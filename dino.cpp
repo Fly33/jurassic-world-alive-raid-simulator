@@ -72,12 +72,13 @@ Dino::Dino(int _team, int _index, int _level, int _health_boost, int _damage_boo
     }
 }
 
-bool Dino::Prepare(int _ability_id, bool force)
+bool Dino::Prepare(int _ability_id, bool minor)
 {
     if (!Alive())
         return true;
-    if (!force && cooldown[_ability_id] != 0)
+    if (index != 0 && cooldown[_ability_id] != 0) // index == 0 => boss
         return false;
+    this->minor = minor;
     for (int i = 0; i < 4; ++i) {
         if (cooldown[i] > 0)
             --cooldown[i];

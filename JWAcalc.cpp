@@ -11,6 +11,7 @@
 #include <getopt.h>
 #include <cctype>
 #include <regex>
+#include <cmath>
 #include "dino.h"
 #include "actions.h"
 #include "modifiers.h"
@@ -43,9 +44,15 @@ bool SpeedCmp(const Dino &dino1, const Dino &dino2) {
         return true;
     if (dino1.kind->rarity < dino2.kind->rarity)
         return false;
-    if (dino1.index < dino2.index)
+    if (dino1.minor < dino2.minor)
         return true;
-//    if (dino1.index > dino2.index)
+    if (dino1.minor > dino2.minor)
+        return false;
+    if ((!dino1.minor && dino1.index < dino2.index) ||
+        (dino1.minor && dino1.index > dino2.index))
+        return true;
+//    if ((!dino1.minor && dino1.index > dino2.index) ||
+//        (dino1.minor && dino1.index < dino2.index))
 //        return false;
     return false;
 }
@@ -139,10 +146,11 @@ bool Check(Dino team[], int team_size, const Strategy &strategy)
             if (!team[i].Alive())
                 continue;
             if (i == 0)
-                boss->Prepare(boss->turn % (int)boss->kind->ability[boss->round].size(), true);
+                boss->Prepare(boss->turn % (int)boss->kind->ability[boss->round].size());
             else if (team[i].team == 1) { // Teammates
-                int ability_id = ability[i-1]-1;
-                if (!team[i].Prepare(ability_id)) {
+                bool minor = ability[i-1] < 0;
+                int ability_id = abs(ability[i-1])-1;
+                if (!team[i].Prepare(ability_id, minor)) {
                     ERROR("%s Can't use %s because of cooldown", team[i].Name().c_str(), team[i].Ability(ability_id)->name.c_str());
                     return false;
                 }
@@ -304,6 +312,10 @@ Checks a strategy from input or <file> if specified. The strategy has the follow
         <teammate_1_turn_1_move> ... <teammate_1_turn_M_move>
         ...
         <teammate_N_turn_1_move> ... <teammate_N_turn_M_move>
+
+A move is a number from 1 to 4. But it can be negative to manage the move order of the dinos with equal speed.
+If two or more dinos have completely equal speed (equal speed, level and rarity), those with the positive move
+act first from top to bottom, then those with the negative move act from bottom to top.
 
 Also there is alternarive format:
         <boss_name>

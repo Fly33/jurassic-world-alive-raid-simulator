@@ -149,6 +149,7 @@ struct Dino
     int speed; // текущая скорость
     int ability_id = -1; // номер атаки
     bool priority = false; // приоритет в текущем ходу
+    bool minor = false;
     bool threatened = false; // угнетение в текущем ходу
     std::vector<modifiers::Mod> mods;
     double vulnerability = 0;
@@ -195,7 +196,7 @@ struct Dino
     {
         return Round(speed * SpeedFactor());
     }
-    bool Prepare(int ability_id, bool force = false);
+    bool Prepare(int ability_id, bool minor = false);
     void Attack(Dino team[], int team_size);
     void CounterAttack(Dino team[], int team_size);
     void Impose(const modifiers::Modifier *mod, Dino &author);
