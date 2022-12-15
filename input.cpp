@@ -85,6 +85,8 @@ Instruction ParseInstruction(int team_size, const char *line, int offset)
     for (int j = 0; j < team_size; ++j) {
         if (sscanf(line, "%d%n", &ability, &n) != 1)
             throw invalid_argument(strprintf("Expected a number near \"%.10s...\"", line));
+        if (ability == 0 || 4 < abs(ability))
+            throw invalid_argument("Move should be between 1 and 4");
         line += n;
         instruction.abilities.push_back(ability);
     }
@@ -210,6 +212,10 @@ int Input(std::vector<Dino> &team, Strategy &strategy)
         team.push_back(boss_it->second[0]);
         if (sscanf(GetLine().c_str(), "%d%d%1s", &team_size, &n_turns, end) != 2)
             throw invalid_argument("Expected team size and number of turns");
+        if (team_size < 1 || 4 < team_size)
+            throw invalid_argument("Invalid team size");
+        if (n_turns < 0 || n_turns > 20)
+            throw invalid_argument("Invalid number of turns");
         for (int i = 0; i < team_size; ++i) {
             char dino[32];
             int level, health_boost, damage_boost, speed_boost;
@@ -218,6 +224,12 @@ int Input(std::vector<Dino> &team, Strategy &strategy)
             auto dino_it = DinoDex.find(dino);
             if (dino_it == DinoDex.end())
                 throw invalid_argument(strprintf("Unable to find %s", dino));
+            if (level < 1 || 30 < level ||
+                health_boost < 0 || 20 < health_boost ||
+                damage_boost < 0 || 20 < damage_boost ||
+                speed_boost < 0 || 20 < speed_boost ||
+                health_boost + damage_boost + speed_boost > 30)
+                throw invalid_argument("Invalid dino parameters");
             team.push_back(Dino(1, i+1, level, health_boost, damage_boost, speed_boost, dino_it->second));
         }
         for (int i = 1; i < (int)boss_it->second.size(); ++i)
@@ -231,6 +243,8 @@ int Input(std::vector<Dino> &team, Strategy &strategy)
                 for (int j = 0; j < n_turns; ++j) {
                     if (sscanf(line.c_str() + offset, "%d%n", &ability[i][j], &n) != 1)
                         throw invalid_argument("Expected a number");
+                    if (ability[i][j] == 0 || 4 < abs(ability[i][j]))
+                        throw invalid_argument("Move should be between 1 and 4");
                     offset += n;
                 }
                 if (sscanf(line.c_str() + offset, "%1s", end) == 1)
