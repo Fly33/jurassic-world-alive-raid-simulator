@@ -262,7 +262,7 @@ struct Dino
     void Heal(const Dino &healer, int heal);
     int Absorb(int damage);
     int HealAbsorb(int heal);
-    const Ability *Ability(int i) const
+    const ::Ability *Ability(int i) const
     {
         return kind->ability[round][i];
     }
