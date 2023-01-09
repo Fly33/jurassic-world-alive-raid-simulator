@@ -44,21 +44,6 @@ struct Action
     virtual void Do(Dino &self, Dino &target) const = 0;
 };
 
-#define TargetRandom(...) std::move(actions::ActionGroupFunction(TARGET_RANDOM, __VA_ARGS__))
-#define TargetLowestHP(...) std::move(actions::ActionGroupFunction(TARGET_LOWEST_HP, __VA_ARGS__))
-#define TargetHighestHP(...) std::move(actions::ActionGroupFunction(TARGET_HIGHEST_HP, __VA_ARGS__))
-#define TargetLowestDamage(...) std::move(actions::ActionGroupFunction(TARGET_LOWEST_DAMAGE, __VA_ARGS__))
-#define TargetHighestDamage(...) std::move(actions::ActionGroupFunction(TARGET_HIGHEST_DAMAGE, __VA_ARGS__))
-#define TargetSlowest(...) std::move(actions::ActionGroupFunction(TARGET_SLOWEST, __VA_ARGS__))
-#define TargetFastest(...) std::move(actions::ActionGroupFunction(TARGET_FASTEST, __VA_ARGS__))
-#define TargetMostPositiveEffects(...) std::move(actions::ActionGroupFunction(TARGET_MOST_POSITIVE_EFFECTS, __VA_ARGS__))
-#define TargetLowestHPTeammate(...) std::move(actions::ActionGroupFunction(TARGET_LOWEST_HP_TEAMMATE, __VA_ARGS__))
-#define TargetAllOpponents(...) std::move(actions::ActionGroupFunction(TARGET_ALL_OPPONENTS, __VA_ARGS__))
-#define TargetAttacker(...) std::move(actions::ActionGroupFunction(TARGET_ATTACKER, __VA_ARGS__))
-#define TargetSelf(...) std::move(actions::ActionGroupFunction(TARGET_SELF, __VA_ARGS__))
-#define TargetTeam(...) std::move(actions::ActionGroupFunction(TARGET_TEAM, __VA_ARGS__))
-#define TargetLast(...) std::move(actions::ActionGroupFunction(TARGET_LAST, __VA_ARGS__))
-
 inline bool IsImmutableTarget(int target)
 {
     return target == TARGET_ALL_OPPONENTS ||
@@ -70,6 +55,21 @@ inline bool IsImmutableTarget(int target)
 
 template<typename ...Args>
 std::list<std::unique_ptr<Action>> ActionGroupFunction(int target, Args &&...args);
+
+template<typename ...Args> auto TargetRandom(Args ...args) { return actions::ActionGroupFunction(TARGET_RANDOM, std::forward<Args>(args)...); }
+template<typename ...Args> auto TargetLowestHP(Args ...args) { return actions::ActionGroupFunction(TARGET_LOWEST_HP, std::forward<Args>(args)...); }
+template<typename ...Args> auto TargetHighestHP(Args ...args) { return actions::ActionGroupFunction(TARGET_HIGHEST_HP, std::forward<Args>(args)...); }
+template<typename ...Args> auto TargetLowestDamage(Args ...args) { return actions::ActionGroupFunction(TARGET_LOWEST_DAMAGE, std::forward<Args>(args)...); }
+template<typename ...Args> auto TargetHighestDamage(Args ...args) { return actions::ActionGroupFunction(TARGET_HIGHEST_DAMAGE, std::forward<Args>(args)...); }
+template<typename ...Args> auto TargetSlowest(Args ...args) { return actions::ActionGroupFunction(TARGET_SLOWEST, std::forward<Args>(args)...); }
+template<typename ...Args> auto TargetFastest(Args ...args) { return actions::ActionGroupFunction(TARGET_FASTEST, std::forward<Args>(args)...); }
+template<typename ...Args> auto TargetMostPositiveEffects(Args ...args) { return actions::ActionGroupFunction(TARGET_MOST_POSITIVE_EFFECTS, std::forward<Args>(args)...); }
+template<typename ...Args> auto TargetLowestHPTeammate(Args ...args) { return actions::ActionGroupFunction(TARGET_LOWEST_HP_TEAMMATE, std::forward<Args>(args)...); }
+template<typename ...Args> auto TargetAllOpponents(Args ...args) { return actions::ActionGroupFunction(TARGET_ALL_OPPONENTS, std::forward<Args>(args)...); }
+template<typename ...Args> auto TargetAttacker(Args ...args) { return actions::ActionGroupFunction(TARGET_ATTACKER, std::forward<Args>(args)...); }
+template<typename ...Args> auto TargetSelf(Args ...args) { return actions::ActionGroupFunction(TARGET_SELF, std::forward<Args>(args)...); }
+template<typename ...Args> auto TargetTeam(Args ...args) { return actions::ActionGroupFunction(TARGET_TEAM, std::forward<Args>(args)...); }
+template<typename ...Args> auto TargetLast(Args ...args) { return actions::ActionGroupFunction(TARGET_LAST, std::forward<Args>(args)...); }
 
 template<typename ...Args>
 class ActionGroupClass;
