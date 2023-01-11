@@ -3,6 +3,7 @@ import os
 import json
 import re
 import traceback
+import json_fix
 
 PATH = "assets\\Database\\"
 DATA = "Assets\\Data\\DataDatabase.json"
@@ -21,6 +22,12 @@ def GetPath(path):
         return json.load(f)
 
 
+def Num(x):
+    if type(x) is float:
+        return str(x).rstrip('0').rstrip('.')
+    return str(x)
+
+
 GuidData = {}
 
 
@@ -30,12 +37,32 @@ def GetGuid(data, guid):
     return GuidData[guid]
 
 
-def Action(name, *args, **flags):
-    flags = '|'.join(key for key, value in flags.items() if value)
-    if flags:
-        args = (*args, flags)
-    args = ', '.join(str(arg) for arg in args)
-    return f'{name}({args})'
+class Action:
+    def __init__(self, name, *args, **flags):
+        self.name = name
+        self.flags = [key for key, value in flags.items() if value]
+        self.args = args
+
+    def ToString(self):
+        name = self.name
+        args = self.args
+        if self.flags:
+            flags = '|'.join(self.flags)
+            args = (*args, flags)
+        args = ', '.join(str(arg) for arg in args)
+        return f'{name}({args})'
+
+    def ToCompact(self):
+        name = GetShort('actions::' + self.name)
+        args = self.args
+        if self.flags:
+            flags = '|'.join(GetShort(flag) for flag in self.flags)
+            args = (*args, flags)
+        args = ','.join(Num(arg) for arg in args)
+        return f'{name}({args})'
+
+    def __json__(self):
+        return self.ToString()
 
 
 def ParseAction(data, guid):
@@ -227,10 +254,10 @@ def ParseAbility(data, guid, l10n):
                     ability['actions'][-1]["Target"] in ImmutableTargets and ability['actions'][-1]["Target"] == action["Target"] or 
                     ability['actions'][-1]["Target"] not in ImmutableTargets and action["Target"] == "Last"
                 ) and (
-                    ability['actions'][-1]["Action"].startswith("Remove") and action["Action"].startswith("Remove") or
-                    ability['actions'][-1]["Action"].startswith("Cleanse") and action["Action"].startswith("Cleanse")
+                    ability['actions'][-1]["Action"].name == "Remove" and action["Action"].name == "Remove" or
+                    ability['actions'][-1]["Action"].name == "Cleanse" and action["Action"].name == "Cleanse"
                 ):
-                ability['actions'][-1]["Action"] = ability['actions'][-1]["Action"][:-1] + '|' + action["Action"][action['Action'].find('(')+1:]
+                ability['actions'][-1]["Action"].flags.extend(action["Action"].flags)
             else:
                 ability['actions'].append(action)
         return ability
@@ -241,10 +268,10 @@ def ParseAbility(data, guid, l10n):
 
 
 Factors = {
-    25: "1./4.",
-    33: "1./3.",
-    50: "1./2.",
-    66: "2./3."
+    25: "1./4",
+    33: "1./3",
+    50: "1./2",
+    66: "2./3"
 }
 
 
@@ -365,6 +392,52 @@ def GetRaid(l10n, data, raid_dex, boss_dex, boss_ability_dex, minion_dex, abilit
         raid_dex.append(raid)
 
 
+def CodeNum(x):
+    a = '_qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890'
+    r = ''
+    r += a[x % 53]
+    x //= 53
+    while True:
+        r += a[x % 63]
+        x //= 63
+        if x == 0:
+            break
+    return r
+
+
+Codes = {}
+
+
+def GetCode(x):
+    if x not in Codes:
+        while True:
+            code = CodeNum(len(Codes))
+            if code not in ('or', 'if', 'do'):
+                break
+            Codes[hash(code)] = code
+        Codes[x] = code
+    return Codes[x]
+
+
+Shorts = {}
+
+
+def GetShort(x):
+    a = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'
+    if x not in Shorts:
+        if len(Shorts) < len(a): 
+            Shorts[x] = a[len(Shorts)]
+        else:
+            Shorts[x] = GetCode(x)
+    return Shorts[x]
+
+
+def GetEntity(x, entity):
+    if x not in entity:
+        entity[x] = GetShort(x)
+    return entity[x]
+
+
 # def WriteDinoDex(dino_file, ability_file, dino_dex):
     # with open(dino_file + ".json", "w") as f:
         # json.dump(dino_dex, f, indent=4)
@@ -435,6 +508,28 @@ def WriteDinoDex(dino_dex, f):
         print('', file=f)
 
 
+def WriteCompactDinoDex(dino_dex, f):
+    for dino in sorted(dino_dex.values(), key=lambda dino: dino['dev_name']):
+        print(f'{GetShort("DinoKind")} {GetCode(dino["dev_name"])}("{dino["name"]}",{GetShort(dino["rarity"])},{dino["flock"]},'\
+              f'{dino["health"]},{dino["damage"]},{dino["speed"]},{Num(dino["armor"])},{Num(dino["crit"])},'\
+              f'{Num(dino["crit_reduction_resistance"])},'\
+              f'{Num(dino["damage_over_time_resistance"])},'\
+              f'{Num(dino["damage_reduction_resistance"])},'\
+              f'{Num(dino["rend_resistance"])},'\
+              f'{Num(dino["speed_reduction_resistance"])},'\
+              f'{Num(dino["stun_resistance"])},'\
+              f'{Num(dino["swap_prevention_resistance"])},'\
+              f'{Num(dino["taunt_resistance"])},'\
+              f'{Num(dino["vulnerable_resistance"])},'\
+              f'{Num(dino["armor_reduction_resistance"])},{{', file=f, end='')
+        for round in range(len(dino['ability'])):
+            print(f'{{', file=f, end='')
+            for ability in range(len(dino['ability'][round])):
+                print(f'&{GetCode(dino["ability"][round][ability])}{"," if ability != len(dino["ability"][round]) - 1 else ""}', file=f, end='')
+            print(f'}}{"," if round != len(dino["ability"]) - 1 else ""}', file=f, end='')
+        print(f'}},{"&" + GetCode(dino["counter"]) if dino["counter"] else GetShort("nullptr")});', file=f, end='')
+
+
 def WriteAbilityActions(actions, f):
     for i in range(len(actions)):
         if i == 0 or not (
@@ -442,7 +537,7 @@ def WriteAbilityActions(actions, f):
                 actions[i-1]["Target"] not in ImmutableTargets and actions[i]["Target"] == "Last"
             ):
             print(f'    Target{actions[i]["Target"]}(', file=f)
-        print(f'        {actions[i]["Action"]}', end='', file=f)
+        print(f'        {actions[i]["Action"].ToString()}', end='', file=f)
         if i == len(actions)-1 or not (
                 actions[i]["Target"] in ImmutableTargets and actions[i]["Target"] == actions[i+1]["Target"] or 
                 actions[i]["Target"] not in ImmutableTargets and actions[i+1]["Target"] == "Last"
@@ -452,6 +547,23 @@ def WriteAbilityActions(actions, f):
             print(f',', file=f)
         else:
             print(f'', file=f)
+
+
+def WriteCompactAbilityActions(actions, f):
+    for i in range(len(actions)):
+        if i == 0 or not (
+                actions[i]["Target"] in ImmutableTargets and actions[i-1]["Target"] == actions[i]["Target"] or 
+                actions[i-1]["Target"] not in ImmutableTargets and actions[i]["Target"] == "Last"
+            ):
+            print(f'{GetShort("actions::Target"+actions[i]["Target"])}(', file=f, end='')
+        print(f'{actions[i]["Action"].ToCompact()}', end='', file=f)
+        if i == len(actions)-1 or not (
+                actions[i]["Target"] in ImmutableTargets and actions[i]["Target"] == actions[i+1]["Target"] or 
+                actions[i]["Target"] not in ImmutableTargets and actions[i+1]["Target"] == "Last"
+            ):
+            print(f')', end='', file=f)
+        if i != len(actions)-1:
+            print(f',', file=f, end='')
 
 
 # def WriteAbilityDex(ability_file, ability_dex):
@@ -518,6 +630,25 @@ def WriteAbilityDex(ability_dex, f):
             WriteAbilityActions(ability["threatened"]["actions"], f) 
         print(f'}});', file=f)
         print(f'', file=f)
+
+
+def WriteCompactAbilityDex(ability_dex, f):
+    for ability in sorted(ability_dex.values(), key=lambda ability: ability['dev_name']):
+        if ability["type"] == "CounterAbility" or ability["type"] == "ThreatenedCounterAbility":
+            print(f'{GetShort(ability["type"])} {GetCode(ability["dev_name"])}("{ability["name"]}",{{', file=f, end='')
+        else:
+            print(f'{GetShort(ability["type"])} {GetCode(ability["dev_name"])}("{ability["name"]}",{ability["delay"]},{ability["cooldown"]},{GetShort(ability["priority"])},{{', file=f, end='')
+        WriteCompactAbilityActions(ability["actions"], f) 
+        if ability["type"] == "RevengeAbility":
+            print(f'}},{ability["revenge"]["delay"]},{ability["revenge"]["cooldown"]},{GetShort(ability["revenge"]["priority"])},{{', file=f, end='')
+            WriteCompactAbilityActions(ability["revenge"]["actions"], f) 
+        elif ability["type"] == "ThreatenedAbility":
+            print(f'}},[]({GetShort("Dino")}&{GetCode("self")}){{return {GetCode("self")}.{GetShort("total_health")}{ability["threatened_compare"]}{GetCode("self")}.{GetShort("max_total_health")}*{ability["threatened_factor"]};}},{ability["threatened"]["delay"]},{ability["threatened"]["cooldown"]},{GetShort(ability["threatened"]["priority"])},{{', file=f, end='')
+            WriteCompactAbilityActions(ability["threatened"]["actions"], f) 
+        elif ability["type"] == "ThreatenedCounterAbility":
+            print(f'}},[]({GetShort("Dino")}&{GetCode("self")}){{return {GetCode("self")}.{GetShort("total_health")}{ability["threatened_compare"]}{GetCode("self")}.{GetShort("max_total_health")}*{ability["threatened_factor"]};}},{{', file=f, end='')
+            WriteCompactAbilityActions(ability["threatened"]["actions"], f) 
+        print(f'}});', file=f, end='')
 
 
 # def WriteDex(dino_dex, minion_dex, boss_dex, raid_dex):
@@ -598,6 +729,48 @@ def WriteDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid
     print(f'}};', file=f)
 
 
+def WriteCompactDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid_dex, f):
+    print(f'#include "dex.h"', file=f)
+    print(f'#include "actions.h"', file=f)
+    print(f'#include "modifiers.h"', file=f)
+    print(f'#include "dino.h"', file=f)
+    print(f'#include "compact_dex.h"', file=f)
+    print(f'using namespace actions;', file=f)
+    print(f'namespace boss {{', file=f, end='')
+    WriteCompactAbilityDex(boss_ability_dex, f)
+    WriteCompactDinoDex(boss_dex, f)
+    print(f'}}', file=f)
+    WriteCompactAbilityDex(ability_dex, f)
+    WriteCompactDinoDex(minion_dex, f)
+    WriteCompactDinoDex(dino_dex, f)
+    print(f'using namespace boss;', file=f)
+    print(f'{GetShort("std::map")}<{GetShort("std::string")},{GetShort("std::vector")}<{GetShort("Dino")}>> BossDex={{', file=f, end='')
+    for raid in sorted(raid_dex, key=lambda raid: raid["boss"]["dino"]):
+        print(f'{GetShort("std::make_pair")}<{GetShort("std::string")},{GetShort("std::vector")}<{GetShort("Dino")}>>("{raid["boss"]["dino"][:-4]}",{{{GetShort("Dino")}(0,0,{Num(raid["boss"]["level"])},{Num(raid["boss"]["health_boost"])},{Num(raid["boss"]["damage_boost"])},{Num(raid["boss"]["speed_boost"])},&{GetCode(raid["boss"]["dino"])})',end='',file=f)
+        for id, minion in enumerate(raid["minion"]):
+            print(f',{GetShort("Dino")}(0,{id+5},{minion["level"]},{minion["health_boost"]},{minion["damage_boost"]},{minion["speed_boost"]},&{GetCode(minion["dino"])})', end='', file=f)
+        print(f'}}),', file=f, end='')
+    print(f'}};', file=f)
+    print(f'{GetShort("std::map")}<{GetShort("std::string")},const {GetShort("DinoKind")} *> DinoDex = {{', file=f, end='')
+    for dino in sorted(dino_dex.values(), key=lambda dino: dino['dev_name']):
+        print(f'{GetShort("std::make_pair")}("{dino["dev_name"]}",&{GetCode(dino["dev_name"])}),', file=f, end='')
+    print(f'}};', file=f)
+
+
+def WriteShorts(f):
+    print(f'#ifndef __JWA_CALC__COMPACT_H__', file=f)
+    print(f'#define __JWA_CALC__COMPACT_H__', file=f)
+    print(f'', file=f)
+    for (k, v) in Shorts.items():
+        print(f'#define {v} {k}', file=f)
+    # for (k, v) in Types.items():
+    #     print(f'using {v} = {k};', file=f)
+    # for (k, v) in Consts.items():
+    #     print(f'static const auto {v} = {k};', file=f)
+    print(f'', file=f)
+    print(f'#endif // __JWA_CALC__COMPACT_H__', file=f)
+
+
 def GetAll():
     l10n = GetPath("Localization_JW_2_Global_ENGLISH.json")
     data = GetPath(PATH + DATA)
@@ -624,6 +797,10 @@ def GetAll():
         json.dump(raid_dex, f, indent=4)
     with open("dex.cpp", "w") as f:
         WriteDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid_dex, f)
+    with open("compact_dex.cpp", "w") as f:
+        WriteCompactDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid_dex, f)
+    with open("compact_dex.h", "w") as f:
+        WriteShorts(f)
 
 def main():
     #unfold()
