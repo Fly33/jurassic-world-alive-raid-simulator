@@ -6,7 +6,7 @@ using namespace actions;
 
 namespace boss {
 
-Ability AcceleratedStrike19B5("Accelerated Strike", 0, 0, false, {
+Ability AcceleratedStrike19B5("Accelerated Strike", 0, 0, 0, {
     TargetLowestHP(
         Attack(1.0)
     ),
@@ -15,7 +15,7 @@ Ability AcceleratedStrike19B5("Accelerated Strike", 0, 0, false, {
     )
 });
 
-Ability AcceleratingEvasiveStance2AAF("Accelerating Evasive Stance", 0, 3, true, {
+Ability AcceleratingEvasiveStance2AAF("Accelerating Evasive Stance", 0, 3, 1, {
     TargetTeam(
         IncreaseSpeed(50.0, 2)
     ),
@@ -24,7 +24,7 @@ Ability AcceleratingEvasiveStance2AAF("Accelerating Evasive Stance", 0, 3, true,
     )
 });
 
-Ability AcceleratingGroupImpactAA7C("Accelerating Group Impact", 0, 0, false, {
+Ability AcceleratingGroupImpactAA7C("Accelerating Group Impact", 0, 0, 0, {
     TargetSelf(
         IncreaseSpeed(10.0, 2)
     ),
@@ -33,7 +33,7 @@ Ability AcceleratingGroupImpactAA7C("Accelerating Group Impact", 0, 0, false, {
     )
 });
 
-Ability AcceleratingGroupStrike581B("Accelerating Group Strike", 0, 0, false, {
+Ability AcceleratingGroupStrike581B("Accelerating Group Strike", 0, 0, 0, {
     TargetSelf(
         IncreaseSpeed(10.0, 2)
     ),
@@ -42,14 +42,14 @@ Ability AcceleratingGroupStrike581B("Accelerating Group Strike", 0, 0, false, {
     )
 });
 
-ThreatenedAbility AlertAdvance2251("Alert Advance", 0, 0, false, {
+ThreatenedAbility AlertAdvance2251("Alert Advance", 0, 0, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS)
     ),
     TargetAllOpponents(
         Attack(2.0)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./4.; }, 0, 0, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./4; }, 0, 0, 0, {
     TargetAllOpponents(
         Attack(1.5)
     ),
@@ -59,7 +59,7 @@ ThreatenedAbility AlertAdvance2251("Alert Advance", 0, 0, false, {
     )
 });
 
-ThreatenedAbility AlertAssistBA90("Alert Assist", 0, 0, true, {
+ThreatenedAbility AlertAssistBA90("Alert Assist", 0, 0, 1, {
     TargetSelf(
         Shield(100.0, 1, 4)
     ),
@@ -67,7 +67,7 @@ ThreatenedAbility AlertAssistBA90("Alert Assist", 0, 0, true, {
         IncreaseDamage(50.0, 2, 2),
         Shield(50.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, 0, 0, true, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 0, 1, {
     TargetSelf(
         Shield(100.0, 1, 4)
     ),
@@ -83,7 +83,7 @@ ThreatenedCounterAbility AlertCoil5A3C("Alert Coil", {
     TargetSelf(
         IncreaseDamage(5.0, 3, 3)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, {
     TargetSelf(
         IncreaseDamage(10.0, 3, 3)
     )
@@ -93,13 +93,13 @@ ThreatenedCounterAbility AlertCounterDistraction2BF3("Alert Counter Distraction"
     TargetAttacker(
         ReduceDamage(10.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, {
     TargetAttacker(
         ReduceDamage(15.0, 2, 4)
     )
 });
 
-ThreatenedAbility AlertMimic58E4("Alert Mimic", 0, 0, true, {
+ThreatenedAbility AlertMimic58E4("Alert Mimic", 0, 0, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -111,7 +111,7 @@ ThreatenedAbility AlertMimic58E4("Alert Mimic", 0, 0, true, {
         IncreaseSpeed(10.0, 2),
         Taunt(2)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, 0, 0, true, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 0, 1, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -127,26 +127,26 @@ ThreatenedAbility AlertMimic58E4("Alert Mimic", 0, 0, true, {
     )
 });
 
-ThreatenedAbility AlertNullification3D09("Alert Nullification", 0, 2, true, {
+ThreatenedAbility AlertNullification3D09("Alert Nullification", 0, 2, 1, {
     TargetAllOpponents(
         Remove(POSITIVE_EFFECTS),
         ReduceDamage(50.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, 0, 2, true, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 2, 1, {
     TargetAllOpponents(
         Remove(POSITIVE_EFFECTS),
         ReduceDamage(75.0, 2, 4)
     )
 });
 
-Ability AlertNullification7C0F("Alert Nullification", 0, 2, true, {
+Ability AlertNullification7C0F("Alert Nullification", 0, 2, 1, {
     TargetAllOpponents(
         Remove(POSITIVE_EFFECTS),
         ReduceDamage(75.0, 2, 4)
     )
 });
 
-ThreatenedAbility AlertSlither23E3("Alert Slither", 0, 0, false, {
+ThreatenedAbility AlertSlither23E3("Alert Slither", 0, 0, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(50.0, 67.0, 3, 4),
@@ -155,7 +155,7 @@ ThreatenedAbility AlertSlither23E3("Alert Slither", 0, 0, false, {
     TargetHighestDamage(
         ReduceDamage(50.0, 3, 6)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, 0, 0, true, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 0, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(75.0, 67.0, 0, 4),
@@ -172,7 +172,7 @@ CounterAbility ArmorPiercingCounterAEB5("Armor Piercing Counter", {
     )
 });
 
-Ability AvianGale57A6("Avian Gale", 0, 0, false, {
+Ability AvianGale57A6("Avian Gale", 0, 0, 0, {
     TargetSelf(
         IncreaseSpeed(20.0, 2)
     ),
@@ -184,13 +184,13 @@ Ability AvianGale57A6("Avian Gale", 0, 0, false, {
     )
 });
 
-Ability AvianGrazeC01A("Avian Graze", 0, 0, false, {
+Ability AvianGrazeC01A("Avian Graze", 0, 0, 0, {
     TargetAllOpponents(
         Attack(1.0)
     )
 });
 
-Ability AvianGust163C("Avian Gust", 0, 0, false, {
+Ability AvianGust163C("Avian Gust", 0, 0, 0, {
     TargetSelf(
         IncreaseSpeed(20.0, 2)
     ),
@@ -202,7 +202,7 @@ Ability AvianGust163C("Avian Gust", 0, 0, false, {
     )
 });
 
-Ability BellowDDD8("Bellow", 0, 0, true, {
+Ability BellowDDD8("Bellow", 0, 0, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Shield(50.0, 0, 4)
@@ -215,13 +215,13 @@ Ability BellowDDD8("Bellow", 0, 0, true, {
     )
 });
 
-Ability BlindRampage3285("Blind Rampage", 0, 0, false, {
+Ability BlindRampage3285("Blind Rampage", 0, 0, 0, {
     TargetRandom(
         Attack(2.0, ALWAYS_CRITS)
     )
 });
 
-Ability BodingDistraction71C6("Boding Distraction", 0, 0, true, {
+Ability BodingDistraction71C6("Boding Distraction", 0, 0, 1, {
     TargetSelf(
         IncreaseSpeed(30.0, 2),
         Dodge(75.0, 66.69999, 2, 2)
@@ -234,14 +234,14 @@ Ability BodingDistraction71C6("Boding Distraction", 0, 0, true, {
     )
 });
 
-Ability BoldRendingAttackB856("Bold Rending Attack", 0, 0, false, {
+Ability BoldRendingAttackB856("Bold Rending Attack", 0, 0, 0, {
     TargetHighestHP(
         Remove(SHIELD),
         Rend(25.0, BYPASS_ARMOR)
     )
 });
 
-Ability BoomAA79("Boom", 0, 0, false, {
+Ability BoomAA79("Boom", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -252,13 +252,13 @@ Ability BoomAA79("Boom", 0, 0, false, {
     )
 });
 
-RevengeAbility BrakingRevenge9580("Braking Revenge", 0, 0, false, {
+RevengeAbility BrakingRevenge9580("Braking Revenge", 0, 0, 0, {
     TargetFastest(
         ReduceSpeed(50.0, 2),
         Attack(2.0),
         DamageOverTime(15.0, 2)
     )
-}, 0, 0, true, {
+}, 0, 0, 1, {
     TargetAllOpponents(
         ReduceSpeed(75.0, 2),
         Attack(2.0),
@@ -266,20 +266,20 @@ RevengeAbility BrakingRevenge9580("Braking Revenge", 0, 0, false, {
     )
 });
 
-Ability BreakthroughE0A1("Breakthrough", 1, 1, true, {
+Ability BreakthroughE0A1("Breakthrough", 1, 1, 1, {
     TargetLowestHP(
         Remove(SHIELD|TAUNT),
         Attack(2.0, BYPASS_ARMOR)
     )
 });
 
-Ability BullyImpact2F83("Bully Impact", 0, 0, false, {
+Ability BullyImpact2F83("Bully Impact", 0, 0, 0, {
     TargetLowestHP(
         Attack(1.5, ALWAYS_CRITS)
     )
 });
 
-Ability CautiousGroupStrike9753("Cautious Group Strike", 0, 0, false, {
+Ability CautiousGroupStrike9753("Cautious Group Strike", 0, 0, 0, {
     TargetSelf(
         IncreaseSpeed(10.0, 1),
         Dodge(75.0, 67.0, 1, 4)
@@ -290,7 +290,7 @@ Ability CautiousGroupStrike9753("Cautious Group Strike", 0, 0, false, {
     )
 });
 
-Ability CautiousPrecisePounceEA3D("Cautious Precise Pounce", 0, 0, false, {
+Ability CautiousPrecisePounceEA3D("Cautious Precise Pounce", 0, 0, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseSpeed(10.0, 3),
@@ -302,13 +302,13 @@ Ability CautiousPrecisePounceEA3D("Cautious Precise Pounce", 0, 0, false, {
     )
 });
 
-Ability ClawingRampageD228("Clawing Rampage", 0, 0, true, {
+Ability ClawingRampageD228("Clawing Rampage", 0, 0, 1, {
     TargetHighestDamage(
         Attack(2.0)
     )
 });
 
-Ability CleansingEvasiveImpact41F1("Cleansing Evasive Impact", 0, 0, false, {
+Ability CleansingEvasiveImpact41F1("Cleansing Evasive Impact", 0, 0, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(75.0, 67.0, 1, 2)
@@ -318,7 +318,7 @@ Ability CleansingEvasiveImpact41F1("Cleansing Evasive Impact", 0, 0, false, {
     )
 });
 
-Ability CleansingGroupCunningStrike6087("Cleansing Group Cunning Strike", 0, 0, false, {
+Ability CleansingGroupCunningStrike6087("Cleansing Group Cunning Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -330,7 +330,7 @@ Ability CleansingGroupCunningStrike6087("Cleansing Group Cunning Strike", 0, 0, 
     )
 });
 
-Ability CleansingPrimalTailWhip0DFD("Cleansing Primal Tail Whip", 0, 0, false, {
+Ability CleansingPrimalTailWhip0DFD("Cleansing Primal Tail Whip", 0, 0, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -340,7 +340,7 @@ Ability CleansingPrimalTailWhip0DFD("Cleansing Primal Tail Whip", 0, 0, false, {
     )
 });
 
-Ability CleansingRandomImpact2314("Cleansing Random Impact", 0, 0, false, {
+Ability CleansingRandomImpact2314("Cleansing Random Impact", 0, 0, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -349,7 +349,7 @@ Ability CleansingRandomImpact2314("Cleansing Random Impact", 0, 0, false, {
     )
 });
 
-Ability CleansingRandomImpactBCA7("Cleansing Random Impact", 0, 0, false, {
+Ability CleansingRandomImpactBCA7("Cleansing Random Impact", 0, 0, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -358,7 +358,7 @@ Ability CleansingRandomImpactBCA7("Cleansing Random Impact", 0, 0, false, {
     )
 });
 
-Ability CleansingRandomPiercingRampageCA35("Cleansing Random Piercing Rampage", 0, 0, false, {
+Ability CleansingRandomPiercingRampageCA35("Cleansing Random Piercing Rampage", 0, 0, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -367,7 +367,7 @@ Ability CleansingRandomPiercingRampageCA35("Cleansing Random Piercing Rampage", 
     )
 });
 
-Ability CleansingRandomShatteringStrikeD4F0("Cleansing Random Shattering Strike", 0, 0, false, {
+Ability CleansingRandomShatteringStrikeD4F0("Cleansing Random Shattering Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -377,7 +377,7 @@ Ability CleansingRandomShatteringStrikeD4F0("Cleansing Random Shattering Strike"
     )
 });
 
-Ability CleverDodge660B("Clever Dodge", 0, 0, true, {
+Ability CleverDodge660B("Clever Dodge", 0, 0, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(100.0, 67.0, 0, 4),
@@ -388,13 +388,13 @@ Ability CleverDodge660B("Clever Dodge", 0, 0, true, {
     )
 });
 
-Ability Cloak2513("Cloak", 0, 3, true, {
+Ability Cloak2513("Cloak", 0, 3, 1, {
     TargetSelf(
         Cloak(2.0, 75.0, 66.66659, 2)
     )
 });
 
-Ability CoilingRampage31C8("Coiling Rampage", 0, 0, true, {
+Ability CoilingRampage31C8("Coiling Rampage", 0, 0, 1, {
     TargetSelf(
         Shield(75.0, 3, 12)
     ),
@@ -406,7 +406,7 @@ Ability CoilingRampage31C8("Coiling Rampage", 0, 0, true, {
     )
 });
 
-Ability ColdbloodedRampage0A01("Cold-Blooded Rampage", 0, 0, false, {
+Ability ColdbloodedRampage0A01("Cold-Blooded Rampage", 0, 0, 0, {
     TargetLowestHP(
         Attack(2.0, PRECISE)
     )
@@ -435,13 +435,13 @@ CounterAbility CounterVulnerabilityC8BA("Counter Vulnerability", {
     )
 });
 
-Ability CriticalGroupImpactAC56("Critical Group Impact", 0, 0, false, {
+Ability CriticalGroupImpactAC56("Critical Group Impact", 0, 0, 0, {
     TargetAllOpponents(
         Attack(1.5, ALWAYS_CRITS)
     )
 });
 
-Ability CriticalShake0032("Critical Shake", 0, 0, true, {
+Ability CriticalShake0032("Critical Shake", 0, 0, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseSpeed(10.0, 2),
@@ -450,7 +450,7 @@ Ability CriticalShake0032("Critical Shake", 0, 0, true, {
     )
 });
 
-RevengeAbility CunningCleanseRevengeE931("Cunning Cleanse Revenge", 0, 0, false, {
+RevengeAbility CunningCleanseRevengeE931("Cunning Cleanse Revenge", 0, 0, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -460,7 +460,7 @@ RevengeAbility CunningCleanseRevengeE931("Cunning Cleanse Revenge", 0, 0, false,
         Remove(INCREASED_CRIT_CHANCE|INCREASED_DAMAGE),
         Attack(2.0)
     )
-}, 0, 0, true, {
+}, 0, 0, 1, {
     TargetTeam(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -472,7 +472,7 @@ RevengeAbility CunningCleanseRevengeE931("Cunning Cleanse Revenge", 0, 0, false,
     )
 });
 
-Ability CunningImpactEE79("Cunning Impact", 0, 1, false, {
+Ability CunningImpactEE79("Cunning Impact", 0, 1, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -484,7 +484,7 @@ Ability CunningImpactEE79("Cunning Impact", 0, 1, false, {
     )
 });
 
-Ability CunningRampage8AEB("Cunning Rampage", 1, 1, false, {
+Ability CunningRampage8AEB("Cunning Rampage", 1, 1, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -496,7 +496,7 @@ Ability CunningRampage8AEB("Cunning Rampage", 1, 1, false, {
     )
 });
 
-Ability DaringEvasionCDAC("Daring Evasion", 0, 0, true, {
+Ability DaringEvasionCDAC("Daring Evasion", 0, 0, 1, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseSpeed(10.0, 2),
@@ -505,7 +505,7 @@ Ability DaringEvasionCDAC("Daring Evasion", 0, 0, true, {
     )
 });
 
-RevengeAbility DaringGroupRevenge489D("Daring Group Revenge", 0, 0, false, {
+RevengeAbility DaringGroupRevenge489D("Daring Group Revenge", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY|DAMAGE_OVER_TIME)
     ),
@@ -514,7 +514,7 @@ RevengeAbility DaringGroupRevenge489D("Daring Group Revenge", 0, 0, false, {
         Attack(1.5, BYPASS_ARMOR),
         ReduceDamage(50.0, 1, 2)
     )
-}, 0, 0, false, {
+}, 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY|DAMAGE_OVER_TIME)
     ),
@@ -525,7 +525,7 @@ RevengeAbility DaringGroupRevenge489D("Daring Group Revenge", 0, 0, false, {
     )
 });
 
-Ability DaringGroupStrike7E0C("Daring Group Strike", 0, 0, false, {
+Ability DaringGroupStrike7E0C("Daring Group Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY|DAMAGE_OVER_TIME)
     ),
@@ -535,7 +535,7 @@ Ability DaringGroupStrike7E0C("Daring Group Strike", 0, 0, false, {
     )
 });
 
-Ability DeadlyDistraction5F14("Deadly Distraction", 0, 0, false, {
+Ability DeadlyDistraction5F14("Deadly Distraction", 0, 0, 0, {
     TargetHighestDamage(
         Attack(2.0),
         Stun(75.0, 1),
@@ -543,14 +543,14 @@ Ability DeadlyDistraction5F14("Deadly Distraction", 0, 0, false, {
     )
 });
 
-Ability DeceleratingRampageD0C5("Decelerating Rampage", 1, 1, false, {
+Ability DeceleratingRampageD0C5("Decelerating Rampage", 1, 1, 0, {
     TargetFastest(
         ReduceSpeed(50.0, 2),
         Attack(2.0)
     )
 });
 
-Ability DefenseShatteringImpact85C0("Defense Shattering Impact", 0, 0, false, {
+Ability DefenseShatteringImpact85C0("Defense Shattering Impact", 0, 0, 0, {
     TargetLowestHP(
         Remove(SHIELD)
     ),
@@ -559,7 +559,7 @@ Ability DefenseShatteringImpact85C0("Defense Shattering Impact", 0, 0, false, {
     )
 });
 
-Ability DefenseShatteringRampage5E24("Defense Shattering Rampage", 0, 0, false, {
+Ability DefenseShatteringRampage5E24("Defense Shattering Rampage", 0, 0, 0, {
     TargetHighestHP(
         Remove(SHIELD)
     ),
@@ -568,7 +568,7 @@ Ability DefenseShatteringRampage5E24("Defense Shattering Rampage", 0, 0, false, 
     )
 });
 
-Ability DefensiveGroupTaunt64E9("Defensive Group Taunt", 0, 2, false, {
+Ability DefensiveGroupTaunt64E9("Defensive Group Taunt", 0, 2, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -581,7 +581,7 @@ Ability DefensiveGroupTaunt64E9("Defensive Group Taunt", 0, 2, false, {
     )
 });
 
-Ability DefinitePowerRampage3EE2("Definite Power Rampage", 0, 0, false, {
+Ability DefinitePowerRampage3EE2("Definite Power Rampage", 0, 0, 0, {
     TargetSelf(
         IncreaseDamage(50.0, 4, 4)
     ),
@@ -591,7 +591,7 @@ Ability DefinitePowerRampage3EE2("Definite Power Rampage", 0, 0, false, {
     )
 });
 
-Ability DelayedCautiousRampageAB44("Delayed Cautious Rampage", 0, 0, false, {
+Ability DelayedCautiousRampageAB44("Delayed Cautious Rampage", 0, 0, 0, {
     TargetSelf(
         IncreaseSpeed(10.0, 1),
         Dodge(75.0, 67.0, 1, 1)
@@ -602,7 +602,7 @@ Ability DelayedCautiousRampageAB44("Delayed Cautious Rampage", 0, 0, false, {
     )
 });
 
-Ability DeterminedGroupImpact7887("Determined Group Impact", 0, 0, false, {
+Ability DeterminedGroupImpact7887("Determined Group Impact", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE|DAMAGE_OVER_TIME)
     ),
@@ -615,7 +615,7 @@ Ability DeterminedGroupImpact7887("Determined Group Impact", 0, 0, false, {
     )
 });
 
-Ability DeterminedGroupRampageF0D0("Determined Group Rampage", 0, 0, false, {
+Ability DeterminedGroupRampageF0D0("Determined Group Rampage", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE|DAMAGE_OVER_TIME)
     ),
@@ -628,7 +628,7 @@ Ability DeterminedGroupRampageF0D0("Determined Group Rampage", 0, 0, false, {
     )
 });
 
-Ability DeterminedGroupStrikeCDD7("Determined Group Strike", 0, 0, false, {
+Ability DeterminedGroupStrikeCDD7("Determined Group Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE|DAMAGE_OVER_TIME)
     ),
@@ -641,7 +641,7 @@ Ability DeterminedGroupStrikeCDD7("Determined Group Strike", 0, 0, false, {
     )
 });
 
-Ability Devastation3723("Devastation", 2, 1, false, {
+Ability Devastation3723("Devastation", 2, 1, 0, {
     TargetHighestHP(
         Attack(3.0, PRECISE)
     ),
@@ -650,7 +650,7 @@ Ability Devastation3723("Devastation", 2, 1, false, {
     )
 });
 
-Ability DeviousGroupStrike5A92("Devious Group Strike", 0, 0, false, {
+Ability DeviousGroupStrike5A92("Devious Group Strike", 0, 0, 0, {
     TargetSelf(
         Dodge(75.0, 67.0, 1, 2),
         IncreaseCritChance(30.0, 2, 2)
@@ -661,7 +661,7 @@ Ability DeviousGroupStrike5A92("Devious Group Strike", 0, 0, false, {
     )
 });
 
-Ability DispersedCunningStrike7D4C("Dispersed Cunning Strike", 0, 0, false, {
+Ability DispersedCunningStrike7D4C("Dispersed Cunning Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -673,14 +673,14 @@ Ability DispersedCunningStrike7D4C("Dispersed Cunning Strike", 0, 0, false, {
     )
 });
 
-Ability DispersedDeceleratingImpactF2D9("Dispersed Decelerating Impact", 0, 0, false, {
+Ability DispersedDeceleratingImpactF2D9("Dispersed Decelerating Impact", 0, 0, 0, {
     TargetAllOpponents(
         ReduceSpeed(50.0, 2),
         Attack(1.5)
     )
 });
 
-Ability DispersedSuperiorVulnerability8D77("Dispersed Superior Vulnerability", 0, 0, false, {
+Ability DispersedSuperiorVulnerability8D77("Dispersed Superior Vulnerability", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -691,21 +691,21 @@ Ability DispersedSuperiorVulnerability8D77("Dispersed Superior Vulnerability", 0
     )
 });
 
-Ability DistractingImpactD4D6("Distracting Impact", 0, 2, false, {
+Ability DistractingImpactD4D6("Distracting Impact", 0, 2, 0, {
     TargetHighestDamage(
         ReduceDamage(50.0, 2, 4),
         Attack(1.5)
     )
 });
 
-Ability DistractingRampage5363("Distracting Rampage", 0, 0, false, {
+Ability DistractingRampage5363("Distracting Rampage", 0, 0, 0, {
     TargetHighestDamage(
         ReduceDamage(50.0, 2, 4),
         Attack(2.0)
     )
 });
 
-Ability DragonsBite8539("Dragon'S Bite", 0, 0, false, {
+Ability DragonsBite8539("Dragon'S Bite", 0, 0, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
         Attack(1.0, BYPASS_ARMOR),
@@ -713,7 +713,7 @@ Ability DragonsBite8539("Dragon'S Bite", 0, 0, false, {
     )
 });
 
-Ability EmergencyRegroup5FAB("Emergency Regroup", 0, 0, true, {
+Ability EmergencyRegroup5FAB("Emergency Regroup", 0, 0, 1, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(1.5),
@@ -721,14 +721,14 @@ Ability EmergencyRegroup5FAB("Emergency Regroup", 0, 0, true, {
     )
 });
 
-Ability EnfeeblingRakingImpactC1AB("Enfeebling Raking Impact", 0, 0, false, {
+Ability EnfeeblingRakingImpactC1AB("Enfeebling Raking Impact", 0, 0, 0, {
     TargetMostPositiveEffects(
         Remove(DODGE|CLOAK),
         Attack(1.5, BYPASS_ARMOR)
     )
 });
 
-Ability EvasiveDrainDA22("Evasive Drain", 0, 0, true, {
+Ability EvasiveDrainDA22("Evasive Drain", 0, 0, 1, {
     TargetSelf(
         IncreaseSpeed(30.0, 2),
         Dodge(75.0, 66.69999, 2, 2)
@@ -738,7 +738,7 @@ Ability EvasiveDrainDA22("Evasive Drain", 0, 0, true, {
     )
 });
 
-Ability EvasiveFierceStrike29E7("Evasive Fierce Strike", 0, 0, false, {
+Ability EvasiveFierceStrike29E7("Evasive Fierce Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -751,7 +751,7 @@ Ability EvasiveFierceStrike29E7("Evasive Fierce Strike", 0, 0, false, {
     )
 });
 
-Ability EvasiveGroupWoundingImpactB11F("Evasive Group Wounding Impact", 0, 0, false, {
+Ability EvasiveGroupWoundingImpactB11F("Evasive Group Wounding Impact", 0, 0, 0, {
     TargetAllOpponents(
         DamageOverTime(33.41, 3),
         Attack(1.5)
@@ -761,7 +761,7 @@ Ability EvasiveGroupWoundingImpactB11F("Evasive Group Wounding Impact", 0, 0, fa
     )
 });
 
-Ability EvasivePiercingImpactBC9F("Evasive Piercing Impact", 0, 0, false, {
+Ability EvasivePiercingImpactBC9F("Evasive Piercing Impact", 0, 0, 0, {
     TargetLowestHP(
         Remove(SHIELD),
         Attack(1.5, BYPASS_ARMOR)
@@ -771,7 +771,7 @@ Ability EvasivePiercingImpactBC9F("Evasive Piercing Impact", 0, 0, false, {
     )
 });
 
-Ability EvasiveRampage40C8("Evasive Rampage", 1, 2, false, {
+Ability EvasiveRampage40C8("Evasive Rampage", 1, 2, 0, {
     TargetSelf(
         Dodge(75.0, 67.0, 2, 4)
     ),
@@ -780,7 +780,7 @@ Ability EvasiveRampage40C8("Evasive Rampage", 1, 2, false, {
     )
 });
 
-Ability FearlessFlap6CE3("Fearless Flap", 0, 2, false, {
+Ability FearlessFlap6CE3("Fearless Flap", 0, 2, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(100.0, 67.0, 2, 2),
@@ -792,7 +792,7 @@ Ability FearlessFlap6CE3("Fearless Flap", 0, 2, false, {
     )
 });
 
-Ability FerociousCunningStrike4818("Ferocious Cunning Strike", 0, 0, false, {
+Ability FerociousCunningStrike4818("Ferocious Cunning Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -814,7 +814,7 @@ CounterAbility FerociousFeathers2BA7("Ferocious Feathers", {
     )
 });
 
-Ability FierceCleansingImpact026E("Fierce Cleansing Impact", 0, 0, false, {
+Ability FierceCleansingImpact026E("Fierce Cleansing Impact", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -824,7 +824,7 @@ Ability FierceCleansingImpact026E("Fierce Cleansing Impact", 0, 0, false, {
     )
 });
 
-Ability FierceCleansingRampage705C("Fierce Cleansing Rampage", 0, 0, false, {
+Ability FierceCleansingRampage705C("Fierce Cleansing Rampage", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -834,7 +834,7 @@ Ability FierceCleansingRampage705C("Fierce Cleansing Rampage", 0, 0, false, {
     )
 });
 
-Ability FierceCleansingStrike0B14("Fierce Cleansing Strike", 0, 0, false, {
+Ability FierceCleansingStrike0B14("Fierce Cleansing Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -844,7 +844,7 @@ Ability FierceCleansingStrike0B14("Fierce Cleansing Strike", 0, 0, false, {
     )
 });
 
-Ability FierceDeceleratingRampage9C4C("Fierce Decelerating Rampage", 0, 0, false, {
+Ability FierceDeceleratingRampage9C4C("Fierce Decelerating Rampage", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -855,7 +855,7 @@ Ability FierceDeceleratingRampage9C4C("Fierce Decelerating Rampage", 0, 0, false
     )
 });
 
-Ability FierceImpactB3BE("Fierce Impact", 0, 1, false, {
+Ability FierceImpactB3BE("Fierce Impact", 0, 1, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -872,14 +872,14 @@ CounterAbility GradualCounterAccelerationAD4F("Gradual Counter Acceleration", {
     )
 });
 
-Ability GreaterEmergencyHeal456B("Greater Emergency Heal", 0, 2, true, {
+Ability GreaterEmergencyHeal456B("Greater Emergency Heal", 0, 2, 1, {
     TargetLowestHPTeammate(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(2.0)
     )
 });
 
-Ability GroupAcceleration6211("Group Acceleration", 0, 1, true, {
+Ability GroupAcceleration6211("Group Acceleration", 0, 1, 1, {
     TargetTeam(
         Cleanse(REDUCED_SPEED),
         IncreaseSpeed(50.0, 3)
@@ -889,7 +889,7 @@ Ability GroupAcceleration6211("Group Acceleration", 0, 1, true, {
     )
 });
 
-Ability GroupCautiousImpactE0F0("Group Cautious Impact", 0, 0, false, {
+Ability GroupCautiousImpactE0F0("Group Cautious Impact", 0, 0, 0, {
     TargetSelf(
         IncreaseSpeed(10.0, 1),
         Dodge(75.0, 67.0, 1, 1)
@@ -900,7 +900,7 @@ Ability GroupCautiousImpactE0F0("Group Cautious Impact", 0, 0, false, {
     )
 });
 
-Ability GroupCleansingLethalWound6F87("Group Cleansing Lethal Wound", 0, 0, false, {
+Ability GroupCleansingLethalWound6F87("Group Cleansing Lethal Wound", 0, 0, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -910,7 +910,7 @@ Ability GroupCleansingLethalWound6F87("Group Cleansing Lethal Wound", 0, 0, fals
     )
 });
 
-Ability GroupCunningImpact356E("Group Cunning Impact", 0, 0, false, {
+Ability GroupCunningImpact356E("Group Cunning Impact", 0, 0, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -922,7 +922,7 @@ Ability GroupCunningImpact356E("Group Cunning Impact", 0, 0, false, {
     )
 });
 
-Ability GroupCunningStrikeB5B4("Group Cunning Strike", 0, 0, false, {
+Ability GroupCunningStrikeB5B4("Group Cunning Strike", 0, 0, 0, {
     TargetAllOpponents(
         ReduceDamage(50.0, 1, 2),
         ReduceCritChance(100.0, 1, 2),
@@ -931,82 +931,82 @@ Ability GroupCunningStrikeB5B4("Group Cunning Strike", 0, 0, false, {
     )
 });
 
-Ability GroupDebilitatingDistractionImpact47B8("Group Debilitating Distraction Impact", 0, 0, false, {
+Ability GroupDebilitatingDistractionImpact47B8("Group Debilitating Distraction Impact", 0, 0, 0, {
     TargetAllOpponents(
         ReduceDamage(75.0, 2, 4),
         Attack(1.5)
     )
 });
 
-Ability GroupDeceleratingRampageE77E("Group Decelerating Rampage", 0, 2, false, {
+Ability GroupDeceleratingRampageE77E("Group Decelerating Rampage", 0, 2, 0, {
     TargetAllOpponents(
         ReduceSpeed(50.0, 2),
         Attack(2.0)
     )
 });
 
-Ability GroupDecelerationStrike3B22("Group Deceleration Strike", 0, 0, false, {
+Ability GroupDecelerationStrike3B22("Group Deceleration Strike", 0, 0, 0, {
     TargetAllOpponents(
         ReduceSpeed(50.0, 2),
         Attack(1.0)
     )
 });
 
-Ability GroupDefenseShatteringStrikeF98B("Group Defense Shattering Strike", 0, 0, false, {
+Ability GroupDefenseShatteringStrikeF98B("Group Defense Shattering Strike", 0, 0, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
         Attack(1.0, BYPASS_ARMOR)
     )
 });
 
-Ability GroupDefiniteImpact4517("Group Definite Impact", 0, 0, false, {
+Ability GroupDefiniteImpact4517("Group Definite Impact", 0, 0, 0, {
     TargetAllOpponents(
         Remove(CLOAK|DODGE|SHIELD|TAUNT),
         Attack(1.5, BYPASS_ARMOR)
     )
 });
 
-Ability GroupDefiniteStrike8D8F("Group Definite Strike", 0, 0, false, {
+Ability GroupDefiniteStrike8D8F("Group Definite Strike", 0, 0, 0, {
     TargetAllOpponents(
         Remove(CLOAK|DODGE|SHIELD|TAUNT),
         Attack(1.0, BYPASS_ARMOR)
     )
 });
 
-Ability GroupDevastationC704("Group Devastation", 0, 0, false, {
+Ability GroupDevastationC704("Group Devastation", 0, 0, 0, {
     TargetAllOpponents(
         Attack(3.0, PRECISE)
     )
 });
 
-Ability GroupDistractingImpact194D("Group Distracting Impact", 0, 0, false, {
+Ability GroupDistractingImpact194D("Group Distracting Impact", 0, 0, 0, {
     TargetAllOpponents(
         Attack(1.5),
         ReduceDamage(50.0, 1, 2)
     )
 });
 
-Ability GroupDistractingImpact2458("Group Distracting Impact", 0, 0, false, {
+Ability GroupDistractingImpact2458("Group Distracting Impact", 0, 0, 0, {
     TargetAllOpponents(
         ReduceDamage(50.0, 2, 2),
         Attack(1.5)
     )
 });
 
-Ability GroupDistractionFB00("Group Distraction", 0, 2, true, {
+Ability GroupDistractionFB00("Group Distraction", 0, 2, 1, {
     TargetAllOpponents(
         ReduceDamage(50.0, 2, 3)
     )
 });
 
-Ability GroupDistractionStrike6170("Group Distraction Strike", 0, 0, false, {
+Ability GroupDistractionStrike6170("Group Distraction Strike", 0, 0, 0, {
     TargetAllOpponents(
         ReduceDamage(75.0, 2, 4),
         Attack(1.0)
     )
 });
 
-Ability GroupFerociousImpactC869("Group Ferocious Impact", 0, 0, false, {
+Ability GroupFerociousImpactC869("Group Ferocious Impact", 0, 0, 0, {
     TargetTeam(
         IncreaseDamage(50.0, 2, 4)
     ),
@@ -1016,7 +1016,7 @@ Ability GroupFerociousImpactC869("Group Ferocious Impact", 0, 0, false, {
     )
 });
 
-Ability GroupFerociousStrikeCB1D("Group Ferocious Strike", 0, 0, false, {
+Ability GroupFerociousStrikeCB1D("Group Ferocious Strike", 0, 0, 0, {
     TargetTeam(
         IncreaseDamage(25.0, 2, 4)
     ),
@@ -1025,7 +1025,7 @@ Ability GroupFerociousStrikeCB1D("Group Ferocious Strike", 0, 0, false, {
     )
 });
 
-Ability GroupFerocityStrike7A2D("Group Ferocity Strike", 0, 3, false, {
+Ability GroupFerocityStrike7A2D("Group Ferocity Strike", 0, 3, 0, {
     TargetTeam(
         IncreaseDamage(50.0, 2, 2)
     ),
@@ -1034,7 +1034,7 @@ Ability GroupFerocityStrike7A2D("Group Ferocity Strike", 0, 3, false, {
     )
 });
 
-Ability GroupFierceDeceleratingStrike1DAD("Group Fierce Decelerating Strike", 0, 0, false, {
+Ability GroupFierceDeceleratingStrike1DAD("Group Fierce Decelerating Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -1045,7 +1045,7 @@ Ability GroupFierceDeceleratingStrike1DAD("Group Fierce Decelerating Strike", 0,
     )
 });
 
-Ability GroupFierceImpactDF8C("Group Fierce Impact", 0, 0, false, {
+Ability GroupFierceImpactDF8C("Group Fierce Impact", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -1055,7 +1055,7 @@ Ability GroupFierceImpactDF8C("Group Fierce Impact", 0, 0, false, {
     )
 });
 
-Ability GroupFierceRampageF4AC("Group Fierce Rampage", 0, 0, false, {
+Ability GroupFierceRampageF4AC("Group Fierce Rampage", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -1065,7 +1065,7 @@ Ability GroupFierceRampageF4AC("Group Fierce Rampage", 0, 0, false, {
     )
 });
 
-Ability GroupFierceStrike3398("Group Fierce Strike", 0, 0, false, {
+Ability GroupFierceStrike3398("Group Fierce Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -1075,7 +1075,7 @@ Ability GroupFierceStrike3398("Group Fierce Strike", 0, 0, false, {
     )
 });
 
-Ability GroupInvincibility36D9("Group Invincibility", 0, 0, true, {
+Ability GroupInvincibility36D9("Group Invincibility", 0, 0, 1, {
     TargetTeam(
         Shield(100.0, 0, 2)
     ),
@@ -1084,14 +1084,14 @@ Ability GroupInvincibility36D9("Group Invincibility", 0, 0, true, {
     )
 });
 
-Ability GroupNecroticStrike3464("Group Necrotic Strike", 0, 0, false, {
+Ability GroupNecroticStrike3464("Group Necrotic Strike", 0, 0, 0, {
     TargetAllOpponents(
         Remove(POSITIVE_EFFECTS),
         DevouringAttack(1.0, 50.0, 2, BYPASS_ARMOR)
     )
 });
 
-Ability GroupPowerStrikeD95F("Group Power Strike", 0, 0, false, {
+Ability GroupPowerStrikeD95F("Group Power Strike", 0, 0, 0, {
     TargetSelf(
         IncreaseDamage(50.0, 4, 4)
     ),
@@ -1100,7 +1100,7 @@ Ability GroupPowerStrikeD95F("Group Power Strike", 0, 0, false, {
     )
 });
 
-Ability GroupResilientImpactAD66("Group Resilient Impact", 0, 0, false, {
+Ability GroupResilientImpactAD66("Group Resilient Impact", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -1111,7 +1111,7 @@ Ability GroupResilientImpactAD66("Group Resilient Impact", 0, 0, false, {
     )
 });
 
-Ability GroupResilientScratchingImpactCD17("Group Resilient Scratching Impact", 0, 0, false, {
+Ability GroupResilientScratchingImpactCD17("Group Resilient Scratching Impact", 0, 0, 0, {
     TargetTeam(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -1123,7 +1123,7 @@ Ability GroupResilientScratchingImpactCD17("Group Resilient Scratching Impact", 
     )
 });
 
-Ability GroupResilientScratchingStrikeB447("Group Resilient Scratching Strike", 0, 0, false, {
+Ability GroupResilientScratchingStrikeB447("Group Resilient Scratching Strike", 0, 0, 0, {
     TargetTeam(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -1135,7 +1135,7 @@ Ability GroupResilientScratchingStrikeB447("Group Resilient Scratching Strike", 
     )
 });
 
-Ability GroupResilientStrike7958("Group Resilient Strike", 0, 0, false, {
+Ability GroupResilientStrike7958("Group Resilient Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -1146,7 +1146,7 @@ Ability GroupResilientStrike7958("Group Resilient Strike", 0, 0, false, {
     )
 });
 
-Ability GroupShieldStrike43E5("Group Shield Strike", 0, 0, true, {
+Ability GroupShieldStrike43E5("Group Shield Strike", 0, 0, 1, {
     TargetLowestHP(
         Attack(1.0)
     ),
@@ -1155,7 +1155,7 @@ Ability GroupShieldStrike43E5("Group Shield Strike", 0, 0, true, {
     )
 });
 
-Ability GroupShieldingRampage6FD2("Group Shielding Rampage", 0, 0, false, {
+Ability GroupShieldingRampage6FD2("Group Shielding Rampage", 0, 0, 0, {
     TargetTeam(
         Shield(50.0, 2, 4)
     ),
@@ -1167,7 +1167,7 @@ Ability GroupShieldingRampage6FD2("Group Shielding Rampage", 0, 0, false, {
     )
 });
 
-Ability GroupSlowingImpact7712("Group Slowing Impact", 0, 0, false, {
+Ability GroupSlowingImpact7712("Group Slowing Impact", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -1178,7 +1178,7 @@ Ability GroupSlowingImpact7712("Group Slowing Impact", 0, 0, false, {
     )
 });
 
-Ability GroupSuperiorVulnerability5DD7("Group Superior Vulnerability", 0, 0, false, {
+Ability GroupSuperiorVulnerability5DD7("Group Superior Vulnerability", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -1189,7 +1189,7 @@ Ability GroupSuperiorVulnerability5DD7("Group Superior Vulnerability", 0, 0, fal
     )
 });
 
-Ability GroupTauntingShieldStrikeEC50("Group Taunting Shield Strike", 0, 1, false, {
+Ability GroupTauntingShieldStrikeEC50("Group Taunting Shield Strike", 0, 1, 0, {
     TargetTeam(
         Shield(50.0, 2, 2)
     ),
@@ -1201,7 +1201,7 @@ Ability GroupTauntingShieldStrikeEC50("Group Taunting Shield Strike", 0, 1, fals
     )
 });
 
-Ability GroupTauntingShieldsEB4C("Group Taunting Shields", 0, 1, true, {
+Ability GroupTauntingShieldsEB4C("Group Taunting Shields", 0, 1, 1, {
     TargetTeam(
         Shield(50.0, 2, 2)
     ),
@@ -1210,7 +1210,7 @@ Ability GroupTauntingShieldsEB4C("Group Taunting Shields", 0, 1, true, {
     )
 });
 
-Ability GroupTauntingShieldsStrikeDA58("Group Taunting Shields Strike", 0, 1, false, {
+Ability GroupTauntingShieldsStrikeDA58("Group Taunting Shields Strike", 0, 1, 0, {
     TargetTeam(
         Shield(50.0, 2, 2)
     ),
@@ -1222,7 +1222,7 @@ Ability GroupTauntingShieldsStrikeDA58("Group Taunting Shields Strike", 0, 1, fa
     )
 });
 
-Ability HardSwallow862D("Hard Swallow", 0, 0, false, {
+Ability HardSwallow862D("Hard Swallow", 0, 0, 0, {
     TargetLowestHP(
         Attack(2.0)
     ),
@@ -1231,20 +1231,20 @@ Ability HardSwallow862D("Hard Swallow", 0, 0, false, {
     )
 });
 
-Ability HighPounceD062("High Pounce", 0, 1, false, {
+Ability HighPounceD062("High Pounce", 0, 1, 0, {
     TargetHighestDamage(
         Attack(2.0),
         ReduceDamage(50.0, 1, 2)
     )
 });
 
-RevengeAbility InfectiousRevengeF4AA("Infectious Revenge", 0, 0, false, {
+RevengeAbility InfectiousRevengeF4AA("Infectious Revenge", 0, 0, 0, {
     TargetFastest(
         ReduceSpeed(50.0, 2),
         Attack(1.5),
         DamageOverTime(15.0, 2)
     )
-}, 0, 0, false, {
+}, 0, 0, 0, {
     TargetAllOpponents(
         ReduceSpeed(75.0, 2),
         Attack(1.5),
@@ -1252,7 +1252,7 @@ RevengeAbility InfectiousRevengeF4AA("Infectious Revenge", 0, 0, false, {
     )
 });
 
-Ability InstantDefense89C1("Instant Defense", 0, 0, true, {
+Ability InstantDefense89C1("Instant Defense", 0, 0, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(1.5),
@@ -1260,7 +1260,7 @@ Ability InstantDefense89C1("Instant Defense", 0, 0, true, {
     )
 });
 
-Ability InstantDefenseCharge57F5("Instant Defense Charge", 0, 0, true, {
+Ability InstantDefenseCharge57F5("Instant Defense Charge", 0, 0, 1, {
     TargetHighestDamage(
         Attack(1.0),
         Stun(75.0, 1)
@@ -1270,14 +1270,14 @@ Ability InstantDefenseCharge57F5("Instant Defense Charge", 0, 0, true, {
     )
 });
 
-Ability InstantDefenseShatteringWound262B("Instant Defense Shattering Wound", 0, 0, true, {
+Ability InstantDefenseShatteringWound262B("Instant Defense Shattering Wound", 0, 0, 1, {
     TargetHighestDamage(
         Remove(SHIELD),
         DamageOverTime(20.0, 2)
     )
 });
 
-Ability InstantGroupAccelerationStrikeBF5A("Instant Group Acceleration Strike", 0, 0, true, {
+Ability InstantGroupAccelerationStrikeBF5A("Instant Group Acceleration Strike", 0, 0, 1, {
     TargetTeam(
         IncreaseSpeed(50.0, 3)
     ),
@@ -1292,19 +1292,19 @@ Ability InstantGroupAccelerationStrikeBF5A("Instant Group Acceleration Strike", 
     )
 });
 
-Ability InstantGroupCloakFD16("Instant Group Cloak", 0, 3, true, {
+Ability InstantGroupCloakFD16("Instant Group Cloak", 0, 3, 1, {
     TargetTeam(
         Cloak(2.0, 75.0, 66.66659, 2)
     )
 });
 
-Ability InstantGroupDistractionAB01("Instant Group Distraction", 0, 0, true, {
+Ability InstantGroupDistractionAB01("Instant Group Distraction", 0, 0, 1, {
     TargetAllOpponents(
         ReduceDamage(100.0, 1, 2)
     )
 });
 
-Ability InstantMutualFury23AC("Instant Mutual Fury", 0, 0, true, {
+Ability InstantMutualFury23AC("Instant Mutual Fury", 0, 0, 1, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseDamage(50.0, 3, 2),
@@ -1315,14 +1315,14 @@ Ability InstantMutualFury23AC("Instant Mutual Fury", 0, 0, true, {
     )
 });
 
-Ability InstantPrecisePounceE31D("Instant Precise Pounce", 0, 1, true, {
+Ability InstantPrecisePounceE31D("Instant Precise Pounce", 0, 1, 1, {
     TargetLowestHP(
         Attack(2.0, PRECISE),
         ReduceDamage(50.0, 1, 2)
     )
 });
 
-Ability InstantRendingStunDC5C("Instant Rending Stun", 0, 0, true, {
+Ability InstantRendingStunDC5C("Instant Rending Stun", 0, 0, 1, {
     TargetHighestHP(
         Remove(SHIELD),
         Rend(40.0),
@@ -1330,7 +1330,7 @@ Ability InstantRendingStunDC5C("Instant Rending Stun", 0, 0, true, {
     )
 });
 
-Ability InstantScratchingGroupInvincibility4AAF("Instant Scratching Group Invincibility", 1, 3, true, {
+Ability InstantScratchingGroupInvincibility4AAF("Instant Scratching Group Invincibility", 1, 3, 1, {
     TargetSelf(
         Shield(100.0, 0, 2)
     ),
@@ -1339,7 +1339,7 @@ Ability InstantScratchingGroupInvincibility4AAF("Instant Scratching Group Invinc
     )
 });
 
-Ability InstantScratchingGroupInvincibility6408("Instant Scratching Group Invincibility", 1, 3, true, {
+Ability InstantScratchingGroupInvincibility6408("Instant Scratching Group Invincibility", 1, 3, 1, {
     TargetTeam(
         Shield(100.0, 0, 1)
     ),
@@ -1348,9 +1348,9 @@ Ability InstantScratchingGroupInvincibility6408("Instant Scratching Group Invinc
     )
 });
 
-Ability InstantShieldedDeceleratingStrike6C3D("Instant Shielded Decelerating Strike", 0, 0, true, {
+Ability InstantShieldedDeceleratingStrike6C3D("Instant Shielded Decelerating Strike", 0, 0, 1, {
     TargetSelf(
-        Shield(50.0, 1, 4)
+        Shield(50.0, 1, 1)
     ),
     TargetHighestHP(
         Attack(1.0),
@@ -1358,7 +1358,7 @@ Ability InstantShieldedDeceleratingStrike6C3D("Instant Shielded Decelerating Str
     )
 });
 
-Ability IntimidatingEchelonE447("Intimidating Echelon", 0, 0, false, {
+Ability IntimidatingEchelonE447("Intimidating Echelon", 0, 0, 0, {
     TargetTeam(
         IncreaseSpeed(50.0, 2)
     ),
@@ -1367,7 +1367,7 @@ Ability IntimidatingEchelonE447("Intimidating Echelon", 0, 0, false, {
     )
 });
 
-Ability KillerInstinctF4B6("Killer Instinct", 1, 1, true, {
+Ability KillerInstinctF4B6("Killer Instinct", 1, 1, 1, {
     TargetLowestHP(
         Remove(SHIELD|TAUNT),
         Attack(1.5, BYPASS_ARMOR)
@@ -1394,7 +1394,7 @@ CounterAbility MinimalCriticalCounterECF3("Minimal Critical Counter", {
     )
 });
 
-Ability MinimalSpeedupStrike44A5("Minimal Speedup Strike", 0, 0, false, {
+Ability MinimalSpeedupStrike44A5("Minimal Speedup Strike", 0, 0, 0, {
     TargetLowestHP(
         Attack(1.0)
     ),
@@ -1403,7 +1403,7 @@ Ability MinimalSpeedupStrike44A5("Minimal Speedup Strike", 0, 0, false, {
     )
 });
 
-Ability OutOfTheBlue3721("Out Of The Blue", 0, 0, true, {
+Ability OutOfTheBlue3721("Out Of The Blue", 0, 0, 1, {
     TargetRandom(
         Attack(2.0, PRECISE),
         ReduceDamage(100.0, 1, 2)
@@ -1414,7 +1414,7 @@ Ability OutOfTheBlue3721("Out Of The Blue", 0, 0, true, {
     )
 });
 
-Ability PersistentGroupImpact99C1("Persistent Group Impact", 0, 0, false, {
+Ability PersistentGroupImpact99C1("Persistent Group Impact", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE),
         IncreaseDamage(50.0, 4, 4)
@@ -1424,14 +1424,14 @@ Ability PersistentGroupImpact99C1("Persistent Group Impact", 0, 0, false, {
     )
 });
 
-Ability PiercingDestructionF653("Piercing Destruction", 0, 0, true, {
+Ability PiercingDestructionF653("Piercing Destruction", 0, 0, 1, {
     TargetMostPositiveEffects(
         Remove(POSITIVE_EFFECTS),
         Rend(100.0, BYPASS_ARMOR)
     )
 });
 
-Ability PiercingScreechB4D7("Piercing Screech", 0, 3, true, {
+Ability PiercingScreechB4D7("Piercing Screech", 0, 3, 1, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseSpeed(10.0, 1),
@@ -1442,7 +1442,7 @@ Ability PiercingScreechB4D7("Piercing Screech", 0, 3, true, {
     )
 });
 
-Ability PoisonousImpact6F8F("Poisonous Impact", 0, 0, false, {
+Ability PoisonousImpact6F8F("Poisonous Impact", 0, 0, 0, {
     TargetHighestDamage(
         Attack(1.5),
         Stun(75.0, 1),
@@ -1450,7 +1450,7 @@ Ability PoisonousImpact6F8F("Poisonous Impact", 0, 0, false, {
     )
 });
 
-Ability PounceDA88("Pounce", 0, 1, false, {
+Ability PounceDA88("Pounce", 0, 1, 0, {
     TargetLowestHP(
         Attack(2.0),
         ReduceDamage(50.0, 1, 2)
@@ -1463,7 +1463,7 @@ CounterAbility PowerHeal0329("Power Heal", {
     )
 });
 
-Ability PreciseDevastationA6DB("Precise Devastation", 0, 0, false, {
+Ability PreciseDevastationA6DB("Precise Devastation", 0, 0, 0, {
     TargetHighestHP(
         Attack(3.0, PRECISE)
     ),
@@ -1472,7 +1472,7 @@ Ability PreciseDevastationA6DB("Precise Devastation", 0, 0, false, {
     )
 });
 
-Ability PreciseGroupStrikeF8C6("Precise Group Strike", 0, 0, false, {
+Ability PreciseGroupStrikeF8C6("Precise Group Strike", 0, 0, 0, {
     TargetSelf(
         IncreaseSpeed(10.0, 1),
         Dodge(75.0, 67.0, 1, 2)
@@ -1483,7 +1483,7 @@ Ability PreciseGroupStrikeF8C6("Precise Group Strike", 0, 0, false, {
     )
 });
 
-Ability PrecisePiercingRampageCB46("Precise Piercing Rampage", 0, 0, false, {
+Ability PrecisePiercingRampageCB46("Precise Piercing Rampage", 0, 0, 0, {
     TargetLowestHP(
         Attack(2.0, BYPASS_ARMOR|PRECISE)
     )
@@ -1495,28 +1495,28 @@ CounterAbility PrecisePiercingStrike5679("Precise Piercing Strike", {
     )
 });
 
-Ability PrecisePounceA125("Precise Pounce", 0, 0, false, {
+Ability PrecisePounceA125("Precise Pounce", 0, 0, 0, {
     TargetLowestHP(
         Attack(2.0, PRECISE),
         ReduceDamage(50.0, 1, 2)
     )
 });
 
-Ability PrecisePounceF675("Precise Pounce", 0, 1, false, {
+Ability PrecisePounceF675("Precise Pounce", 0, 1, 0, {
     TargetLowestHP(
         Attack(2.0, PRECISE),
         ReduceDamage(50.0, 1, 2)
     )
 });
 
-Ability PrimalBraceF81C("Primal Brace", 0, 0, true, {
+Ability PrimalBraceF81C("Primal Brace", 0, 0, 1, {
     TargetSelf(
         Shield(50.0, 0, 2),
         IncreaseDamage(50.0, 2, 2)
     )
 });
 
-Ability PrimalDigIn6188("Primal Dig In", 0, 0, true, {
+Ability PrimalDigIn6188("Primal Dig In", 0, 0, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseSpeed(10.0, 2),
@@ -1525,14 +1525,14 @@ Ability PrimalDigIn6188("Primal Dig In", 0, 0, true, {
     )
 });
 
-Ability PrimalInstantChargeDA5D("Primal Instant Charge", 0, 0, true, {
+Ability PrimalInstantChargeDA5D("Primal Instant Charge", 0, 0, 1, {
     TargetHighestDamage(
         Attack(1.0, BYPASS_ARMOR),
         Stun(75.0, 1)
     )
 });
 
-Ability PrimalProwlC087("Primal Prowl", 0, 0, false, {
+Ability PrimalProwlC087("Primal Prowl", 0, 0, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(75.0, 67.0, 2, 4),
@@ -1540,14 +1540,14 @@ Ability PrimalProwlC087("Primal Prowl", 0, 0, false, {
     )
 });
 
-Ability PrimalTailWhip7185("Primal Tail Whip", 0, 0, false, {
+Ability PrimalTailWhip7185("Primal Tail Whip", 0, 0, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
         Attack(1.0, BYPASS_ARMOR)
     )
 });
 
-Ability ProtectiveStrike7615("Protective Strike", 0, 0, false, {
+Ability ProtectiveStrike7615("Protective Strike", 0, 0, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseSpeed(10.0, 2)
@@ -1560,7 +1560,7 @@ Ability ProtectiveStrike7615("Protective Strike", 0, 0, false, {
     )
 });
 
-Ability ProwlingShields41A1("Prowling Shields", 0, 0, false, {
+Ability ProwlingShields41A1("Prowling Shields", 0, 0, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(75.0, 67.0, 2, 4),
@@ -1569,7 +1569,7 @@ Ability ProwlingShields41A1("Prowling Shields", 0, 0, false, {
     )
 });
 
-Ability QuickAndCautiousGroupStrike9DE9("Quick And Cautious Group Strike", 0, 0, false, {
+Ability QuickAndCautiousGroupStrike9DE9("Quick And Cautious Group Strike", 0, 0, 0, {
     TargetTeam(
         IncreaseSpeed(50.0, 2)
     ),
@@ -1582,26 +1582,26 @@ Ability QuickAndCautiousGroupStrike9DE9("Quick And Cautious Group Strike", 0, 0,
     )
 });
 
-Ability RakingPiercingStrikeA643("Raking Piercing Strike", 0, 0, false, {
+Ability RakingPiercingStrikeA643("Raking Piercing Strike", 0, 0, 0, {
     TargetMostPositiveEffects(
         Remove(DODGE|CLOAK),
         Attack(1.0, BYPASS_ARMOR)
     )
 });
 
-Ability RampageB9EA("Rampage", 0, 1, false, {
+Ability RampageB9EA("Rampage", 0, 1, 0, {
     TargetLowestHP(
         Attack(2.0)
     )
 });
 
-Ability RandomArmorPiercingImpactE10A("Random Armor Piercing Impact", 0, 0, false, {
+Ability RandomArmorPiercingImpactE10A("Random Armor Piercing Impact", 0, 0, 0, {
     TargetRandom(
         Attack(1.5, BYPASS_ARMOR)
     )
 });
 
-Ability RandomCautiousAcceleratedImpactDF77("Random Cautious Accelerated Impact", 0, 0, false, {
+Ability RandomCautiousAcceleratedImpactDF77("Random Cautious Accelerated Impact", 0, 0, 0, {
     TargetSelf(
         IncreaseSpeed(50.0, 2),
         Dodge(75.0, 67.0, 1, 4)
@@ -1612,7 +1612,7 @@ Ability RandomCautiousAcceleratedImpactDF77("Random Cautious Accelerated Impact"
     )
 });
 
-Ability RandomCautiousImpact3C97("Random Cautious Impact", 0, 0, false, {
+Ability RandomCautiousImpact3C97("Random Cautious Impact", 0, 0, 0, {
     TargetSelf(
         IncreaseSpeed(10.0, 1),
         Dodge(75.0, 67.0, 1, 2)
@@ -1623,7 +1623,7 @@ Ability RandomCautiousImpact3C97("Random Cautious Impact", 0, 0, false, {
     )
 });
 
-Ability RandomCunningImpactD332("Random Cunning Impact", 0, 0, false, {
+Ability RandomCunningImpactD332("Random Cunning Impact", 0, 0, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -1635,7 +1635,7 @@ Ability RandomCunningImpactD332("Random Cunning Impact", 0, 0, false, {
     )
 });
 
-Ability RandomCunningRampageE711("Random Cunning Rampage", 0, 0, false, {
+Ability RandomCunningRampageE711("Random Cunning Rampage", 0, 0, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -1648,7 +1648,7 @@ Ability RandomCunningRampageE711("Random Cunning Rampage", 0, 0, false, {
     )
 });
 
-Ability RandomCunningStrike3E81("Random Cunning Strike", 0, 0, false, {
+Ability RandomCunningStrike3E81("Random Cunning Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -1661,7 +1661,7 @@ Ability RandomCunningStrike3E81("Random Cunning Strike", 0, 0, false, {
     )
 });
 
-Ability RandomDaringRampageFCFA("Random Daring Rampage", 0, 0, false, {
+Ability RandomDaringRampageFCFA("Random Daring Rampage", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY|DAMAGE_OVER_TIME)
     ),
@@ -1671,7 +1671,7 @@ Ability RandomDaringRampageFCFA("Random Daring Rampage", 0, 0, false, {
     )
 });
 
-Ability RandomDeterminedRampage025D("Random Determined Rampage", 0, 0, false, {
+Ability RandomDeterminedRampage025D("Random Determined Rampage", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE|DAMAGE_OVER_TIME)
     ),
@@ -1684,7 +1684,7 @@ Ability RandomDeterminedRampage025D("Random Determined Rampage", 0, 0, false, {
     )
 });
 
-Ability RandomFierceRampageF724("Random Fierce Rampage", 0, 0, false, {
+Ability RandomFierceRampageF724("Random Fierce Rampage", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -1694,7 +1694,7 @@ Ability RandomFierceRampageF724("Random Fierce Rampage", 0, 0, false, {
     )
 });
 
-Ability RandomFierceStrike9BC6("Random Fierce Strike", 0, 0, false, {
+Ability RandomFierceStrike9BC6("Random Fierce Strike", 0, 0, 0, {
     TargetSelf(
         IncreaseDamage(50.0, 3, 6)
     ),
@@ -1703,20 +1703,20 @@ Ability RandomFierceStrike9BC6("Random Fierce Strike", 0, 0, false, {
     )
 });
 
-Ability RandomLethalImpact6141("Random Lethal Impact", 0, 0, false, {
+Ability RandomLethalImpact6141("Random Lethal Impact", 0, 0, 0, {
     TargetRandom(
         Attack(1.5),
         DamageOverTime(33.41, 3)
     )
 });
 
-Ability RandomPiercingRampage4581("Random Piercing Rampage", 0, 0, false, {
+Ability RandomPiercingRampage4581("Random Piercing Rampage", 0, 0, 0, {
     TargetRandom(
         Attack(2.0, BYPASS_ARMOR)
     )
 });
 
-Ability RandomScratchingResilientRampageEC8B("Random Scratching Resilient Rampage", 1, 1, false, {
+Ability RandomScratchingResilientRampageEC8B("Random Scratching Resilient Rampage", 1, 1, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -1730,14 +1730,14 @@ Ability RandomScratchingResilientRampageEC8B("Random Scratching Resilient Rampag
     )
 });
 
-Ability RavenousRampage476D("Ravenous Rampage", 1, 2, true, {
+Ability RavenousRampage476D("Ravenous Rampage", 1, 2, 1, {
     TargetHighestDamage(
         Remove(DODGE|CLOAK),
         Attack(2.0)
     )
 });
 
-Ability Regroup29BC("Regroup", 0, 0, false, {
+Ability Regroup29BC("Regroup", 0, 0, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(2.0),
@@ -1752,7 +1752,7 @@ CounterAbility RendingCounterattack24B1("Rending Counter-Attack", {
     )
 });
 
-Ability RendingStun659E("Rending Stun", 0, 0, false, {
+Ability RendingStun659E("Rending Stun", 0, 0, 0, {
     TargetHighestHP(
         Remove(SHIELD),
         Rend(40.0),
@@ -1760,7 +1760,7 @@ Ability RendingStun659E("Rending Stun", 0, 0, false, {
     )
 });
 
-RevengeAbility ResilientCleanseRevengeB848("Resilient Cleanse Revenge", 0, 0, false, {
+RevengeAbility ResilientCleanseRevengeB848("Resilient Cleanse Revenge", 0, 0, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -1769,7 +1769,7 @@ RevengeAbility ResilientCleanseRevengeB848("Resilient Cleanse Revenge", 0, 0, fa
         Attack(2.0),
         ImposeVulnerability(50.0, 2, 2)
     )
-}, 0, 0, false, {
+}, 0, 0, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -1780,7 +1780,7 @@ RevengeAbility ResilientCleanseRevengeB848("Resilient Cleanse Revenge", 0, 0, fa
     )
 });
 
-Ability ResilientGroupImpactBD7D("Resilient Group Impact", 0, 0, false, {
+Ability ResilientGroupImpactBD7D("Resilient Group Impact", 0, 0, 0, {
     TargetTeam(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -1791,7 +1791,7 @@ Ability ResilientGroupImpactBD7D("Resilient Group Impact", 0, 0, false, {
     )
 });
 
-Ability ResilientGroupStrikeAEE3("Resilient Group Strike", 0, 0, false, {
+Ability ResilientGroupStrikeAEE3("Resilient Group Strike", 0, 0, 0, {
     TargetTeam(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -1802,7 +1802,7 @@ Ability ResilientGroupStrikeAEE3("Resilient Group Strike", 0, 0, false, {
     )
 });
 
-Ability ResilientHealingStrike2A27("Resilient Healing Strike", 0, 0, false, {
+Ability ResilientHealingStrike2A27("Resilient Healing Strike", 0, 0, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -1816,7 +1816,7 @@ Ability ResilientHealingStrike2A27("Resilient Healing Strike", 0, 0, false, {
     )
 });
 
-Ability ResilientImpact7BB4("Resilient Impact", 0, 1, false, {
+Ability ResilientImpact7BB4("Resilient Impact", 0, 1, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -1827,7 +1827,7 @@ Ability ResilientImpact7BB4("Resilient Impact", 0, 1, false, {
     )
 });
 
-Ability ResilientImpactB55D("Resilient Impact", 0, 0, false, {
+Ability ResilientImpactB55D("Resilient Impact", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -1838,7 +1838,7 @@ Ability ResilientImpactB55D("Resilient Impact", 0, 0, false, {
     )
 });
 
-RevengeAbility ResilientImpactRevengeEA75("Resilient Impact Revenge", 0, 0, false, {
+RevengeAbility ResilientImpactRevengeEA75("Resilient Impact Revenge", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -1847,7 +1847,7 @@ RevengeAbility ResilientImpactRevengeEA75("Resilient Impact Revenge", 0, 0, fals
         Attack(1.5),
         ImposeVulnerability(50.0, 2, 2)
     )
-}, 0, 0, false, {
+}, 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -1858,7 +1858,7 @@ RevengeAbility ResilientImpactRevengeEA75("Resilient Impact Revenge", 0, 0, fals
     )
 });
 
-Ability ResilientRampageB23D("Resilient Rampage", 1, 1, false, {
+Ability ResilientRampageB23D("Resilient Rampage", 1, 1, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -1869,7 +1869,7 @@ Ability ResilientRampageB23D("Resilient Rampage", 1, 1, false, {
     )
 });
 
-RevengeAbility ResilientRampageRevengeBD64("Resilient Rampage Revenge", 0, 0, false, {
+RevengeAbility ResilientRampageRevengeBD64("Resilient Rampage Revenge", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -1878,7 +1878,7 @@ RevengeAbility ResilientRampageRevengeBD64("Resilient Rampage Revenge", 0, 0, fa
         Attack(2.0),
         ImposeVulnerability(50.0, 2, 2)
     )
-}, 0, 0, false, {
+}, 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -1889,7 +1889,7 @@ RevengeAbility ResilientRampageRevengeBD64("Resilient Rampage Revenge", 0, 0, fa
     )
 });
 
-Ability ResilientVulnerabilityRampage2D5B("Resilient Vulnerability Rampage", 0, 0, false, {
+Ability ResilientVulnerabilityRampage2D5B("Resilient Vulnerability Rampage", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -1900,13 +1900,13 @@ Ability ResilientVulnerabilityRampage2D5B("Resilient Vulnerability Rampage", 0, 
     )
 });
 
-Ability RevengeCloakB52A("Revenge Cloak", 0, 3, true, {
+Ability RevengeCloakB52A("Revenge Cloak", 0, 3, 1, {
     TargetSelf(
         Cloak(3.0, 75.0, 66.66659, 2)
     )
 });
 
-RevengeAbility RevengeCunningImpact7960("Revenge Cunning Impact", 0, 0, false, {
+RevengeAbility RevengeCunningImpact7960("Revenge Cunning Impact", 0, 0, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -1920,7 +1920,7 @@ RevengeAbility RevengeCunningImpact7960("Revenge Cunning Impact", 0, 0, false, {
         Dodge(75.0, 67.0, 2, 4),
         Taunt(2)
     )
-}, 0, 0, false, {
+}, 0, 0, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -1934,7 +1934,7 @@ RevengeAbility RevengeCunningImpact7960("Revenge Cunning Impact", 0, 0, false, {
     )
 });
 
-RevengeAbility RevengeCunningRampageAEC1("Revenge Cunning Rampage", 0, 0, false, {
+RevengeAbility RevengeCunningRampageAEC1("Revenge Cunning Rampage", 0, 0, 0, {
     TargetHighestDamage(
         Remove(INCREASED_DAMAGE|INCREASED_CRIT_CHANCE),
         ReduceDamage(50.0, 2, 4),
@@ -1944,7 +1944,7 @@ RevengeAbility RevengeCunningRampageAEC1("Revenge Cunning Rampage", 0, 0, false,
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     )
-}, 0, 0, false, {
+}, 0, 0, 0, {
     TargetAllOpponents(
         Remove(INCREASED_DAMAGE|INCREASED_CRIT_CHANCE),
         ReduceDamage(50.0, 2, 3),
@@ -1956,29 +1956,29 @@ RevengeAbility RevengeCunningRampageAEC1("Revenge Cunning Rampage", 0, 0, false,
     )
 });
 
-RevengeAbility RevengeDebilitatingDistractionC608("Revenge Debilitating Distraction", 0, 0, true, {
+RevengeAbility RevengeDebilitatingDistractionC608("Revenge Debilitating Distraction", 0, 0, 1, {
     TargetAllOpponents(
         ReduceDamage(75.0, 2, 4)
     )
-}, 0, 0, true, {
+}, 0, 0, 1, {
     TargetAllOpponents(
         ReduceDamage(50.0, 1, 2)
     )
 });
 
-RevengeAbility RevengeDistractingRampage0014("Revenge Distracting Rampage", 0, 0, false, {
+RevengeAbility RevengeDistractingRampage0014("Revenge Distracting Rampage", 0, 0, 0, {
     TargetHighestDamage(
         Attack(2.0),
         ReduceDamage(50.0, 2, 4)
     )
-}, 0, 0, false, {
+}, 0, 0, 0, {
     TargetAllOpponents(
         Attack(2.0),
         ReduceDamage(50.0, 2, 4)
     )
 });
 
-RevengeAbility RevengeGroupCunningStrikeA081("Revenge Group Cunning Strike", 0, 0, false, {
+RevengeAbility RevengeGroupCunningStrikeA081("Revenge Group Cunning Strike", 0, 0, 0, {
     TargetAllOpponents(
         Remove(INCREASED_DAMAGE|INCREASED_CRIT_CHANCE),
         ReduceDamage(50.0, 2, 3),
@@ -1988,7 +1988,7 @@ RevengeAbility RevengeGroupCunningStrikeA081("Revenge Group Cunning Strike", 0, 
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     )
-}, 0, 0, false, {
+}, 0, 0, 0, {
     TargetAllOpponents(
         Remove(INCREASED_DAMAGE|INCREASED_CRIT_CHANCE),
         ReduceDamage(50.0, 2, 3),
@@ -2000,7 +2000,7 @@ RevengeAbility RevengeGroupCunningStrikeA081("Revenge Group Cunning Strike", 0, 
     )
 });
 
-RevengeAbility RevengeGroupCunningStrikeAD1D("Revenge Group Cunning Strike", 0, 0, false, {
+RevengeAbility RevengeGroupCunningStrikeAD1D("Revenge Group Cunning Strike", 0, 0, 0, {
     TargetAllOpponents(
         Remove(INCREASED_DAMAGE|INCREASED_CRIT_CHANCE),
         ReduceDamage(50.0, 2, 3),
@@ -2010,7 +2010,7 @@ RevengeAbility RevengeGroupCunningStrikeAD1D("Revenge Group Cunning Strike", 0, 
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     )
-}, 0, 0, false, {
+}, 0, 0, 0, {
     TargetAllOpponents(
         Remove(INCREASED_DAMAGE|INCREASED_CRIT_CHANCE),
         ReduceDamage(50.0, 2, 3),
@@ -2022,7 +2022,7 @@ RevengeAbility RevengeGroupCunningStrikeAD1D("Revenge Group Cunning Strike", 0, 
     )
 });
 
-RevengeAbility RevengeGroupThwartingImpact3F91("Revenge Group Thwarting Impact", 0, 0, false, {
+RevengeAbility RevengeGroupThwartingImpact3F91("Revenge Group Thwarting Impact", 0, 0, 0, {
     TargetAllOpponents(
         Remove(INCREASED_DAMAGE|INCREASED_CRIT_CHANCE),
         ReduceDamage(50.0, 2, 3),
@@ -2032,7 +2032,7 @@ RevengeAbility RevengeGroupThwartingImpact3F91("Revenge Group Thwarting Impact",
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     )
-}, 0, 0, false, {
+}, 0, 0, 0, {
     TargetAllOpponents(
         Remove(INCREASED_DAMAGE|INCREASED_CRIT_CHANCE),
         ReduceDamage(50.0, 2, 3),
@@ -2044,31 +2044,31 @@ RevengeAbility RevengeGroupThwartingImpact3F91("Revenge Group Thwarting Impact",
     )
 });
 
-RevengeAbility RevengeNullifyingImpact07EE("Revenge Nullifying Impact", 0, 0, false, {
+RevengeAbility RevengeNullifyingImpact07EE("Revenge Nullifying Impact", 0, 0, 0, {
     TargetMostPositiveEffects(
         Remove(POSITIVE_EFFECTS),
         Attack(1.5)
     )
-}, 0, 0, false, {
+}, 0, 0, 0, {
     TargetAllOpponents(
         Remove(POSITIVE_EFFECTS),
         Attack(1.5)
     )
 });
 
-RevengeAbility RevengeNullifyingRampage44D0("Revenge Nullifying Rampage", 0, 0, false, {
+RevengeAbility RevengeNullifyingRampage44D0("Revenge Nullifying Rampage", 0, 0, 0, {
     TargetMostPositiveEffects(
         Remove(POSITIVE_EFFECTS),
         Attack(2.0)
     )
-}, 0, 0, false, {
+}, 0, 0, 0, {
     TargetAllOpponents(
         Remove(POSITIVE_EFFECTS),
         Attack(2.0)
     )
 });
 
-RevengeAbility RevengeRandomCautiousStrike0238("Revenge Random Cautious Strike", 0, 0, false, {
+RevengeAbility RevengeRandomCautiousStrike0238("Revenge Random Cautious Strike", 0, 0, 0, {
     TargetSelf(
         IncreaseSpeed(50.0, 2),
         Dodge(75.0, 67.0, 1, 4)
@@ -2077,7 +2077,7 @@ RevengeAbility RevengeRandomCautiousStrike0238("Revenge Random Cautious Strike",
         Attack(1.0, PRECISE),
         ReduceDamage(50.0, 1, 2)
     )
-}, 0, 0, false, {
+}, 0, 0, 0, {
     TargetSelf(
         IncreaseSpeed(50.0, 2),
         Dodge(75.0, 67.0, 1, 4)
@@ -2088,12 +2088,12 @@ RevengeAbility RevengeRandomCautiousStrike0238("Revenge Random Cautious Strike",
     )
 });
 
-RevengeAbility RevengeRandomDistractingImpact4DD2("Revenge Random Distracting Impact", 0, 0, false, {
+RevengeAbility RevengeRandomDistractingImpact4DD2("Revenge Random Distracting Impact", 0, 0, 0, {
     TargetRandom(
         Attack(1.5),
         ReduceDamage(50.0, 1, 2)
     )
-}, 0, 0, false, {
+}, 0, 0, 0, {
     TargetAllOpponents(
         ReduceDamage(50.0, 2, 2),
         Attack(1.5)
@@ -2106,7 +2106,7 @@ ThreatenedCounterAbility RocketAlert60C3("Rocket Alert", {
         IncreaseSpeed(10.0, 2),
         IncreaseCritChance(20.0, 2, 2)
     )
-}, [](Dino &self) { return self.total_health > self.max_total_health * 1./2.; }, {
+}, [](Dino &self) { return self.total_health > self.max_total_health * 1./2; }, {
     TargetSelf(
         Cleanse(REDUCED_SPEED),
         IncreaseSpeed(10.0, 2),
@@ -2114,7 +2114,7 @@ ThreatenedCounterAbility RocketAlert60C3("Rocket Alert", {
     )
 });
 
-Ability RuthlessRampage1302("Ruthless Rampage", 0, 0, false, {
+Ability RuthlessRampage1302("Ruthless Rampage", 0, 0, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -2132,7 +2132,7 @@ CounterAbility SharpCounterACA0("Sharp Counter", {
     )
 });
 
-Ability ShatteringDevourImpactC35B("Shattering Devour Impact", 0, 0, false, {
+Ability ShatteringDevourImpactC35B("Shattering Devour Impact", 0, 0, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -2142,7 +2142,7 @@ Ability ShatteringDevourImpactC35B("Shattering Devour Impact", 0, 0, false, {
     )
 });
 
-ThreatenedAbility ShieldedAlertImpact7250("Shielded Alert Impact", 0, 0, false, {
+ThreatenedAbility ShieldedAlertImpact7250("Shielded Alert Impact", 0, 0, 0, {
     TargetHighestDamage(
         Remove(SHIELD),
         Attack(1.5, BYPASS_ARMOR),
@@ -2152,7 +2152,7 @@ ThreatenedAbility ShieldedAlertImpact7250("Shielded Alert Impact", 0, 0, false, 
     TargetSelf(
         Shield(100.0, 2, 8)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, 0, 0, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 0, 0, {
     TargetHighestDamage(
         Remove(SHIELD),
         Attack(2.0, BYPASS_ARMOR),
@@ -2164,7 +2164,7 @@ ThreatenedAbility ShieldedAlertImpact7250("Shielded Alert Impact", 0, 0, false, 
     )
 });
 
-Ability ShieldedGroupStrike424D("Shielded Group Strike", 0, 0, false, {
+Ability ShieldedGroupStrike424D("Shielded Group Strike", 0, 0, 0, {
     TargetSelf(
         Shield(50.0, 4, 4)
     ),
@@ -2173,7 +2173,7 @@ Ability ShieldedGroupStrike424D("Shielded Group Strike", 0, 0, false, {
     )
 });
 
-Ability ShieldedGroupStrike9401("Shielded Group Strike", 0, 0, true, {
+Ability ShieldedGroupStrike9401("Shielded Group Strike", 0, 0, 1, {
     TargetAllOpponents(
         Attack(1.0)
     ),
@@ -2182,7 +2182,7 @@ Ability ShieldedGroupStrike9401("Shielded Group Strike", 0, 0, true, {
     )
 });
 
-Ability ShieldedResilientStrike3702("Shielded Resilient Strike", 0, 0, false, {
+Ability ShieldedResilientStrike3702("Shielded Resilient Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -2196,13 +2196,13 @@ Ability ShieldedResilientStrike3702("Shielded Resilient Strike", 0, 0, false, {
     )
 });
 
-RevengeAbility SlowPiercingRevenge0252("Slow Piercing Revenge", 0, 0, false, {
+RevengeAbility SlowPiercingRevenge0252("Slow Piercing Revenge", 0, 0, 0, {
     TargetHighestHP(
         Remove(SHIELD),
         Rend(40.0, BYPASS_ARMOR),
         ReduceSpeed(50.0, 2)
     )
-}, 0, 0, false, {
+}, 0, 0, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
         Rend(40.0, BYPASS_ARMOR),
@@ -2210,7 +2210,7 @@ RevengeAbility SlowPiercingRevenge0252("Slow Piercing Revenge", 0, 0, false, {
     )
 });
 
-Ability SprayOfQuillsF93D("Spray Of Quills", 0, 0, false, {
+Ability SprayOfQuillsF93D("Spray Of Quills", 0, 0, 0, {
     TargetAllOpponents(
         Attack(1.5),
         ReduceDamage(50.0, 2, 4),
@@ -2218,28 +2218,28 @@ Ability SprayOfQuillsF93D("Spray Of Quills", 0, 0, false, {
     )
 });
 
-Ability SqueezeAndStrike84FE("Squeeze And Strike", 0, 0, false, {
+Ability SqueezeAndStrike84FE("Squeeze And Strike", 0, 0, 0, {
     TargetAllOpponents(
         Remove(POSITIVE_EFFECTS),
         Attack(1.0)
     )
 });
 
-Ability SteadyGroupVulnerabilityStrike28DF("Steady Group Vulnerability Strike", 0, 0, false, {
+Ability SteadyGroupVulnerabilityStrike28DF("Steady Group Vulnerability Strike", 0, 0, 0, {
     TargetAllOpponents(
         Attack(1.0),
         ImposeVulnerability(50.0, 1, 2)
     )
 });
 
-Ability StunPierceAndImpact31DA("Stun, Pierce And Impact", 0, 0, false, {
+Ability StunPierceAndImpact31DA("Stun, Pierce And Impact", 0, 0, 0, {
     TargetLowestHP(
         Attack(1.5, BYPASS_ARMOR),
         Stun(75.0, 1)
     )
 });
 
-Ability StunningShields67AD("Stunning Shields", 0, 0, false, {
+Ability StunningShields67AD("Stunning Shields", 0, 0, 0, {
     TargetSelf(
         Shield(50.0, 4, 4)
     ),
@@ -2248,7 +2248,7 @@ Ability StunningShields67AD("Stunning Shields", 0, 0, false, {
     )
 });
 
-Ability SuperDistractionEC4A("Super Distraction", 0, 0, true, {
+Ability SuperDistractionEC4A("Super Distraction", 0, 0, 1, {
     TargetHighestDamage(
         Remove(DODGE)
     ),
@@ -2265,7 +2265,7 @@ Ability SuperDistractionEC4A("Super Distraction", 0, 0, true, {
     )
 });
 
-Ability TargetedCleansingImpact232A("Targeted Cleansing Impact", 0, 0, false, {
+Ability TargetedCleansingImpact232A("Targeted Cleansing Impact", 0, 0, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -2274,7 +2274,7 @@ Ability TargetedCleansingImpact232A("Targeted Cleansing Impact", 0, 0, false, {
     )
 });
 
-Ability TargetedCleansingImpact487D("Targeted Cleansing Impact", 0, 0, false, {
+Ability TargetedCleansingImpact487D("Targeted Cleansing Impact", 0, 0, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -2283,7 +2283,7 @@ Ability TargetedCleansingImpact487D("Targeted Cleansing Impact", 0, 0, false, {
     )
 });
 
-Ability TargetedCleansingImpactE480("Targeted Cleansing Impact", 0, 0, false, {
+Ability TargetedCleansingImpactE480("Targeted Cleansing Impact", 0, 0, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -2292,7 +2292,7 @@ Ability TargetedCleansingImpactE480("Targeted Cleansing Impact", 0, 0, false, {
     )
 });
 
-Ability TargetedCleansingStrike1B35("Targeted Cleansing Strike", 0, 0, false, {
+Ability TargetedCleansingStrike1B35("Targeted Cleansing Strike", 0, 0, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -2301,7 +2301,7 @@ Ability TargetedCleansingStrike1B35("Targeted Cleansing Strike", 0, 0, false, {
     )
 });
 
-Ability TargetedCunningStrikeF441("Targeted Cunning Strike", 0, 0, false, {
+Ability TargetedCunningStrikeF441("Targeted Cunning Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -2316,7 +2316,7 @@ Ability TargetedCunningStrikeF441("Targeted Cunning Strike", 0, 0, false, {
     )
 });
 
-Ability TotalCleanseAndStrikeD7F0("Total Cleanse And Strike", 0, 0, false, {
+Ability TotalCleanseAndStrikeD7F0("Total Cleanse And Strike", 0, 0, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -2325,28 +2325,28 @@ Ability TotalCleanseAndStrikeD7F0("Total Cleanse And Strike", 0, 0, false, {
     )
 });
 
-Ability VenomousBite83AA("Venomous Bite", 0, 0, true, {
+Ability VenomousBite83AA("Venomous Bite", 0, 0, 1, {
     TargetHighestDamage(
         Attack(1.5, PRECISE),
         DamageOverTime(40.0, 2)
     )
 });
 
-Ability VulnerabilityImpact2DAA("Vulnerability Impact", 0, 1, false, {
+Ability VulnerabilityImpact2DAA("Vulnerability Impact", 0, 1, 0, {
     TargetHighestHP(
         Attack(1.5),
         ImposeVulnerability(50.0, 2, 2)
     )
 });
 
-Ability VulnerabilityRampageD44C("Vulnerability Rampage", 0, 0, false, {
+Ability VulnerabilityRampageD44C("Vulnerability Rampage", 0, 0, 0, {
     TargetHighestHP(
         Attack(2.0),
         ImposeVulnerability(50.0, 3, 4)
     )
 });
 
-RevengeAbility WaningRevenge0554("Waning Revenge", 0, 0, false, {
+RevengeAbility WaningRevenge0554("Waning Revenge", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -2355,7 +2355,7 @@ RevengeAbility WaningRevenge0554("Waning Revenge", 0, 0, false, {
         Attack(2.0, BYPASS_ARMOR),
         ReduceSpeed(50.0, 2)
     )
-}, 0, 0, false, {
+}, 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -2428,7 +2428,7 @@ DinoKind AndrewtopsBoss("Andrewtops Boss", UNIQUE, 1, 11000, 1350, 122, 15.0, 20
     }
 }, &CounterVulnerabilityC8BA);
 
-DinoKind ArctodusBoss("Arctodus Boss", RARE, 1, 10500, 800, 110, 0.0, 5.0, 50.0, 80.0, 44.99998, 80.0, 60.0, 75.0, 0.0, 0.0, 44.99998, 0.0, {
+DinoKind ArctodusBoss("Arctodus Boss", RARE, 1, 12500, 1050, 108, 10.0, 5.0, 50.0, 20.0, 50.0, 66.0, 100.0, 89.99999, 0.0, 0.0, 100.0, 50.0, {
     {
         &BellowDDD8,
         &GroupSuperiorVulnerability5DD7,
@@ -3108,7 +3108,7 @@ DinoKind WoollyMammothBoss("Woolly Mammoth Boss", EPIC, 1, 15000, 1200, 115, 10.
 
 } // namespace boss
 
-Ability AcceleratingShieldedDistraction80B6("Accelerating Shielded Distraction", 0, 2, true, {
+Ability AcceleratingShieldedDistraction80B6("Accelerating Shielded Distraction", 0, 2, 1, {
     TargetHighestHP(
         ReduceDamage(50.0, 2, 4)
     ),
@@ -3118,7 +3118,7 @@ Ability AcceleratingShieldedDistraction80B6("Accelerating Shielded Distraction",
     )
 });
 
-Ability AcceleratingTeamHealEAF5("Accelerating Team Heal", 0, 2, false, {
+Ability AcceleratingTeamHealEAF5("Accelerating Team Heal", 0, 2, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(1.0),
@@ -3126,26 +3126,26 @@ Ability AcceleratingTeamHealEAF5("Accelerating Team Heal", 0, 2, false, {
     )
 });
 
-Ability AcuteStun1F1E("Acute Stun", 0, 2, false, {
+Ability AcuteStun1F1E("Acute Stun", 0, 2, 0, {
     TargetHighestDamage(
         Stun(100.0, 1)
     )
 });
 
-Ability AdrenalinePulse2BA5("Adrenaline Pulse", 0, 3, true, {
+Ability AdrenalinePulse2BA5("Adrenaline Pulse", 0, 3, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(1.0)
     )
 });
 
-ThreatenedAbility AlertArcticBlast801B("Alert Arctic Blast", 0, 1, false, {
+ThreatenedAbility AlertArcticBlast801B("Alert Arctic Blast", 0, 1, 0, {
     TargetHighestDamage(
         Attack(1.5),
         ReduceSpeed(50.0, 1),
         ImposeVulnerability(50.0, 2, 1)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, 0, 1, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 1, 0, {
     TargetHighestDamage(
         Attack(1.5),
         Stun(66.71, 1),
@@ -3155,7 +3155,7 @@ ThreatenedAbility AlertArcticBlast801B("Alert Arctic Blast", 0, 1, false, {
     )
 });
 
-ThreatenedAbility AlertBuffAndStrike79FE("Alert Buff And Strike", 0, 0, false, {
+ThreatenedAbility AlertBuffAndStrike79FE("Alert Buff And Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_SPEED|REDUCED_CRIT_CHANCE),
         IncreaseCritChance(25.0, 3, 2)
@@ -3163,7 +3163,7 @@ ThreatenedAbility AlertBuffAndStrike79FE("Alert Buff And Strike", 0, 0, false, {
     TargetLowestHP(
         Attack(1.0)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3.; }, 0, 0, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_SPEED|REDUCED_CRIT_CHANCE),
         IncreaseCritChance(25.0, 3, 2)
@@ -3177,19 +3177,19 @@ ThreatenedCounterAbility AlertCounterDistractionBE9B("Alert Counter Distraction"
     TargetAttacker(
         ReduceDamage(10.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, {
     TargetAttacker(
         ReduceDamage(15.0, 2, 4)
     )
 });
 
-ThreatenedAbility AlertDeceleratingImpact5396("Alert Decelerating Impact", 0, 1, false, {
+ThreatenedAbility AlertDeceleratingImpact5396("Alert Decelerating Impact", 0, 1, 0, {
     TargetHighestDamage(
         Attack(1.5),
         ReduceSpeed(50.0, 1),
         ImposeVulnerability(50.0, 2, 1)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, 0, 1, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 1, 0, {
     TargetHighestDamage(
         Attack(1.5),
         Stun(75.0, 1),
@@ -3201,25 +3201,25 @@ ThreatenedCounterAbility AlertDeception0644("Alert Deception", {
     TargetSelf(
         IncreaseDamage(15.0, 2, 2)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, {
     TargetSelf(
         IncreaseDamage(25.0, 2, 4)
     )
 });
 
-ThreatenedAbility AlertDistractingImpact85F8("Alert Distracting Impact", 0, 2, false, {
+ThreatenedAbility AlertDistractingImpact85F8("Alert Distracting Impact", 0, 2, 0, {
     TargetHighestDamage(
         Attack(1.5, ALWAYS_CRITS),
         ReduceDamage(50.0, 1, 2)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3.; }, 0, 2, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 0, 2, 0, {
     TargetHighestDamage(
         Attack(1.5, ALWAYS_CRITS),
         ReduceDamage(100.0, 1, 2)
     )
 });
 
-ThreatenedAbility AlertFatalStrikeE0D9("Alert Fatal Strike", 0, 0, false, {
+ThreatenedAbility AlertFatalStrikeE0D9("Alert Fatal Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -3227,7 +3227,7 @@ ThreatenedAbility AlertFatalStrikeE0D9("Alert Fatal Strike", 0, 0, false, {
         Remove(SHIELD),
         Attack(1.0, BYPASS_ARMOR)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, 0, 0, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -3237,7 +3237,7 @@ ThreatenedAbility AlertFatalStrikeE0D9("Alert Fatal Strike", 0, 0, false, {
     )
 });
 
-ThreatenedAbility AlertFierceStrikeF86F("Alert Fierce Strike", 0, 0, false, {
+ThreatenedAbility AlertFierceStrikeF86F("Alert Fierce Strike", 0, 0, 0, {
     TargetLowestHP(
         Remove(SHIELD),
         Attack(1.0, BYPASS_ARMOR),
@@ -3246,7 +3246,7 @@ ThreatenedAbility AlertFierceStrikeF86F("Alert Fierce Strike", 0, 0, false, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     )
-}, [](Dino &self) { return self.total_health > self.max_total_health * 1./2.; }, 0, 0, false, {
+}, [](Dino &self) { return self.total_health > self.max_total_health * 1./2; }, 0, 0, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
         Attack(1.0, BYPASS_ARMOR),
@@ -3257,7 +3257,7 @@ ThreatenedAbility AlertFierceStrikeF86F("Alert Fierce Strike", 0, 0, false, {
     )
 });
 
-ThreatenedAbility AlertFrenzy3343("Alert Frenzy", 1, 2, false, {
+ThreatenedAbility AlertFrenzy3343("Alert Frenzy", 1, 2, 0, {
     TargetSlowest(
         Attack(1.5),
         Attack(1.5)
@@ -3265,7 +3265,7 @@ ThreatenedAbility AlertFrenzy3343("Alert Frenzy", 1, 2, false, {
     TargetSelf(
         IncreaseSpeed(10.0, 2)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 2./3.; }, 1, 2, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 2./3; }, 1, 2, 0, {
     TargetSelf(
         RallyHeal(33.33333)
     ),
@@ -3278,19 +3278,19 @@ ThreatenedAbility AlertFrenzy3343("Alert Frenzy", 1, 2, false, {
     )
 });
 
-ThreatenedAbility AlertInstantHeal6BB9("Alert Instant Heal", 1, 2, true, {
+ThreatenedAbility AlertInstantHeal6BB9("Alert Instant Heal", 1, 2, 1, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(1.5)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3.; }, 1, 2, true, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 1, 2, 1, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(2.0)
     )
 });
 
-ThreatenedAbility AlertInstantShieldedStrikeF2E8("Alert Instant Shielded Strike", 1, 3, true, {
+ThreatenedAbility AlertInstantShieldedStrikeF2E8("Alert Instant Shielded Strike", 1, 3, 1, {
     TargetHighestDamage(
         Attack(1.0),
         Stun(75.0, 1)
@@ -3299,7 +3299,7 @@ ThreatenedAbility AlertInstantShieldedStrikeF2E8("Alert Instant Shielded Strike"
         Taunt(2),
         Shield(50.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, 1, 3, true, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 1, 3, 1, {
     TargetHighestDamage(
         Attack(1.0),
         Stun(66.71, 1)
@@ -3310,25 +3310,25 @@ ThreatenedAbility AlertInstantShieldedStrikeF2E8("Alert Instant Shielded Strike"
     )
 });
 
-ThreatenedAbility AlertNullification3D09("Alert Nullification", 0, 2, true, {
+ThreatenedAbility AlertNullification3D09("Alert Nullification", 0, 2, 1, {
     TargetAllOpponents(
         Remove(POSITIVE_EFFECTS),
         ReduceDamage(50.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, 0, 2, true, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 2, 1, {
     TargetAllOpponents(
         Remove(POSITIVE_EFFECTS),
         ReduceDamage(75.0, 2, 4)
     )
 });
 
-ThreatenedAbility AlertPeck3B22("Alert Peck", 0, 2, false, {
+ThreatenedAbility AlertPeck3B22("Alert Peck", 0, 2, 0, {
     TargetLowestHP(
         Remove(SHIELD),
         Rend(60.0, BYPASS_ARMOR),
         Remove(INCREASED_DAMAGE|INCREASED_CRIT_CHANCE)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3.; }, 1, 2, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 1, 2, 0, {
     TargetLowestHP(
         Remove(SHIELD),
         Rend(40.0, BYPASS_ARMOR),
@@ -3336,7 +3336,7 @@ ThreatenedAbility AlertPeck3B22("Alert Peck", 0, 2, false, {
     )
 });
 
-ThreatenedAbility AlertPersistentGroupShields2A85("Alert Persistent Group Shields", 0, 2, false, {
+ThreatenedAbility AlertPersistentGroupShields2A85("Alert Persistent Group Shields", 0, 2, 0, {
     TargetAllOpponents(
         Remove(SHIELD)
     ),
@@ -3344,7 +3344,7 @@ ThreatenedAbility AlertPersistentGroupShields2A85("Alert Persistent Group Shield
         IncreaseDamage(50.0, 3, 2),
         Shield(50.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, 0, 2, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 2, 0, {
     TargetAllOpponents(
         Remove(SHIELD)
     ),
@@ -3356,14 +3356,14 @@ ThreatenedAbility AlertPersistentGroupShields2A85("Alert Persistent Group Shield
     )
 });
 
-ThreatenedAbility AlertSafetyRampage24DB("Alert Safety Rampage", 1, 2, false, {
+ThreatenedAbility AlertSafetyRampage24DB("Alert Safety Rampage", 1, 2, 0, {
     TargetHighestDamage(
         Attack(1.5)
     ),
     TargetSelf(
         Swap()
     )
-}, [](Dino &self) { return self.total_health > self.max_total_health * 1./2.; }, 1, 2, false, {
+}, [](Dino &self) { return self.total_health > self.max_total_health * 1./2; }, 1, 2, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -3372,12 +3372,12 @@ ThreatenedAbility AlertSafetyRampage24DB("Alert Safety Rampage", 1, 2, false, {
     )
 });
 
-ThreatenedAbility AlertScurry6808("Alert Scurry", 0, 3, false, {
+ThreatenedAbility AlertScurry6808("Alert Scurry", 0, 3, 0, {
     TargetHighestDamage(
         Attack(2.0),
         ReduceDamage(50.0, 1, 2)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 2./3.; }, 0, 3, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 2./3; }, 0, 3, 0, {
     TargetHighestDamage(
         Attack(1.5),
         ReduceDamage(25.0, 1, 2)
@@ -3387,13 +3387,13 @@ ThreatenedAbility AlertScurry6808("Alert Scurry", 0, 3, false, {
     )
 });
 
-ThreatenedAbility AlertShatteringImpact9D9B("Alert Shattering Impact", 0, 2, false, {
+ThreatenedAbility AlertShatteringImpact9D9B("Alert Shattering Impact", 0, 2, 0, {
     TargetLowestHP(
         Remove(SHIELD|TAUNT),
         ReduceDamage(50.0, 1, 2),
         Attack(1.5, BYPASS_ARMOR)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3.; }, 0, 2, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 0, 2, 0, {
     TargetLowestHP(
         Remove(SHIELD|TAUNT)
     ),
@@ -3405,7 +3405,7 @@ ThreatenedAbility AlertShatteringImpact9D9B("Alert Shattering Impact", 0, 2, fal
     )
 });
 
-ThreatenedAbility AlertSquall6E68("Alert Squall", 0, 3, false, {
+ThreatenedAbility AlertSquall6E68("Alert Squall", 0, 3, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseSpeed(50.0, 2),
@@ -3414,7 +3414,7 @@ ThreatenedAbility AlertSquall6E68("Alert Squall", 0, 3, false, {
     TargetLowestHP(
         Swap()
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3.; }, 0, 3, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 0, 3, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseSpeed(50.0, 2),
@@ -3425,11 +3425,11 @@ ThreatenedAbility AlertSquall6E68("Alert Squall", 0, 3, false, {
     )
 });
 
-ThreatenedAbility AlertSurge82DA("Alert Surge", 0, 0, true, {
+ThreatenedAbility AlertSurge82DA("Alert Surge", 0, 0, 1, {
     TargetLowestHP(
         Attack(1.0, ALWAYS_CRITS)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3.; }, 0, 0, true, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 0, 0, 1, {
     TargetLowestHP(
         Attack(1.0)
     ),
@@ -3444,19 +3444,19 @@ CounterAbility ArmorPiercingCounterAEB5("Armor Piercing Counter", {
     )
 });
 
-Ability ArmorPiercingImpactB10F("Armor Piercing Impact", 0, 1, false, {
+Ability ArmorPiercingImpactB10F("Armor Piercing Impact", 0, 1, 0, {
     TargetLowestHP(
         Attack(1.5, BYPASS_ARMOR)
     )
 });
 
-Ability ArmorPiercingRampage4328("Armor Piercing Rampage", 1, 1, false, {
+Ability ArmorPiercingRampage4328("Armor Piercing Rampage", 1, 1, 0, {
     TargetHighestHP(
         Attack(2.0, BYPASS_ARMOR)
     )
 });
 
-Ability ArmorPiercingStrike69E0("Armor Piercing Strike", 0, 0, false, {
+Ability ArmorPiercingStrike69E0("Armor Piercing Strike", 0, 0, 0, {
     TargetLowestHP(
         Attack(1.0, BYPASS_ARMOR)
     )
@@ -3471,7 +3471,7 @@ CounterAbility BaitAD47("Bait", {
     )
 });
 
-Ability Bask359E("Bask", 0, 2, true, {
+Ability Bask359E("Bask", 0, 2, 1, {
     TargetFastest(
         Stun(100.0, 1),
         UnableToSwap(2)
@@ -3483,7 +3483,7 @@ Ability Bask359E("Bask", 0, 2, true, {
     )
 });
 
-Ability Bellow866E("Bellow", 0, 2, true, {
+Ability Bellow866E("Bellow", 0, 2, 1, {
     TargetSelf(
         Shield(50.0, 0, 4)
     ),
@@ -3492,7 +3492,7 @@ Ability Bellow866E("Bellow", 0, 2, true, {
     )
 });
 
-Ability BellowingImpact7163("Bellowing Impact", 0, 1, false, {
+Ability BellowingImpact7163("Bellowing Impact", 0, 1, 0, {
     TargetSelf(
         Shield(50.0, 0, 4),
         Taunt(1)
@@ -3505,7 +3505,7 @@ Ability BellowingImpact7163("Bellowing Impact", 0, 1, false, {
     )
 });
 
-ThreatenedAbility BerserkAlertDecoy8557("Berserk Alert Decoy", 1, 3, false, {
+ThreatenedAbility BerserkAlertDecoy8557("Berserk Alert Decoy", 1, 3, 0, {
     TargetLowestHP(
         Attack(2.0, ALWAYS_CRITS)
     ),
@@ -3513,10 +3513,10 @@ ThreatenedAbility BerserkAlertDecoy8557("Berserk Alert Decoy", 1, 3, false, {
         Sacrifice(33.33333),
         Swap()
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3.; }, 0, 0, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 0, 0, false, {
 });
 
-RevengeAbility BerserkBitingRevenge5D5E("Berserk Biting Revenge", 0, 2, false, {
+RevengeAbility BerserkBitingRevenge5D5E("Berserk Biting Revenge", 0, 2, 0, {
     TargetHighestHP(
         Remove(SHIELD),
         Attack(2.5, BYPASS_ARMOR)
@@ -3525,14 +3525,14 @@ RevengeAbility BerserkBitingRevenge5D5E("Berserk Biting Revenge", 0, 2, false, {
         UnableToSwap(1),
         Sacrifice(33.33333)
     )
-}, 0, 2, true, {
+}, 0, 2, 1, {
     TargetLowestHP(
         Remove(SHIELD),
         Attack(2.5, BYPASS_ARMOR)
     )
 });
 
-RevengeAbility BerserkClawedRevenge111B("Berserk Clawed Revenge", 0, 2, false, {
+RevengeAbility BerserkClawedRevenge111B("Berserk Clawed Revenge", 0, 2, 0, {
     TargetAllOpponents(
         Attack(2.5, PRECISE)
     ),
@@ -3540,13 +3540,13 @@ RevengeAbility BerserkClawedRevenge111B("Berserk Clawed Revenge", 0, 2, false, {
         UnableToSwap(1),
         Sacrifice(33.33333)
     )
-}, 0, 2, true, {
+}, 0, 2, 1, {
     TargetAllOpponents(
         Attack(2.5, PRECISE)
     )
 });
 
-Ability BerserkDecimatingWound9D0A("Berserk Decimating Wound", 0, 2, true, {
+Ability BerserkDecimatingWound9D0A("Berserk Decimating Wound", 0, 2, -1, {
     TargetSelf(
         Sacrifice(33.33333)
     ),
@@ -3560,7 +3560,7 @@ Ability BerserkDecimatingWound9D0A("Berserk Decimating Wound", 0, 2, true, {
     )
 });
 
-Ability BerserkDecimation51AD("Berserk Decimation", 1, 2, false, {
+Ability BerserkDecimation51AD("Berserk Decimation", 1, 2, 0, {
     TargetSelf(
         Sacrifice(33.33333),
         Cleanse(VULNERABILITY)
@@ -3574,7 +3574,7 @@ Ability BerserkDecimation51AD("Berserk Decimation", 1, 2, false, {
     )
 });
 
-Ability BerserkRampagingCloak51AA("Berserk Rampaging Cloak", 1, 2, false, {
+Ability BerserkRampagingCloak51AA("Berserk Rampaging Cloak", 1, 2, 0, {
     TargetLowestHP(
         Attack(2.0)
     ),
@@ -3585,7 +3585,7 @@ Ability BerserkRampagingCloak51AA("Berserk Rampaging Cloak", 1, 2, false, {
     )
 });
 
-Ability BerserkResilientRampageD249("Berserk Resilient Rampage", 0, 2, false, {
+Ability BerserkResilientRampageD249("Berserk Resilient Rampage", 0, 2, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -3600,22 +3600,22 @@ Ability BerserkResilientRampageD249("Berserk Resilient Rampage", 0, 2, false, {
     )
 });
 
-Ability BindingImpactA742("Binding Impact", 0, 1, false, {
+Ability BindingImpactA742("Binding Impact", 0, 1, 0, {
     TargetFastest(
         Attack(1.5),
         UnableToSwap(2)
     )
 });
 
-Ability BraceB9A2("Brace", 0, 2, true, {
+Ability BraceB9A2("Brace", 0, 2, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
-        IncreaseArmor(89.99999, 1, 1),
+        IncreaseArmor(50.0, 1, 1),
         Heal(1.0)
     )
 });
 
-Ability BristlingStun38A2("Bristling Stun", 0, 2, true, {
+Ability BristlingStun38A2("Bristling Stun", 0, 2, 1, {
     TargetHighestDamage(
         Remove(INCREASED_DAMAGE|INCREASED_CRIT_CHANCE),
         ReduceDamage(75.0, 2, 4),
@@ -3627,7 +3627,7 @@ Ability BristlingStun38A2("Bristling Stun", 0, 2, true, {
     )
 });
 
-Ability Camouflage03BB("Camouflage", 0, 0, true, {
+Ability Camouflage03BB("Camouflage", 0, 0, 1, {
     TargetSelf(
         IncreaseSpeed(30.0, 2),
         Dodge(75.0, 66.69999, 2, 2)
@@ -3637,7 +3637,7 @@ Ability Camouflage03BB("Camouflage", 0, 0, true, {
     )
 });
 
-Ability Camouflage8414("Camouflage", 0, 0, true, {
+Ability Camouflage8414("Camouflage", 0, 0, 1, {
     TargetSelf(
         IncreaseSpeed(30.0, 2),
         Dodge(75.0, 66.69999, 2, 2)
@@ -3647,7 +3647,7 @@ Ability Camouflage8414("Camouflage", 0, 0, true, {
     )
 });
 
-Ability CautiousCunningRampage8C7B("Cautious Cunning Rampage", 0, 2, true, {
+Ability CautiousCunningRampage8C7B("Cautious Cunning Rampage", 0, 2, 1, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -3659,7 +3659,7 @@ Ability CautiousCunningRampage8C7B("Cautious Cunning Rampage", 0, 2, true, {
     )
 });
 
-Ability CautiousDisarmingStrikeBCD2("Cautious Disarming Strike", 0, 0, false, {
+Ability CautiousDisarmingStrikeBCD2("Cautious Disarming Strike", 0, 0, 0, {
     TargetSelf(
         IncreaseSpeed(10.0, 1),
         Dodge(75.0, 67.0, 1, 1)
@@ -3673,7 +3673,7 @@ Ability CautiousDisarmingStrikeBCD2("Cautious Disarming Strike", 0, 0, false, {
     )
 });
 
-Ability CautiousImpact0569("Cautious Impact", 0, 1, false, {
+Ability CautiousImpact0569("Cautious Impact", 0, 1, 0, {
     TargetSelf(
         IncreaseSpeed(10.0, 1),
         Dodge(75.0, 67.0, 1, 1)
@@ -3684,7 +3684,7 @@ Ability CautiousImpact0569("Cautious Impact", 0, 1, false, {
     )
 });
 
-Ability CautiousRampage36B3("Cautious Rampage", 1, 2, false, {
+Ability CautiousRampage36B3("Cautious Rampage", 1, 2, 0, {
     TargetSelf(
         IncreaseSpeed(10.0, 1),
         Dodge(75.0, 67.0, 1, 1)
@@ -3695,7 +3695,7 @@ Ability CautiousRampage36B3("Cautious Rampage", 1, 2, false, {
     )
 });
 
-Ability CautiousStrike3CE4("Cautious Strike", 0, 0, false, {
+Ability CautiousStrike3CE4("Cautious Strike", 0, 0, 0, {
     TargetSelf(
         IncreaseSpeed(10.0, 1),
         Dodge(75.0, 67.0, 1, 1)
@@ -3706,7 +3706,7 @@ Ability CautiousStrike3CE4("Cautious Strike", 0, 0, false, {
     )
 });
 
-Ability CenozoicSmack8DC9("Cenozoic Smack", 0, 0, false, {
+Ability CenozoicSmack8DC9("Cenozoic Smack", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY|REDUCED_DAMAGE)
     ),
@@ -3725,18 +3725,18 @@ Ability CenozoicSmack8DC9("Cenozoic Smack", 0, 0, false, {
     )
 });
 
-ThreatenedAbility ChallengingAlertImpact0839("Challenging Alert Impact", 0, 1, false, {
+ThreatenedAbility ChallengingAlertImpact0839("Challenging Alert Impact", 0, 1, 0, {
     TargetLowestHP(
         Remove(SHIELD),
         Attack(1.5, BYPASS_ARMOR)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3.; }, 0, 1, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 0, 1, 0, {
     TargetHighestHP(
         Attack(2.0, BYPASS_ARMOR)
     )
 });
 
-Ability CleansingDeceleratingImpact66A0("Cleansing Decelerating Impact", 0, 2, false, {
+Ability CleansingDeceleratingImpact66A0("Cleansing Decelerating Impact", 0, 2, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -3746,7 +3746,7 @@ Ability CleansingDeceleratingImpact66A0("Cleansing Decelerating Impact", 0, 2, f
     )
 });
 
-Ability CleansingGroupDestroyer66E8("Cleansing Group Destroyer", 0, 1, false, {
+Ability CleansingGroupDestroyer66E8("Cleansing Group Destroyer", 0, 1, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -3756,7 +3756,7 @@ Ability CleansingGroupDestroyer66E8("Cleansing Group Destroyer", 0, 1, false, {
     )
 });
 
-Ability CleansingImpact351E("Cleansing Impact", 0, 2, false, {
+Ability CleansingImpact351E("Cleansing Impact", 0, 2, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -3765,7 +3765,7 @@ Ability CleansingImpact351E("Cleansing Impact", 0, 2, false, {
     )
 });
 
-Ability CleansingRampageC8DB("Cleansing Rampage", 1, 2, false, {
+Ability CleansingRampageC8DB("Cleansing Rampage", 1, 2, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -3774,7 +3774,7 @@ Ability CleansingRampageC8DB("Cleansing Rampage", 1, 2, false, {
     )
 });
 
-Ability CleansingShatteringStrikeA6B1("Cleansing Shattering Strike", 0, 0, false, {
+Ability CleansingShatteringStrikeA6B1("Cleansing Shattering Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -3786,7 +3786,7 @@ Ability CleansingShatteringStrikeA6B1("Cleansing Shattering Strike", 0, 0, false
     )
 });
 
-Ability CleansingStrike541F("Cleansing Strike", 0, 0, false, {
+Ability CleansingStrike541F("Cleansing Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -3795,7 +3795,7 @@ Ability CleansingStrike541F("Cleansing Strike", 0, 0, false, {
     )
 });
 
-Ability CleansingSwoopB410("Cleansing Swoop", 0, 2, false, {
+Ability CleansingSwoopB410("Cleansing Swoop", 0, 2, 0, {
     TargetHighestHP(
         DamageOverTime(25.0, 2)
     ),
@@ -3805,17 +3805,17 @@ Ability CleansingSwoopB410("Cleansing Swoop", 0, 2, false, {
     )
 });
 
-RevengeAbility Cloak2513("Cloak", 0, 3, true, {
+RevengeAbility Cloak2513("Cloak", 0, 3, 1, {
     TargetSelf(
         Cloak(2.0, 75.0, 66.66659, 2)
     )
-}, 0, 1, true, {
+}, 0, 1, 1, {
     TargetSelf(
         Cloak(3.0, 75.0, 66.66659, 2)
     )
 });
 
-Ability CloakOfRage7990("Cloak Of Rage", 0, 3, false, {
+Ability CloakOfRage7990("Cloak Of Rage", 0, 3, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseDamage(50.0, 3, 2),
@@ -3864,26 +3864,26 @@ CounterAbility CounterVulnerabilityC8BA("Counter Vulnerability", {
     )
 });
 
-Ability CraftyStrike1DFE("Crafty Strike", 0, 0, false, {
+Ability CraftyStrike1DFE("Crafty Strike", 0, 0, 0, {
     TargetLowestHP(
         Attack(1.0, BYPASS_ARMOR|PRECISE),
         Remove(INCREASED_CRIT_CHANCE|INCREASED_DAMAGE)
     )
 });
 
-Ability CriticalImpactD735("Critical Impact", 0, 2, false, {
+Ability CriticalImpactD735("Critical Impact", 0, 2, 0, {
     TargetLowestHP(
         Attack(1.5, ALWAYS_CRITS)
     )
 });
 
-Ability CriticalRampageA0F6("Critical Rampage", 1, 2, false, {
+Ability CriticalRampageA0F6("Critical Rampage", 1, 2, 0, {
     TargetLowestHP(
         Attack(2.0, ALWAYS_CRITS)
     )
 });
 
-Ability CriticalSidestep78B0("Critical Sidestep", 0, 1, true, {
+Ability CriticalSidestep78B0("Critical Sidestep", 0, 1, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseSpeed(10.0, 2),
@@ -3892,13 +3892,13 @@ Ability CriticalSidestep78B0("Critical Sidestep", 0, 1, true, {
     )
 });
 
-Ability CriticalStrike8706("Critical Strike", 0, 0, false, {
+Ability CriticalStrike8706("Critical Strike", 0, 0, 0, {
     TargetLowestHP(
         Attack(1.0, ALWAYS_CRITS)
     )
 });
 
-Ability CrushingProwl3FF5("Crushing Prowl", 0, 2, true, {
+Ability CrushingProwl3FF5("Crushing Prowl", 0, 2, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseCritChance(75.0, 2, 2),
@@ -3910,7 +3910,7 @@ Ability CrushingProwl3FF5("Crushing Prowl", 0, 2, true, {
     )
 });
 
-Ability CunningFerociousStrike6867("Cunning Ferocious Strike", 0, 3, false, {
+Ability CunningFerociousStrike6867("Cunning Ferocious Strike", 0, 3, 0, {
     TargetSelf(
         IncreaseDamage(50.0, 3, 6),
         Cleanse(DAMAGE_OVER_TIME)
@@ -3923,7 +3923,7 @@ Ability CunningFerociousStrike6867("Cunning Ferocious Strike", 0, 3, false, {
     )
 });
 
-Ability CunningFierceStrike9D6C("Cunning Fierce Strike", 0, 0, false, {
+Ability CunningFierceStrike9D6C("Cunning Fierce Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -3941,7 +3941,7 @@ Ability CunningFierceStrike9D6C("Cunning Fierce Strike", 0, 0, false, {
     )
 });
 
-Ability CunningImpactEE79("Cunning Impact", 0, 1, false, {
+Ability CunningImpactEE79("Cunning Impact", 0, 1, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -3953,7 +3953,7 @@ Ability CunningImpactEE79("Cunning Impact", 0, 1, false, {
     )
 });
 
-Ability CunningRampage8AEB("Cunning Rampage", 1, 1, false, {
+Ability CunningRampage8AEB("Cunning Rampage", 1, 1, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -3965,7 +3965,7 @@ Ability CunningRampage8AEB("Cunning Rampage", 1, 1, false, {
     )
 });
 
-Ability CunningStrike75A8("Cunning Strike", 0, 0, false, {
+Ability CunningStrike75A8("Cunning Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -3977,7 +3977,7 @@ Ability CunningStrike75A8("Cunning Strike", 0, 0, false, {
     )
 });
 
-Ability DaringStrikeE486("Daring Strike", 0, 0, false, {
+Ability DaringStrikeE486("Daring Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY|DAMAGE_OVER_TIME)
     ),
@@ -3996,7 +3996,7 @@ CounterAbility DartingCounter6039("Darting Counter", {
     )
 });
 
-Ability DeathRollD52C("Death Roll", 0, 1, false, {
+Ability DeathRollD52C("Death Roll", 0, 1, 0, {
     TargetHighestHP(
         Attack(1.5, BYPASS_ARMOR),
         DamageOverTime(15.0, 2),
@@ -4004,14 +4004,14 @@ Ability DeathRollD52C("Death Roll", 0, 1, false, {
     )
 });
 
-Ability DebilitatingDistraction3695("Debilitating Distraction", 0, 3, false, {
+Ability DebilitatingDistraction3695("Debilitating Distraction", 0, 3, 0, {
     TargetHighestDamage(
         ReduceDamage(75.0, 2, 4),
         Attack(1.0)
     )
 });
 
-Ability DebilitatingRampageAndRun5304("Debilitating Rampage And Run", 1, 1, false, {
+Ability DebilitatingRampageAndRun5304("Debilitating Rampage And Run", 1, 1, 0, {
     TargetLowestHP(
         Attack(2.0),
         ReduceDamage(100.0, 2, 4)
@@ -4021,7 +4021,7 @@ Ability DebilitatingRampageAndRun5304("Debilitating Rampage And Run", 1, 1, fals
     )
 });
 
-Ability DebilitatingStrike1814("Debilitating Strike", 0, 0, false, {
+Ability DebilitatingStrike1814("Debilitating Strike", 0, 0, 0, {
     TargetHighestDamage(
         ReduceDamage(75.0, 1, 2),
         Attack(1.0)
@@ -4035,14 +4035,14 @@ CounterAbility DeceleratingCounterD9D3("Decelerating Counter", {
     )
 });
 
-Ability DeceleratingImpact5016("Decelerating Impact", 0, 1, false, {
+Ability DeceleratingImpact5016("Decelerating Impact", 0, 1, 0, {
     TargetFastest(
         ReduceSpeed(50.0, 2),
         Attack(1.5)
     )
 });
 
-Ability DeceleratingRampageAndRun2D5A("Decelerating Rampage And Run", 1, 2, false, {
+Ability DeceleratingRampageAndRun2D5A("Decelerating Rampage And Run", 1, 2, 0, {
     TargetFastest(
         ReduceSpeed(50.0, 2),
         Attack(2.0)
@@ -4052,14 +4052,14 @@ Ability DeceleratingRampageAndRun2D5A("Decelerating Rampage And Run", 1, 2, fals
     )
 });
 
-Ability DeceleratingRampageD0C5("Decelerating Rampage", 1, 1, false, {
+Ability DeceleratingRampageD0C5("Decelerating Rampage", 1, 1, 0, {
     TargetFastest(
         ReduceSpeed(50.0, 2),
         Attack(2.0)
     )
 });
 
-Ability DeceleratingSideflap5BCD("Decelerating Sideflap", 0, 1, true, {
+Ability DeceleratingSideflap5BCD("Decelerating Sideflap", 0, 1, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(100.0, 67.0, 0, 2),
@@ -4071,7 +4071,7 @@ Ability DeceleratingSideflap5BCD("Decelerating Sideflap", 0, 1, true, {
     )
 });
 
-Ability DecimatingHunger9FEA("Decimating Hunger", 1, 3, false, {
+Ability DecimatingHunger9FEA("Decimating Hunger", 1, 3, 0, {
     TargetHighestHP(
         Remove(SHIELD)
     ),
@@ -4080,19 +4080,19 @@ Ability DecimatingHunger9FEA("Decimating Hunger", 1, 3, false, {
     )
 });
 
-Ability DecimatingTelsonBAD4("Decimating Telson", 2, 2, false, {
+Ability DecimatingTelsonBAD4("Decimating Telson", 2, 2, 0, {
     TargetLowestHP(
         Remove(SHIELD),
         Attack(2.5, BYPASS_ARMOR|PRECISE|ALWAYS_CRITS)
     )
 });
 
-ThreatenedAbility DefenseShatteringAlert459B("Defense Shattering Alert", 0, 0, false, {
+ThreatenedAbility DefenseShatteringAlert459B("Defense Shattering Alert", 0, 0, 0, {
     TargetLowestHP(
         Remove(SHIELD),
         Attack(1.0, BYPASS_ARMOR)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, 0, 0, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 0, 0, {
     TargetMostPositiveEffects(
         Remove(TAUNT)
     ),
@@ -4119,21 +4119,21 @@ CounterAbility DefenseShatteringCounterattackD663("Defense Shattering Counter-At
     )
 });
 
-Ability DefenseShatteringImpact25E3("Defense Shattering Impact", 0, 1, false, {
+Ability DefenseShatteringImpact25E3("Defense Shattering Impact", 0, 1, 0, {
     TargetLowestHP(
         Remove(SHIELD|TAUNT),
         Attack(1.5, BYPASS_ARMOR)
     )
 });
 
-Ability DefenseShatteringRampageC9FF("Defense Shattering Rampage", 1, 1, false, {
+Ability DefenseShatteringRampageC9FF("Defense Shattering Rampage", 1, 1, 0, {
     TargetHighestHP(
         Remove(SHIELD|TAUNT),
         Attack(2.0, BYPASS_ARMOR)
     )
 });
 
-RevengeAbility DefenseShatteringRevengeFFF1("Defense Shattering Revenge", 0, 1, false, {
+RevengeAbility DefenseShatteringRevengeFFF1("Defense Shattering Revenge", 0, 1, 0, {
     TargetLowestHP(
         Remove(SHIELD),
         Attack(1.5, BYPASS_ARMOR),
@@ -4142,7 +4142,7 @@ RevengeAbility DefenseShatteringRevengeFFF1("Defense Shattering Revenge", 0, 1, 
     TargetSelf(
         Cleanse(VULNERABILITY)
     )
-}, 0, 1, false, {
+}, 0, 1, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
         Attack(1.5, BYPASS_ARMOR),
@@ -4153,14 +4153,14 @@ RevengeAbility DefenseShatteringRevengeFFF1("Defense Shattering Revenge", 0, 1, 
     )
 });
 
-Ability DefenseShatteringStrike1CA6("Defense Shattering Strike", 0, 0, false, {
+Ability DefenseShatteringStrike1CA6("Defense Shattering Strike", 0, 0, 0, {
     TargetLowestHP(
         Remove(SHIELD|TAUNT),
         Attack(1.0, BYPASS_ARMOR)
     )
 });
 
-Ability DefenseShatteringWound1735("Defense Shattering Wound", 0, 0, false, {
+Ability DefenseShatteringWound1735("Defense Shattering Wound", 0, 0, 0, {
     TargetLowestHP(
         Remove(SHIELD|TAUNT),
         Attack(1.0, BYPASS_ARMOR),
@@ -4168,7 +4168,7 @@ Ability DefenseShatteringWound1735("Defense Shattering Wound", 0, 0, false, {
     )
 });
 
-Ability DefensiveEdgeF83D("Defensive Edge", 0, 2, false, {
+Ability DefensiveEdgeF83D("Defensive Edge", 0, 2, 0, {
     TargetAllOpponents(
         Remove(SHIELD)
     ),
@@ -4177,7 +4177,7 @@ Ability DefensiveEdgeF83D("Defensive Edge", 0, 2, false, {
     )
 });
 
-Ability DefensiveRendingAttack54CB("Defensive Rending Attack", 1, 2, false, {
+Ability DefensiveRendingAttack54CB("Defensive Rending Attack", 1, 2, 0, {
     TargetHighestHP(
         Remove(SHIELD),
         Rend(40.0, BYPASS_ARMOR)
@@ -4187,7 +4187,7 @@ Ability DefensiveRendingAttack54CB("Defensive Rending Attack", 1, 2, false, {
     )
 });
 
-ThreatenedAbility DefiniteAlertFrenzy84C4("Definite Alert Frenzy", 1, 2, false, {
+ThreatenedAbility DefiniteAlertFrenzy84C4("Definite Alert Frenzy", 1, 2, 0, {
     TargetSlowest(
         Attack(1.5, BYPASS_ARMOR),
         Attack(1.5, BYPASS_ARMOR)
@@ -4195,7 +4195,7 @@ ThreatenedAbility DefiniteAlertFrenzy84C4("Definite Alert Frenzy", 1, 2, false, 
     TargetSelf(
         IncreaseSpeed(10.0, 2)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 2./3.; }, 1, 2, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 2./3; }, 1, 2, 0, {
     TargetSelf(
         RallyHeal(33.33333)
     ),
@@ -4208,40 +4208,40 @@ ThreatenedAbility DefiniteAlertFrenzy84C4("Definite Alert Frenzy", 1, 2, false, 
     )
 });
 
-Ability DefiniteImpactE2FE("Definite Impact", 1, 1, false, {
+Ability DefiniteImpactE2FE("Definite Impact", 1, 1, 0, {
     TargetMostPositiveEffects(
         Remove(CLOAK|DODGE|SHIELD|TAUNT),
         Attack(1.5, BYPASS_ARMOR)
     )
 });
 
-Ability DefiniteRampageD45A("Definite Rampage", 1, 2, false, {
+Ability DefiniteRampageD45A("Definite Rampage", 1, 2, 0, {
     TargetMostPositiveEffects(
         Remove(CLOAK|DODGE|SHIELD|TAUNT),
         Attack(2.0, BYPASS_ARMOR)
     )
 });
 
-Ability DefiniteShieldAdvantageED59("Definite Shield Advantage", 0, 2, false, {
+Ability DefiniteShieldAdvantageED59("Definite Shield Advantage", 0, 2, 0, {
     TargetMostPositiveEffects(
         Remove(CLOAK|DODGE|SHIELD)
     ),
     TargetSelf(
-        Shield(50.0, 1, 4)
+        Shield(50.0, 1, 1)
     ),
     TargetLast(
         Attack(2.0, BYPASS_ARMOR)
     )
 });
 
-Ability DefiniteStrike51A6("Definite Strike", 0, 0, false, {
+Ability DefiniteStrike51A6("Definite Strike", 0, 0, 0, {
     TargetMostPositiveEffects(
         Remove(CLOAK|DODGE|SHIELD|TAUNT),
         Attack(1.0, BYPASS_ARMOR)
     )
 });
 
-Ability DelayedCunningRampage5557("Delayed Cunning Rampage", 2, 1, false, {
+Ability DelayedCunningRampage5557("Delayed Cunning Rampage", 2, 1, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -4253,17 +4253,17 @@ Ability DelayedCunningRampage5557("Delayed Cunning Rampage", 2, 1, false, {
     )
 });
 
-ThreatenedAbility DelayedPreciseRampage5DFE("Delayed Precise Rampage", 1, 1, false, {
-    TargetHighestHP(
+ThreatenedAbility DelayedPreciseRampage5DFE("Delayed Precise Rampage", 1, 1, 0, {
+    TargetHighestDamage(
         Attack(2.0, PRECISE)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3.; }, 1, 1, true, {
-    TargetHighestHP(
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 1, 1, 1, {
+    TargetHighestDamage(
         Attack(2.0, PRECISE)
     )
 });
 
-Ability DelayedRampageAndRun7020("Delayed Rampage And Run", 2, 1, false, {
+Ability DelayedRampageAndRun7020("Delayed Rampage And Run", 2, 1, 0, {
     TargetLowestHP(
         Attack(2.0)
     ),
@@ -4272,19 +4272,19 @@ Ability DelayedRampageAndRun7020("Delayed Rampage And Run", 2, 1, false, {
     )
 });
 
-RevengeAbility DelayedRevengeDistractingRampage99EB("Delayed Revenge Distracting Rampage", 1, 1, false, {
+RevengeAbility DelayedRevengeDistractingRampage99EB("Delayed Revenge Distracting Rampage", 1, 1, 0, {
     TargetHighestDamage(
         Attack(2.0),
         ReduceDamage(50.0, 2, 4)
     )
-}, 0, 1, false, {
+}, 0, 1, 0, {
     TargetHighestDamage(
         Attack(2.0),
         ReduceDamage(50.0, 2, 4)
     )
 });
 
-Ability DeliberateProwlDF39("Deliberate Prowl", 0, 0, false, {
+Ability DeliberateProwlDF39("Deliberate Prowl", 0, 0, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(75.0, 67.0, 1, 2),
@@ -4292,7 +4292,7 @@ Ability DeliberateProwlDF39("Deliberate Prowl", 0, 0, false, {
     )
 });
 
-Ability DeterminedStrike3D79("Determined Strike", 0, 0, false, {
+Ability DeterminedStrike3D79("Determined Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE|DAMAGE_OVER_TIME)
     ),
@@ -4305,7 +4305,7 @@ Ability DeterminedStrike3D79("Determined Strike", 0, 0, false, {
     )
 });
 
-Ability Devastation3723("Devastation", 2, 1, false, {
+Ability Devastation3723("Devastation", 2, 1, 0, {
     TargetHighestHP(
         Attack(3.0, PRECISE)
     ),
@@ -4314,7 +4314,7 @@ Ability Devastation3723("Devastation", 2, 1, false, {
     )
 });
 
-Ability DeviousStrike53F7("Devious Strike", 0, 0, false, {
+Ability DeviousStrike53F7("Devious Strike", 0, 0, 0, {
     TargetSelf(
         Dodge(75.0, 67.0, 1, 2),
         IncreaseCritChance(30.0, 2, 2)
@@ -4325,13 +4325,13 @@ Ability DeviousStrike53F7("Devious Strike", 0, 0, false, {
     )
 });
 
-Ability DevouringImpact0320("Devouring Impact", 0, 2, false, {
+Ability DevouringImpact0320("Devouring Impact", 0, 2, 0, {
     TargetHighestHP(
         DevouringAttack(1.5, 50.0, 2)
     )
 });
 
-Ability DevouringStinger965B("Devouring Stinger", 0, 0, false, {
+Ability DevouringStinger965B("Devouring Stinger", 0, 0, 0, {
     TargetMostPositiveEffects(
         Remove(SHIELD),
         DevouringAttack(0.5, 50.0, 1, BYPASS_ARMOR),
@@ -4339,7 +4339,7 @@ Ability DevouringStinger965B("Devouring Stinger", 0, 0, false, {
     )
 });
 
-Ability DevouringWound32A1("Devouring Wound", 0, 1, false, {
+Ability DevouringWound32A1("Devouring Wound", 0, 1, 0, {
     TargetHighestHP(
         Remove(SHIELD)
     ),
@@ -4351,7 +4351,7 @@ Ability DevouringWound32A1("Devouring Wound", 0, 1, false, {
     )
 });
 
-Ability DigIn6DFE("Dig In", 0, 2, true, {
+Ability DigIn6DFE("Dig In", 0, 2, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseSpeed(10.0, 2),
@@ -4360,7 +4360,7 @@ Ability DigIn6DFE("Dig In", 0, 2, true, {
     )
 });
 
-Ability DigInTaunt1BB1("Dig In Taunt", 0, 2, true, {
+Ability DigInTaunt1BB1("Dig In Taunt", 0, 2, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseSpeed(10.0, 2),
@@ -4377,7 +4377,7 @@ CounterAbility DisarmingCounterStrike8AAD("Disarming Counter Strike", {
     )
 });
 
-Ability DisarmingDecimateAndRunB62E("Disarming Decimate And Run", 2, 1, true, {
+Ability DisarmingDecimateAndRunB62E("Disarming Decimate And Run", 2, 1, 1, {
     TargetHighestDamage(
         Attack(2.5)
     ),
@@ -4389,7 +4389,7 @@ Ability DisarmingDecimateAndRunB62E("Disarming Decimate And Run", 2, 1, true, {
     )
 });
 
-Ability DisarmingImpactAndRunC0BA("Disarming Impact And Run", 1, 1, false, {
+Ability DisarmingImpactAndRunC0BA("Disarming Impact And Run", 1, 1, 0, {
     TargetHighestHP(
         Attack(1.5)
     ),
@@ -4401,7 +4401,7 @@ Ability DisarmingImpactAndRunC0BA("Disarming Impact And Run", 1, 1, false, {
     )
 });
 
-Ability DisarmingStrike7427("Disarming Strike", 0, 0, false, {
+Ability DisarmingStrike7427("Disarming Strike", 0, 0, 0, {
     TargetLowestHP(
         Attack(1.0)
     ),
@@ -4410,7 +4410,7 @@ Ability DisarmingStrike7427("Disarming Strike", 0, 0, false, {
     )
 });
 
-Ability DispersedCautiousStrikeDD1C("Dispersed Cautious Strike", 0, 0, false, {
+Ability DispersedCautiousStrikeDD1C("Dispersed Cautious Strike", 0, 0, 0, {
     TargetSelf(
         IncreaseSpeed(10.0, 1),
         Dodge(75.0, 67.0, 1, 4)
@@ -4421,7 +4421,7 @@ Ability DispersedCautiousStrikeDD1C("Dispersed Cautious Strike", 0, 0, false, {
     )
 });
 
-Ability DispersedFerociousImpact78DD("Dispersed Ferocious Impact", 0, 3, false, {
+Ability DispersedFerociousImpact78DD("Dispersed Ferocious Impact", 0, 3, 0, {
     TargetAllOpponents(
         Attack(1.5)
     ),
@@ -4430,7 +4430,7 @@ Ability DispersedFerociousImpact78DD("Dispersed Ferocious Impact", 0, 3, false, 
     )
 });
 
-Ability DispersedRakingImpact1D47("Dispersed Raking Impact", 0, 2, false, {
+Ability DispersedRakingImpact1D47("Dispersed Raking Impact", 0, 2, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -4440,7 +4440,7 @@ Ability DispersedRakingImpact1D47("Dispersed Raking Impact", 0, 2, false, {
     )
 });
 
-Ability DispersedSuperiorVulnerability5AC2("Dispersed Superior Vulnerability", 0, 0, false, {
+Ability DispersedSuperiorVulnerability5AC2("Dispersed Superior Vulnerability", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -4452,19 +4452,19 @@ Ability DispersedSuperiorVulnerability5AC2("Dispersed Superior Vulnerability", 0
 });
 
 CounterAbility DistractingCounterA897("Distracting Counter", {
-    TargetAllOpponents(
+    TargetNone(
         ReduceDamage(15.0, 1, 1)
     )
 });
 
-Ability DistractingDevourImpactF535("Distracting Devour Impact", 0, 3, false, {
+Ability DistractingDevourImpactF535("Distracting Devour Impact", 0, 3, 0, {
     TargetHighestDamage(
         ReduceDamage(50.0, 2, 4),
         DevouringAttack(1.5, 50.0, 2)
     )
 });
 
-Ability DistractingImpactAndRunBB70("Distracting Impact And Run", 1, 1, false, {
+Ability DistractingImpactAndRunBB70("Distracting Impact And Run", 1, 1, 0, {
     TargetHighestDamage(
         ReduceDamage(50.0, 2, 4),
         Attack(1.5)
@@ -4474,33 +4474,33 @@ Ability DistractingImpactAndRunBB70("Distracting Impact And Run", 1, 1, false, {
     )
 });
 
-Ability DistractingImpactD4D6("Distracting Impact", 0, 2, false, {
+Ability DistractingImpactD4D6("Distracting Impact", 0, 2, 0, {
     TargetHighestDamage(
         ReduceDamage(50.0, 2, 4),
         Attack(1.5)
     )
 });
 
-Ability DistractingRampageBD0D("Distracting Rampage", 1, 2, false, {
+Ability DistractingRampageBD0D("Distracting Rampage", 1, 2, 0, {
     TargetHighestDamage(
         ReduceDamage(50.0, 2, 4),
         Attack(2.0)
     )
 });
 
-RevengeAbility DistractingRevengeBlow7BE8("Distracting Revenge Blow", 0, 2, false, {
+RevengeAbility DistractingRevengeBlow7BE8("Distracting Revenge Blow", 0, 2, 0, {
     TargetHighestDamage(
         ReduceDamage(50.0, 2, 4),
         Attack(1.5)
     )
-}, 0, 2, false, {
+}, 0, 2, 0, {
     TargetHighestDamage(
         ReduceDamage(100.0, 2, 4),
         Attack(2.0)
     )
 });
 
-Ability DistractingSidestep6F60("Distracting Sidestep", 0, 0, true, {
+Ability DistractingSidestep6F60("Distracting Sidestep", 0, 0, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(100.0, 67.0, 0, 2),
@@ -4511,14 +4511,14 @@ Ability DistractingSidestep6F60("Distracting Sidestep", 0, 0, true, {
     )
 });
 
-Ability DistractingStrikeD81E("Distracting Strike", 0, 2, false, {
+Ability DistractingStrikeD81E("Distracting Strike", 0, 2, 0, {
     TargetHighestDamage(
         ReduceDamage(50.0, 2, 4),
         Attack(1.0)
     )
 });
 
-Ability DistractingTeamHeal41AD("Distracting Team Heal", 0, 2, true, {
+Ability DistractingTeamHeal41AD("Distracting Team Heal", 0, 2, 1, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(2.0)
@@ -4528,7 +4528,7 @@ Ability DistractingTeamHeal41AD("Distracting Team Heal", 0, 2, true, {
     )
 });
 
-Ability DistractingTripleStrike777F("Distracting Triple Strike", 1, 2, false, {
+Ability DistractingTripleStrike777F("Distracting Triple Strike", 1, 2, 0, {
     TargetHighestDamage(
         ReduceDamage(50.0, 1, 2),
         Attack(1.0),
@@ -4537,21 +4537,21 @@ Ability DistractingTripleStrike777F("Distracting Triple Strike", 1, 2, false, {
     )
 });
 
-Ability Distraction2717("Distraction", 0, 0, false, {
+Ability Distraction2717("Distraction", 0, 0, 0, {
     TargetHighestDamage(
         ReduceDamage(50.0, 1, 2),
         Attack(1.0)
     )
 });
 
-Ability Distraction8FE1("Distraction", 0, 0, false, {
+Ability Distraction8FE1("Distraction", 0, 0, 0, {
     TargetHighestDamage(
         ReduceDamage(50.0, 1, 2),
         Attack(1.0)
     )
 });
 
-Ability DominantRoar01DF("Dominant Roar", 0, 2, true, {
+Ability DominantRoar01DF("Dominant Roar", 0, 2, 1, {
     TargetTeam(
         IncreaseDamage(50.0, 2, 2)
     ),
@@ -4563,7 +4563,7 @@ Ability DominantRoar01DF("Dominant Roar", 0, 2, true, {
     )
 });
 
-Ability DragonsFlightB1E0("Dragon'S Flight", 0, 2, false, {
+Ability DragonsFlightB1E0("Dragon'S Flight", 0, 2, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -4577,21 +4577,21 @@ Ability DragonsFlightB1E0("Dragon'S Flight", 0, 2, false, {
     )
 });
 
-Ability EmergencyGroupHealC79B("Emergency Group Heal", 1, 2, true, {
+Ability EmergencyGroupHealC79B("Emergency Group Heal", 1, 2, 1, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(1.5)
     )
 });
 
-Ability EmergencyHeal679C("Emergency Heal", 0, 2, true, {
+Ability EmergencyHeal679C("Emergency Heal", 0, 2, 1, {
     TargetLowestHPTeammate(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(1.5)
     )
 });
 
-Ability EnfeeblingImpact9D6C("Enfeebling Impact", 0, 2, false, {
+Ability EnfeeblingImpact9D6C("Enfeebling Impact", 0, 2, 0, {
     TargetMostPositiveEffects(
         Attack(1.5),
         Remove(POSITIVE_EFFECTS),
@@ -4601,7 +4601,7 @@ Ability EnfeeblingImpact9D6C("Enfeebling Impact", 0, 2, false, {
     )
 });
 
-Ability EnfeeblingRampage8631("Enfeebling Rampage", 0, 3, false, {
+Ability EnfeeblingRampage8631("Enfeebling Rampage", 0, 3, 0, {
     TargetMostPositiveEffects(
         Attack(2.0),
         Remove(POSITIVE_EFFECTS),
@@ -4611,7 +4611,7 @@ Ability EnfeeblingRampage8631("Enfeebling Rampage", 0, 3, false, {
     )
 });
 
-Ability EnfeeblingStinger5E49("Enfeebling Stinger", 0, 0, false, {
+Ability EnfeeblingStinger5E49("Enfeebling Stinger", 0, 0, 0, {
     TargetMostPositiveEffects(
         Remove(SHIELD),
         Attack(0.5, BYPASS_ARMOR),
@@ -4619,14 +4619,14 @@ Ability EnfeeblingStinger5E49("Enfeebling Stinger", 0, 0, false, {
     )
 });
 
-ThreatenedAbility EvasiveAlertRampageF230("Evasive Alert Rampage", 1, 2, false, {
+ThreatenedAbility EvasiveAlertRampageF230("Evasive Alert Rampage", 1, 2, 0, {
     TargetHighestDamage(
         Attack(2.0)
     ),
     TargetSelf(
         Dodge(100.0, 67.0, 1, 2)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3.; }, 1, 2, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 1, 2, 0, {
     TargetHighestDamage(
         Attack(2.0)
     ),
@@ -4638,7 +4638,7 @@ ThreatenedAbility EvasiveAlertRampageF230("Evasive Alert Rampage", 1, 2, false, 
     )
 });
 
-Ability EvasiveCunningImpact4070("Evasive Cunning Impact", 0, 1, true, {
+Ability EvasiveCunningImpact4070("Evasive Cunning Impact", 0, 1, 1, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -4653,7 +4653,7 @@ Ability EvasiveCunningImpact4070("Evasive Cunning Impact", 0, 1, true, {
     )
 });
 
-Ability EvasiveFerociousRampageFFBB("Evasive Ferocious Rampage", 1, 2, false, {
+Ability EvasiveFerociousRampageFFBB("Evasive Ferocious Rampage", 1, 2, 0, {
     TargetHighestHP(
         Attack(2.0)
     ),
@@ -4663,7 +4663,7 @@ Ability EvasiveFerociousRampageFFBB("Evasive Ferocious Rampage", 1, 2, false, {
     )
 });
 
-Ability EvasiveHunt089A("Evasive Hunt", 0, 2, true, {
+Ability EvasiveHunt089A("Evasive Hunt", 0, 2, 1, {
     TargetSelf(
         IncreaseSpeed(25.0, 1),
         IncreaseDamage(50.0, 2, 4),
@@ -4671,7 +4671,7 @@ Ability EvasiveHunt089A("Evasive Hunt", 0, 2, true, {
     )
 });
 
-Ability EvasiveImpact7999("Evasive Impact", 0, 2, false, {
+Ability EvasiveImpact7999("Evasive Impact", 0, 2, 0, {
     TargetSelf(
         Dodge(75.0, 67.0, 2, 4)
     ),
@@ -4680,7 +4680,7 @@ Ability EvasiveImpact7999("Evasive Impact", 0, 2, false, {
     )
 });
 
-Ability EvasiveRampage40C8("Evasive Rampage", 1, 2, false, {
+Ability EvasiveRampage40C8("Evasive Rampage", 1, 2, 0, {
     TargetSelf(
         Dodge(75.0, 67.0, 2, 4)
     ),
@@ -4689,7 +4689,7 @@ Ability EvasiveRampage40C8("Evasive Rampage", 1, 2, false, {
     )
 });
 
-Ability EvasiveResilientImpactBCAB("Evasive Resilient Impact", 0, 1, false, {
+Ability EvasiveResilientImpactBCAB("Evasive Resilient Impact", 0, 1, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -4703,7 +4703,7 @@ Ability EvasiveResilientImpactBCAB("Evasive Resilient Impact", 0, 1, false, {
     )
 });
 
-Ability EvasiveRestore11D0("Evasive Restore", 1, 3, true, {
+Ability EvasiveRestore11D0("Evasive Restore", 1, 3, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseSpeed(10.0, 2),
@@ -4712,13 +4712,13 @@ Ability EvasiveRestore11D0("Evasive Restore", 1, 3, true, {
     )
 });
 
-Ability EvasiveStanceF473("Evasive Stance", 0, 3, true, {
+Ability EvasiveStanceF473("Evasive Stance", 0, 3, 1, {
     TargetSelf(
         Dodge(75.0, 67.0, 0, 4)
     )
 });
 
-Ability EvasiveStrikeA8EB("Evasive Strike", 0, 0, false, {
+Ability EvasiveStrikeA8EB("Evasive Strike", 0, 0, 0, {
     TargetSelf(
         Dodge(75.0, 67.0, 1, 1)
     ),
@@ -4727,7 +4727,7 @@ Ability EvasiveStrikeA8EB("Evasive Strike", 0, 0, false, {
     )
 });
 
-Ability EvasiveWoundingStrikeC8F8("Evasive Wounding Strike", 0, 2, false, {
+Ability EvasiveWoundingStrikeC8F8("Evasive Wounding Strike", 0, 2, 0, {
     TargetLowestHP(
         Attack(1.0)
     ),
@@ -4739,7 +4739,7 @@ Ability EvasiveWoundingStrikeC8F8("Evasive Wounding Strike", 0, 2, false, {
     )
 });
 
-Ability ExposeWeakSpot7AA2("Expose Weak Spot", 0, 2, false, {
+Ability ExposeWeakSpot7AA2("Expose Weak Spot", 0, 2, 0, {
     TargetLowestHP(
         Attack(1.0),
         ImposeVulnerability(50.0, 3, 4)
@@ -4752,7 +4752,7 @@ CounterAbility ExposingCounterA5BA("Exposing Counter", {
     )
 });
 
-Ability ExtendedCriticalStrike7DFE("Extended Critical Strike", 0, 3, false, {
+Ability ExtendedCriticalStrike7DFE("Extended Critical Strike", 0, 3, 0, {
     TargetTeam(
         IncreaseCritChance(60.0, 2, 2)
     ),
@@ -4761,14 +4761,14 @@ Ability ExtendedCriticalStrike7DFE("Extended Critical Strike", 0, 3, false, {
     )
 });
 
-Ability FabledFangs9083("Fabled Fangs", 1, 3, true, {
+Ability FabledFangs9083("Fabled Fangs", 1, 3, 1, {
     TargetHighestDamage(
         Attack(1.5, PRECISE),
         DamageOverTime(40.0, 2)
     )
 });
 
-ThreatenedAbility FearlessAlertCC50("Fearless Alert", 0, 2, false, {
+ThreatenedAbility FearlessAlertCC50("Fearless Alert", 0, 2, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         RallyHeal(33.33333),
@@ -4778,7 +4778,7 @@ ThreatenedAbility FearlessAlertCC50("Fearless Alert", 0, 2, false, {
     TargetAllOpponents(
         Attack(1.0, PRECISE)
     )
-}, [](Dino &self) { return self.total_health > self.max_total_health * 1./3.; }, 0, 2, false, {
+}, [](Dino &self) { return self.total_health > self.max_total_health * 1./3; }, 0, 2, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(75.0, 66.69999, 2, 2),
@@ -4790,7 +4790,7 @@ ThreatenedAbility FearlessAlertCC50("Fearless Alert", 0, 2, false, {
     )
 });
 
-Ability FearlessFlap6CE3("Fearless Flap", 0, 2, false, {
+Ability FearlessFlap6CE3("Fearless Flap", 0, 2, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(100.0, 67.0, 2, 2),
@@ -4802,7 +4802,7 @@ Ability FearlessFlap6CE3("Fearless Flap", 0, 2, false, {
     )
 });
 
-Ability FerociousCleansingStrike120F("Ferocious Cleansing Strike", 0, 0, false, {
+Ability FerociousCleansingStrike120F("Ferocious Cleansing Strike", 0, 0, 0, {
     TargetHighestHP(
         Remove(SHIELD),
         Attack(1.0, BYPASS_ARMOR),
@@ -4823,7 +4823,7 @@ CounterAbility FerociousCounterStunE8A6("Ferocious Counter Stun", {
     )
 });
 
-Ability FerociousCunningImpact683F("Ferocious Cunning Impact", 0, 3, false, {
+Ability FerociousCunningImpact683F("Ferocious Cunning Impact", 0, 3, 0, {
     TargetSelf(
         IncreaseDamage(50.0, 3, 6),
         Cleanse(DAMAGE_OVER_TIME)
@@ -4836,14 +4836,14 @@ Ability FerociousCunningImpact683F("Ferocious Cunning Impact", 0, 3, false, {
     )
 });
 
-Ability FerociousDefense7932("Ferocious Defense", 0, 3, false, {
+Ability FerociousDefense7932("Ferocious Defense", 0, 3, 0, {
     TargetSelf(
         IncreaseDamage(50.0, 3, 6),
         Shield(50.0, 2, 4)
     )
 });
 
-Ability FerociousImpactA5CC("Ferocious Impact", 0, 3, false, {
+Ability FerociousImpactA5CC("Ferocious Impact", 0, 3, 0, {
     TargetSelf(
         IncreaseDamage(50.0, 3, 6)
     ),
@@ -4852,7 +4852,7 @@ Ability FerociousImpactA5CC("Ferocious Impact", 0, 3, false, {
     )
 });
 
-Ability FerociousRampage7FD3("Ferocious Rampage", 1, 2, false, {
+Ability FerociousRampage7FD3("Ferocious Rampage", 1, 2, 0, {
     TargetHighestHP(
         Attack(2.0)
     ),
@@ -4861,7 +4861,7 @@ Ability FerociousRampage7FD3("Ferocious Rampage", 1, 2, false, {
     )
 });
 
-Ability FerociousRestoreD2AB("Ferocious Restore", 0, 3, false, {
+Ability FerociousRestoreD2AB("Ferocious Restore", 0, 3, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseSpeed(10.0, 2)
@@ -4875,7 +4875,7 @@ Ability FerociousRestoreD2AB("Ferocious Restore", 0, 3, false, {
     )
 });
 
-Ability FerociousShieldedHeal2912("Ferocious Shielded Heal", 0, 0, false, {
+Ability FerociousShieldedHeal2912("Ferocious Shielded Heal", 0, 0, 0, {
     TargetSelf(
         IncreaseDamage(50.0, 2, 2),
         Shield(50.0, 1, 2),
@@ -4883,7 +4883,7 @@ Ability FerociousShieldedHeal2912("Ferocious Shielded Heal", 0, 0, false, {
     )
 });
 
-Ability FerociousStrike71CC("Ferocious Strike", 0, 3, false, {
+Ability FerociousStrike71CC("Ferocious Strike", 0, 3, 0, {
     TargetSelf(
         IncreaseDamage(50.0, 3, 6)
     ),
@@ -4905,7 +4905,7 @@ CounterAbility FierceCounter4FB7("Fierce Counter", {
     )
 });
 
-Ability FierceCriticalImpact8120("Fierce Critical Impact", 0, 2, false, {
+Ability FierceCriticalImpact8120("Fierce Critical Impact", 0, 2, 0, {
     TargetLowestHP(
         Remove(SHIELD)
     ),
@@ -4917,7 +4917,7 @@ Ability FierceCriticalImpact8120("Fierce Critical Impact", 0, 2, false, {
     )
 });
 
-Ability FierceDeceleratingStrike401B("Fierce Decelerating Strike", 0, 0, false, {
+Ability FierceDeceleratingStrike401B("Fierce Decelerating Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -4928,7 +4928,7 @@ Ability FierceDeceleratingStrike401B("Fierce Decelerating Strike", 0, 0, false, 
     )
 });
 
-Ability FierceDevouringCleanse4BB9("Fierce Devouring Cleanse", 0, 0, false, {
+Ability FierceDevouringCleanse4BB9("Fierce Devouring Cleanse", 0, 0, 0, {
     TargetLowestHP(
         Remove(SHIELD),
         DevouringAttack(1.0, 20.0, 1, BYPASS_ARMOR),
@@ -4939,7 +4939,7 @@ Ability FierceDevouringCleanse4BB9("Fierce Devouring Cleanse", 0, 0, false, {
     )
 });
 
-Ability FierceDevouringImpactB728("Fierce Devouring Impact", 0, 2, false, {
+Ability FierceDevouringImpactB728("Fierce Devouring Impact", 0, 2, 0, {
     TargetLowestHP(
         Remove(SHIELD),
         DevouringAttack(1.5, 60.0, 2, BYPASS_ARMOR),
@@ -4950,7 +4950,7 @@ Ability FierceDevouringImpactB728("Fierce Devouring Impact", 0, 2, false, {
     )
 });
 
-Ability FierceDevouringRampage6CE7("Fierce Devouring Rampage", 1, 1, false, {
+Ability FierceDevouringRampage6CE7("Fierce Devouring Rampage", 1, 1, 0, {
     TargetLowestHP(
         Remove(SHIELD),
         DevouringAttack(2.0, 60.0, 4, BYPASS_ARMOR),
@@ -4961,7 +4961,7 @@ Ability FierceDevouringRampage6CE7("Fierce Devouring Rampage", 1, 1, false, {
     )
 });
 
-Ability FierceImpactB3BE("Fierce Impact", 0, 1, false, {
+Ability FierceImpactB3BE("Fierce Impact", 0, 1, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -4971,7 +4971,7 @@ Ability FierceImpactB3BE("Fierce Impact", 0, 1, false, {
     )
 });
 
-Ability FierceRampageDC31("Fierce Rampage", 1, 1, false, {
+Ability FierceRampageDC31("Fierce Rampage", 1, 1, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -4981,7 +4981,7 @@ Ability FierceRampageDC31("Fierce Rampage", 1, 1, false, {
     )
 });
 
-Ability FierceStrike106A("Fierce Strike", 0, 0, false, {
+Ability FierceStrike106A("Fierce Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -4991,7 +4991,7 @@ Ability FierceStrike106A("Fierce Strike", 0, 0, false, {
     )
 });
 
-Ability FierceStrikeAA4B("Fierce Strike", 0, 0, false, {
+Ability FierceStrikeAA4B("Fierce Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -5001,7 +5001,7 @@ Ability FierceStrikeAA4B("Fierce Strike", 0, 0, false, {
     )
 });
 
-Ability FlightlessStrikeCC17("Flightless Strike", 0, 0, false, {
+Ability FlightlessStrikeCC17("Flightless Strike", 0, 0, 0, {
     TargetLowestHP(
         Attack(1.0, BYPASS_ARMOR),
         Remove(INCREASED_DAMAGE),
@@ -5009,28 +5009,28 @@ Ability FlightlessStrikeCC17("Flightless Strike", 0, 0, false, {
     )
 });
 
-Ability GashingWound4BC2("Gashing Wound", 0, 1, false, {
+Ability GashingWound4BC2("Gashing Wound", 0, 1, 0, {
     TargetHighestHP(
         Attack(1.0),
         DamageOverTime(30.0, 2)
     )
 });
 
-Ability GreaterEmergencyHeal456B("Greater Emergency Heal", 0, 2, true, {
+Ability GreaterEmergencyHeal456B("Greater Emergency Heal", 0, 2, 1, {
     TargetLowestHPTeammate(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(2.0)
     )
 });
 
-Ability GreaterGroupHeal566D("Greater Group Heal", 0, 2, false, {
+Ability GreaterGroupHeal566D("Greater Group Heal", 0, 2, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(2.0)
     )
 });
 
-Ability GreaterNullification593D("Greater Nullification", 0, 1, false, {
+Ability GreaterNullification593D("Greater Nullification", 0, 1, 1, {
     TargetMostPositiveEffects(
         Remove(POSITIVE_EFFECTS),
         ReduceDamage(50.0, 2, 4)
@@ -5044,21 +5044,21 @@ CounterAbility GreaterRendingCounterattackD5C2("Greater Rending Counter-Attack",
     )
 });
 
-Ability GreaterStunningImpact2966("Greater Stunning Impact", 1, 2, false, {
+Ability GreaterStunningImpact2966("Greater Stunning Impact", 1, 2, 0, {
     TargetHighestHP(
         Attack(1.5),
         Stun(75.0, 1)
     )
 });
 
-Ability GreaterStunningStrikeBAEF("Greater Stunning Strike", 1, 2, false, {
+Ability GreaterStunningStrikeBAEF("Greater Stunning Strike", 1, 2, 0, {
     TargetHighestDamage(
         Attack(1.0),
         Stun(75.0, 1)
     )
 });
 
-Ability GroupAccelerateCunningStrikeF6AA("Group Accelerate Cunning Strike", 0, 0, false, {
+Ability GroupAccelerateCunningStrikeF6AA("Group Accelerate Cunning Strike", 0, 0, 0, {
     TargetTeam(
         IncreaseSpeed(10.0, 2)
     ),
@@ -5073,7 +5073,7 @@ Ability GroupAccelerateCunningStrikeF6AA("Group Accelerate Cunning Strike", 0, 0
     )
 });
 
-Ability GroupAcceleration6211("Group Acceleration", 0, 1, true, {
+Ability GroupAcceleration6211("Group Acceleration", 0, 1, 1, {
     TargetTeam(
         Cleanse(REDUCED_SPEED),
         IncreaseSpeed(50.0, 3)
@@ -5083,7 +5083,7 @@ Ability GroupAcceleration6211("Group Acceleration", 0, 1, true, {
     )
 });
 
-Ability GroupCleansingFatalStrike3DBD("Group Cleansing Fatal Strike", 0, 3, false, {
+Ability GroupCleansingFatalStrike3DBD("Group Cleansing Fatal Strike", 0, 3, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseDamage(50.0, 3, 6)
@@ -5093,16 +5093,7 @@ Ability GroupCleansingFatalStrike3DBD("Group Cleansing Fatal Strike", 0, 3, fals
     )
 });
 
-Ability GroupCleansingImpactC857("Group Cleansing Impact", 0, 2, false, {
-    TargetTeam(
-        Cleanse(NEGATIVE_EFFECTS)
-    ),
-    TargetHighestDamage(
-        Attack(1.5)
-    )
-});
-
-Ability GroupCleansingStrike4EEA("Group Cleansing Strike", 0, 0, false, {
+Ability GroupCleansingStrike4EEA("Group Cleansing Strike", 0, 0, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -5111,7 +5102,7 @@ Ability GroupCleansingStrike4EEA("Group Cleansing Strike", 0, 0, false, {
     )
 });
 
-Ability GroupCleansingStrike8B0C("Group Cleansing Strike", 0, 0, false, {
+Ability GroupCleansingStrike8B0C("Group Cleansing Strike", 0, 0, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -5120,14 +5111,14 @@ Ability GroupCleansingStrike8B0C("Group Cleansing Strike", 0, 0, false, {
     )
 });
 
-ThreatenedAbility GroupCriticalAlertF371("Group Critical Alert", 0, 2, true, {
+ThreatenedAbility GroupCriticalAlertF371("Group Critical Alert", 0, 2, 1, {
     TargetTeam(
         IncreaseCritChance(100.0, 2, 4)
     ),
     TargetAllOpponents(
         ReduceDamage(50.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, 0, 2, true, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 2, 1, {
     TargetTeam(
         IncreaseCritChance(50.0, 2, 4)
     ),
@@ -5136,7 +5127,7 @@ ThreatenedAbility GroupCriticalAlertF371("Group Critical Alert", 0, 2, true, {
     )
 });
 
-Ability GroupCunningImpact436E("Group Cunning Impact", 0, 1, false, {
+Ability GroupCunningImpact436E("Group Cunning Impact", 0, 1, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -5148,7 +5139,7 @@ Ability GroupCunningImpact436E("Group Cunning Impact", 0, 1, false, {
     )
 });
 
-Ability GroupCunningRampageA204("Group Cunning Rampage", 2, 1, false, {
+Ability GroupCunningRampageA204("Group Cunning Rampage", 2, 1, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -5160,49 +5151,49 @@ Ability GroupCunningRampageA204("Group Cunning Rampage", 2, 1, false, {
     )
 });
 
-Ability GroupDeceleratingImpact9451("Group Decelerating Impact", 0, 1, false, {
+Ability GroupDeceleratingImpact9451("Group Decelerating Impact", 0, 1, 0, {
     TargetAllOpponents(
         ReduceSpeed(50.0, 2),
         Attack(1.5)
     )
 });
 
-Ability GroupDeceleratingRampageE77E("Group Decelerating Rampage", 0, 2, false, {
+Ability GroupDeceleratingRampageE77E("Group Decelerating Rampage", 0, 2, 0, {
     TargetAllOpponents(
         ReduceSpeed(50.0, 2),
         Attack(2.0)
     )
 });
 
-Ability GroupDeceleratingStrikeBAC6("Group Decelerating Strike", 0, 0, false, {
+Ability GroupDeceleratingStrikeBAC6("Group Decelerating Strike", 0, 0, 0, {
     TargetAllOpponents(
         ReduceSpeed(50.0, 2),
         Attack(1.0)
     )
 });
 
-Ability GroupDefenseShatteringImpact0C66("Group Defense Shattering Impact", 0, 2, false, {
+Ability GroupDefenseShatteringImpact0C66("Group Defense Shattering Impact", 0, 2, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
         Attack(1.5, BYPASS_ARMOR)
     )
 });
 
-Ability GroupDefenseShatteringStrikeAE98("Group Defense Shattering Strike", 0, 0, false, {
+Ability GroupDefenseShatteringStrikeAE98("Group Defense Shattering Strike", 0, 0, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
         Attack(1.0, BYPASS_ARMOR)
     )
 });
 
-Ability GroupDefenseShatteringStrikeF98B("Group Defense Shattering Strike", 0, 0, false, {
+Ability GroupDefenseShatteringStrikeF98B("Group Defense Shattering Strike", 0, 0, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
         Attack(1.0, BYPASS_ARMOR)
     )
 });
 
-Ability GroupDefensiveEdge19D2("Group Defensive Edge", 0, 2, false, {
+Ability GroupDefensiveEdge19D2("Group Defensive Edge", 0, 2, 0, {
     TargetAllOpponents(
         Remove(SHIELD)
     ),
@@ -5214,7 +5205,7 @@ Ability GroupDefensiveEdge19D2("Group Defensive Edge", 0, 2, false, {
     )
 });
 
-Ability GroupDevouringImpactC9D9("Group Devouring Impact", 0, 2, false, {
+Ability GroupDevouringImpactC9D9("Group Devouring Impact", 0, 2, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
         DevouringAttack(1.5, 60.0, 2, BYPASS_ARMOR),
@@ -5225,7 +5216,7 @@ Ability GroupDevouringImpactC9D9("Group Devouring Impact", 0, 2, false, {
     )
 });
 
-Ability GroupDisarmingRampage7FC1("Group Disarming Rampage", 0, 2, false, {
+Ability GroupDisarmingRampage7FC1("Group Disarming Rampage", 0, 2, 0, {
     TargetAllOpponents(
         Attack(2.0),
         ReduceArmor(15.0, 1, 2),
@@ -5234,20 +5225,20 @@ Ability GroupDisarmingRampage7FC1("Group Disarming Rampage", 0, 2, false, {
     )
 });
 
-Ability GroupDistractionFB00("Group Distraction", 0, 2, true, {
+Ability GroupDistractionFB00("Group Distraction", 0, 2, 1, {
     TargetAllOpponents(
         ReduceDamage(50.0, 2, 3)
     )
 });
 
-Ability GroupFerocityC6F7("Group Ferocity", 0, 2, true, {
+Ability GroupFerocityC6F7("Group Ferocity", 0, 2, 1, {
     TargetTeam(
         Cleanse(REDUCED_DAMAGE|REDUCED_CRIT_CHANCE),
         IncreaseDamage(50.0, 2, 2)
     )
 });
 
-Ability GroupFerocityStrike7A2D("Group Ferocity Strike", 0, 3, false, {
+Ability GroupFerocityStrike7A2D("Group Ferocity Strike", 0, 3, 0, {
     TargetTeam(
         IncreaseDamage(50.0, 2, 2)
     ),
@@ -5256,7 +5247,7 @@ Ability GroupFerocityStrike7A2D("Group Ferocity Strike", 0, 3, false, {
     )
 });
 
-Ability GroupFierceImpact938B("Group Fierce Impact", 0, 1, false, {
+Ability GroupFierceImpact938B("Group Fierce Impact", 0, 1, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -5266,26 +5257,26 @@ Ability GroupFierceImpact938B("Group Fierce Impact", 0, 1, false, {
     )
 });
 
-Ability GroupHeal0723("Group Heal", 0, 2, false, {
+Ability GroupHeal0723("Group Heal", 0, 2, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(1.5)
     )
 });
 
-Ability GroupInstantDistractionA5D4("Group Instant Distraction", 0, 2, true, {
+Ability GroupInstantDistractionA5D4("Group Instant Distraction", 0, 2, 1, {
     TargetAllOpponents(
         ReduceDamage(100.0, 1, 2)
     )
 });
 
-Ability GroupInstantInvincibility82CC("Group Instant Invincibility", 1, 3, true, {
+Ability GroupInstantInvincibility82CC("Group Instant Invincibility", 1, 3, 1, {
     TargetTeam(
         Shield(100.0, 0, 1)
     )
 });
 
-Ability GroupMockBlockAndSockD0AE("Group Mock, Block And Sock", 0, 1, false, {
+Ability GroupMockBlockAndSockD0AE("Group Mock, Block And Sock", 0, 1, 0, {
     TargetTeam(
         Shield(50.0, 2, 2)
     ),
@@ -5297,13 +5288,13 @@ Ability GroupMockBlockAndSockD0AE("Group Mock, Block And Sock", 0, 1, false, {
     )
 });
 
-Ability GroupRampage4077("Group Rampage", 1, 2, false, {
+Ability GroupRampage4077("Group Rampage", 1, 2, 0, {
     TargetAllOpponents(
         Attack(2.0)
     )
 });
 
-Ability GroupResilientImpact3AE3("Group Resilient Impact", 0, 1, false, {
+Ability GroupResilientImpact3AE3("Group Resilient Impact", 0, 1, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -5314,7 +5305,7 @@ Ability GroupResilientImpact3AE3("Group Resilient Impact", 0, 1, false, {
     )
 });
 
-Ability GroupResilientStrike74A6("Group Resilient Strike", 0, 0, false, {
+Ability GroupResilientStrike74A6("Group Resilient Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -5325,40 +5316,40 @@ Ability GroupResilientStrike74A6("Group Resilient Strike", 0, 0, false, {
     )
 });
 
-RevengeAbility GroupRevengeShatteringRampageFCB6("Group Revenge Shattering Rampage", 1, 2, false, {
+RevengeAbility GroupRevengeShatteringRampageFCB6("Group Revenge Shattering Rampage", 1, 2, 0, {
     TargetHighestHP(
         Remove(SHIELD)
     ),
     TargetHighestHP(
         Attack(2.0, BYPASS_ARMOR)
     )
-}, 0, 2, false, {
+}, 0, 2, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
         Attack(2.0, BYPASS_ARMOR)
     )
 });
 
-Ability GroupShatteringImpact7EAE("Group Shattering Impact", 0, 1, false, {
+Ability GroupShatteringImpact7EAE("Group Shattering Impact", 0, 1, 0, {
     TargetAllOpponents(
         Remove(SHIELD|TAUNT),
         Attack(1.5, BYPASS_ARMOR)
     )
 });
 
-Ability GroupShield54BA("Group Shield", 0, 1, true, {
+Ability GroupShield54BA("Group Shield", 0, 1, 1, {
     TargetTeam(
         Shield(50.0, 2, 2)
     )
 });
 
-Ability GroupStrikeC21E("Group Strike", 0, 0, false, {
+Ability GroupStrikeC21E("Group Strike", 0, 0, 0, {
     TargetAllOpponents(
         Attack(1.0)
     )
 });
 
-Ability GroupSuperiority16E2("Group Superiority", 0, 0, false, {
+Ability GroupSuperiority16E2("Group Superiority", 0, 0, 0, {
     TargetTeam(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -5368,26 +5359,14 @@ Ability GroupSuperiority16E2("Group Superiority", 0, 0, false, {
     )
 });
 
-Ability GroupTakedown066E("Group Takedown", 1, 2, true, {
+Ability GroupTakedown066E("Group Takedown", 1, 2, 1, {
     TargetTeam(
         Cleanse(REDUCED_DAMAGE|REDUCED_CRIT_CHANCE),
         IncreaseDamage(50.0, 2, 1)
     )
 });
 
-Ability GroupTauntingShieldImpactB83B("Group Taunting Shield Impact", 0, 2, false, {
-    TargetTeam(
-        Shield(50.0, 2, 2)
-    ),
-    TargetSelf(
-        Taunt(1)
-    ),
-    TargetHighestDamage(
-        Attack(1.5)
-    )
-});
-
-Ability GroupTauntingShieldsEB4C("Group Taunting Shields", 0, 1, true, {
+Ability GroupTauntingShieldsEB4C("Group Taunting Shields", 0, 1, 1, {
     TargetTeam(
         Shield(50.0, 2, 2)
     ),
@@ -5396,7 +5375,7 @@ Ability GroupTauntingShieldsEB4C("Group Taunting Shields", 0, 1, true, {
     )
 });
 
-Ability GroupTauntingShieldsStrikeDA58("Group Taunting Shields Strike", 0, 1, false, {
+Ability GroupTauntingShieldsStrikeDA58("Group Taunting Shields Strike", 0, 1, 0, {
     TargetTeam(
         Shield(50.0, 2, 2)
     ),
@@ -5408,7 +5387,7 @@ Ability GroupTauntingShieldsStrikeDA58("Group Taunting Shields Strike", 0, 1, fa
     )
 });
 
-Ability GroupWarningSqueal0E5A("Group Warning Squeal", 0, 3, true, {
+Ability GroupWarningSqueal0E5A("Group Warning Squeal", 0, 3, 1, {
     TargetTeam(
         Shield(50.0, 2, 4),
         IncreaseCritChance(20.0, 2, 2),
@@ -5419,8 +5398,8 @@ Ability GroupWarningSqueal0E5A("Group Warning Squeal", 0, 3, true, {
     )
 });
 
-Ability Harden1485("Harden", 0, 2, false, {
-    TargetAllOpponents(
+Ability Harden1485("Harden", 0, 2, 0, {
+    TargetHighestHP(
         Attack(1.5)
     ),
     TargetTeam(
@@ -5431,14 +5410,14 @@ Ability Harden1485("Harden", 0, 2, false, {
     )
 });
 
-Ability HealA906("Heal", 0, 3, true, {
+Ability HealA906("Heal", 0, 3, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(1.5)
     )
 });
 
-Ability HeavyStrike5748("Heavy Strike", 0, 0, false, {
+Ability HeavyStrike5748("Heavy Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY|REDUCED_DAMAGE)
     ),
@@ -5450,14 +5429,14 @@ Ability HeavyStrike5748("Heavy Strike", 0, 0, false, {
     )
 });
 
-Ability HighPounceD062("High Pounce", 0, 1, false, {
+Ability HighPounceD062("High Pounce", 0, 1, 0, {
     TargetHighestDamage(
         Attack(2.0),
         ReduceDamage(50.0, 1, 2)
     )
 });
 
-Ability HopAndMockD6D1("Hop And Mock", 0, 1, true, {
+Ability HopAndMockD6D1("Hop And Mock", 0, 1, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(75.0, 67.0, 0, 2)
@@ -5470,7 +5449,7 @@ Ability HopAndMockD6D1("Hop And Mock", 0, 1, true, {
     )
 });
 
-Ability HostileGlow1021("Hostile Glow", 0, 2, false, {
+Ability HostileGlow1021("Hostile Glow", 0, 2, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -5487,27 +5466,87 @@ Ability HostileGlow1021("Hostile Glow", 0, 2, false, {
     )
 });
 
-Ability HowlEBEA("Howl", 0, 3, true, {
+Ability HowlEBEA("Howl", 0, 3, 1, {
     TargetTeam(
         IncreaseDamage(30.0, 3, 6),
         IncreaseSpeed(20.0, 3)
     )
 });
 
-Ability ImmobilizeEA4E("Immobilize", 0, 2, true, {
+Ability Ids_tip_ability_title_group_fortifying_impact9551("Ids_tip_ability_title_group_fortifying_impact", 0, 2, 0, {
+    TargetTeam(
+        Cleanse(NEGATIVE_EFFECTS),
+        Heal(0.5)
+    ),
+    TargetHighestHP(
+        Attack(1.5)
+    )
+});
+
+Ability Ids_tip_ability_title_group_persistence_strike0246("Ids_tip_ability_title_group_persistence_strike", 0, 0, 0, {
+    TargetTeam(
+        IncreaseDamage(25.0, 2, 2)
+    ),
+    TargetHighestHP(
+        Attack(1.0)
+    )
+});
+
+Ability Ids_tip_ability_title_imminent_stampede7426("Ids_tip_ability_title_imminent_stampede", 0, 2, 1, {
+    TargetTeam(
+        Cleanse(REDUCED_SPEED),
+        IncreaseSpeed(50.0, 2)
+    ),
+    TargetSelf(
+        IncreaseDamage(50.0, 2, 2)
+    )
+});
+
+Ability Ids_tip_ability_title_instant_charging_impact7672("Ids_tip_ability_title_instant_charging_impact", 1, 2, 1, {
+    TargetHighestDamage(
+        Attack(1.5),
+        Stun(75.0, 1)
+    )
+});
+
+Ability Ids_tip_ability_title_secure_taunt7C74("Ids_tip_ability_title_secure_taunt", 0, 1, 1, {
+    TargetTeam(
+        Shield(50.0, 2, 2)
+    ),
+    TargetSelf(
+        IncreaseArmor(20.0, 2, 2),
+        Taunt(1)
+    )
+});
+
+Ability Ids_tip_title_ability_healing_bellow73D3("Ids_tip_title_ability_healing_bellow", 0, 2, 1, {
+    TargetTeam(
+        Cleanse(REDUCED_SPEED),
+        Heal(0.5),
+        Shield(50.0, 2, 4)
+    ),
+    TargetSelf(
+        Taunt(1)
+    ),
+    TargetFastest(
+        ReduceSpeed(50.0, 2)
+    )
+});
+
+Ability ImmobilizeEA4E("Immobilize", 0, 2, 1, {
     TargetFastest(
         Stun(100.0, 1),
         UnableToSwap(2)
     )
 });
 
-Ability ImpactA82F("Impact", 0, 1, false, {
+Ability ImpactA82F("Impact", 0, 1, 0, {
     TargetLowestHP(
         Attack(1.5)
     )
 });
 
-Ability ImpactAndRun738D("Impact And Run", 1, 1, false, {
+Ability ImpactAndRun738D("Impact And Run", 1, 1, 0, {
     TargetLowestHP(
         Attack(1.5)
     ),
@@ -5516,7 +5555,7 @@ Ability ImpactAndRun738D("Impact And Run", 1, 1, false, {
     )
 });
 
-Ability InstantAmbushD57D("Instant Ambush", 0, 2, true, {
+Ability InstantAmbushD57D("Instant Ambush", 0, 2, 1, {
     TargetSelf(
         IncreaseSpeed(30.0, 2),
         Dodge(75.0, 67.0, 1, 2)
@@ -5529,7 +5568,7 @@ Ability InstantAmbushD57D("Instant Ambush", 0, 2, true, {
     )
 });
 
-Ability InstantBuff41DC("Instant Buff", 0, 1, true, {
+Ability InstantBuff41DC("Instant Buff", 0, 1, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseSpeed(10.0, 2),
@@ -5538,14 +5577,14 @@ Ability InstantBuff41DC("Instant Buff", 0, 1, true, {
     )
 });
 
-Ability InstantCharge0917("Instant Charge", 1, 2, true, {
+Ability InstantCharge0917("Instant Charge", 1, 2, 1, {
     TargetHighestDamage(
         Attack(1.0),
         Stun(75.0, 1)
     )
 });
 
-Ability InstantCunningStrike12C2("Instant Cunning Strike", 0, 1, true, {
+Ability InstantCunningStrike12C2("Instant Cunning Strike", 0, 1, 1, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -5560,16 +5599,16 @@ Ability InstantCunningStrike12C2("Instant Cunning Strike", 0, 1, true, {
     )
 });
 
-Ability InstantDeceleratingDistraction2B7F("Instant Decelerating Distraction", 0, 1, true, {
+Ability InstantDeceleratingDistraction2B7F("Instant Decelerating Distraction", 0, 1, 1, {
     TargetHighestDamage(
         ReduceDamage(100.0, 1, 2),
         ReduceSpeed(50.0, 1)
     )
 });
 
-Ability InstantDeceleratingPrecision323A("Instant Decelerating Precision", 0, 0, true, {
+Ability InstantDeceleratingPrecision323A("Instant Decelerating Precision", 0, 0, 1, {
     TargetSelf(
-        Shield(50.0, 1, 4)
+        Shield(50.0, 1, 1)
     ),
     TargetFastest(
         ReduceSpeed(50.0, 3)
@@ -5579,7 +5618,7 @@ Ability InstantDeceleratingPrecision323A("Instant Decelerating Precision", 0, 0,
     )
 });
 
-Ability InstantDefenseShatteringStrikeB62F("Instant Defense Shattering Strike", 0, 0, true, {
+Ability InstantDefenseShatteringStrikeB62F("Instant Defense Shattering Strike", 0, 0, 1, {
     TargetHighestHP(
         Remove(SHIELD)
     ),
@@ -5588,27 +5627,27 @@ Ability InstantDefenseShatteringStrikeB62F("Instant Defense Shattering Strike", 
     )
 });
 
-Ability InstantDistractingStrikeF18F("Instant Distracting Strike", 0, 0, true, {
+Ability InstantDistractingStrikeF18F("Instant Distracting Strike", 0, 0, 1, {
     TargetHighestDamage(
         ReduceDamage(33.0, 1, 2),
         Attack(1.0)
     )
 });
 
-Ability InstantDistractionF5AC("Instant Distraction", 0, 1, true, {
+Ability InstantDistractionF5AC("Instant Distraction", 0, 1, 1, {
     TargetHighestDamage(
         ReduceDamage(100.0, 1, 2)
     )
 });
 
-RevengeAbility InstantFerociousRevenge3D5C("Instant Ferocious Revenge", 1, 2, true, {
+RevengeAbility InstantFerociousRevenge3D5C("Instant Ferocious Revenge", 1, 2, 1, {
     TargetSelf(
         IncreaseDamage(50.0, 2, 2)
     ),
     TargetLowestHP(
         Attack(1.5)
     )
-}, 0, 2, true, {
+}, 0, 2, 1, {
     TargetSelf(
         IncreaseDamage(50.0, 2, 2)
     ),
@@ -5617,46 +5656,46 @@ RevengeAbility InstantFerociousRevenge3D5C("Instant Ferocious Revenge", 1, 2, tr
     )
 });
 
-Ability InstantInvincibility9B21("Instant Invincibility", 1, 3, true, {
+Ability InstantInvincibility9B21("Instant Invincibility", 1, 3, 1, {
     TargetSelf(
         Shield(100.0, 0, 2)
     )
 });
 
-Ability InstantInvincibilityTaunt6C65("Instant Invincibility Taunt", 1, 2, true, {
+Ability InstantInvincibilityTaunt6C65("Instant Invincibility Taunt", 1, 2, 1, {
     TargetSelf(
         Shield(100.0, 0, 2),
         Taunt(1)
     )
 });
 
-Ability InstantNullifyingStrike1708("Instant Nullifying Strike", 0, 0, true, {
+Ability InstantNullifyingStrike1708("Instant Nullifying Strike", 0, 0, 1, {
     TargetMostPositiveEffects(
         Remove(POSITIVE_EFFECTS),
         Attack(1.0)
     )
 });
 
-Ability InstantPreciseImpact5A71("Instant Precise Impact", 0, 1, true, {
+Ability InstantPreciseImpact5A71("Instant Precise Impact", 0, 1, 1, {
     TargetFastest(
         Attack(1.5, BYPASS_ARMOR|PRECISE)
     )
 });
 
-Ability InstantRampageC258("Instant Rampage", 0, 2, true, {
+Ability InstantRampageC258("Instant Rampage", 0, 2, 1, {
     TargetLowestHP(
         Attack(2.0)
     )
 });
 
-Ability InstantRend0585("Instant Rend", 1, 1, true, {
+Ability InstantRend0585("Instant Rend", 1, 1, 1, {
     TargetMostPositiveEffects(
         Remove(SHIELD),
         Rend(60.0, BYPASS_ARMOR)
     )
 });
 
-Ability InstantRumble2784("Instant Rumble", 0, 3, true, {
+Ability InstantRumble2784("Instant Rumble", 0, 3, 1, {
     TargetSelf(
         Shield(50.0, 0, 4),
         IncreaseCritChance(20.0, 2, 2),
@@ -5667,14 +5706,14 @@ Ability InstantRumble2784("Instant Rumble", 0, 3, true, {
     )
 });
 
-Ability InstantStunningStrikeEA34("Instant Stunning Strike", 0, 3, true, {
+Ability InstantStunningStrikeEA34("Instant Stunning Strike", 0, 3, 1, {
     TargetHighestDamage(
         Attack(1.0),
         Stun(75.0, 1)
     )
 });
 
-Ability IntimidatingImpact50F9("Intimidating Impact", 0, 1, false, {
+Ability IntimidatingImpact50F9("Intimidating Impact", 0, 1, 0, {
     TargetLowestHP(
         Remove(SHIELD),
         Attack(1.5, BYPASS_ARMOR),
@@ -5682,7 +5721,7 @@ Ability IntimidatingImpact50F9("Intimidating Impact", 0, 1, false, {
     )
 });
 
-ThreatenedAbility InvincibleAlert449E("Invincible Alert", 0, 2, false, {
+ThreatenedAbility InvincibleAlert449E("Invincible Alert", 0, 2, 0, {
     TargetSelf(
         Shield(100.0, 1, 8)
     ),
@@ -5692,7 +5731,7 @@ ThreatenedAbility InvincibleAlert449E("Invincible Alert", 0, 2, false, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, 0, 3, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 3, 0, {
     TargetSelf(
         Shield(100.0, 2, 8)
     ),
@@ -5702,21 +5741,21 @@ ThreatenedAbility InvincibleAlert449E("Invincible Alert", 0, 2, false, {
     )
 });
 
-Ability KillerInstinct3E33("Killer Instinct", 1, 1, true, {
+Ability KillerInstinct3E33("Killer Instinct", 1, 1, 1, {
     TargetLowestHP(
         Remove(SHIELD|TAUNT),
         Attack(1.5, BYPASS_ARMOR)
     )
 });
 
-Ability LesserEmergencyHealE329("Lesser Emergency Heal", 0, 2, true, {
+Ability LesserEmergencyHealE329("Lesser Emergency Heal", 0, 2, 1, {
     TargetLowestHPTeammate(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(1.0)
     )
 });
 
-Ability LesserFierceDeceleratingStrike2F7B("Lesser Fierce Decelerating Strike", 0, 0, false, {
+Ability LesserFierceDeceleratingStrike2F7B("Lesser Fierce Decelerating Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -5727,14 +5766,14 @@ Ability LesserFierceDeceleratingStrike2F7B("Lesser Fierce Decelerating Strike", 
     )
 });
 
-Ability LesserGroupHeal5491("Lesser Group Heal", 0, 2, false, {
+Ability LesserGroupHeal5491("Lesser Group Heal", 0, 2, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(1.0)
     )
 });
 
-Ability LethalQuillShotF007("Lethal Quill Shot", 1, 2, false, {
+Ability LethalQuillShotF007("Lethal Quill Shot", 1, 2, 0, {
     TargetHighestDamage(
         Attack(1.5),
         ReduceDamage(50.0, 2, 4),
@@ -5742,7 +5781,7 @@ Ability LethalQuillShotF007("Lethal Quill Shot", 1, 2, false, {
     )
 });
 
-Ability LethalRampageAndRun204F("Lethal Rampage And Run", 2, 2, false, {
+Ability LethalRampageAndRun204F("Lethal Rampage And Run", 2, 2, 0, {
     TargetHighestDamage(
         Remove(SHIELD),
         Attack(2.0, BYPASS_ARMOR),
@@ -5753,14 +5792,14 @@ Ability LethalRampageAndRun204F("Lethal Rampage And Run", 2, 2, false, {
     )
 });
 
-Ability LethalWound98A0("Lethal Wound", 0, 2, false, {
+Ability LethalWound98A0("Lethal Wound", 0, 2, 0, {
     TargetHighestHP(
         Attack(1.0),
         DamageOverTime(33.41, 3)
     )
 });
 
-Ability LimitedEvasiveStrike6F07("Limited Evasive Strike", 0, 1, false, {
+Ability LimitedEvasiveStrike6F07("Limited Evasive Strike", 0, 1, 0, {
     TargetLowestHP(
         Attack(1.0)
     ),
@@ -5769,14 +5808,14 @@ Ability LimitedEvasiveStrike6F07("Limited Evasive Strike", 0, 1, false, {
     )
 });
 
-Ability LongDeceleratingStrike7953("Long Decelerating Strike", 0, 0, false, {
+Ability LongDeceleratingStrike7953("Long Decelerating Strike", 0, 0, 0, {
     TargetFastest(
         ReduceSpeed(50.0, 2),
         Attack(1.0)
     )
 });
 
-Ability LongDefenseStrike1237("Long Defense Strike", 0, 0, false, {
+Ability LongDefenseStrike1237("Long Defense Strike", 0, 0, 0, {
     TargetLowestHP(
         Attack(1.0)
     ),
@@ -5785,13 +5824,13 @@ Ability LongDefenseStrike1237("Long Defense Strike", 0, 0, false, {
     )
 });
 
-Ability LongInvincibilityBB2D("Long Invincibility", 0, 3, false, {
+Ability LongInvincibilityBB2D("Long Invincibility", 0, 3, 0, {
     TargetSelf(
         Shield(100.0, 3, 2)
     )
 });
 
-Ability LongProtection8331("Long Protection", 0, 3, false, {
+Ability LongProtection8331("Long Protection", 0, 3, 0, {
     TargetLowestHP(
         Attack(1.0)
     ),
@@ -5800,7 +5839,7 @@ Ability LongProtection8331("Long Protection", 0, 3, false, {
     )
 });
 
-Ability MaimingWoundFC48("Maiming Wound", 0, 2, false, {
+Ability MaimingWoundFC48("Maiming Wound", 0, 2, 0, {
     TargetHighestHP(
         Attack(1.0),
         DamageOverTime(40.0, 2)
@@ -5834,12 +5873,12 @@ CounterAbility MediumResilientCounterattack3EB5("Medium Resilient Counter-Attack
     )
 });
 
-ThreatenedAbility MercilessAlert571C("Merciless Alert", 0, 1, false, {
+ThreatenedAbility MercilessAlert571C("Merciless Alert", 0, 1, 0, {
     TargetHighestHP(
         Attack(1.5, BYPASS_ARMOR),
         DamageOverTime(15.0, 3)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, 0, 1, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 1, 0, {
     TargetLowestHP(
         Attack(1.0, BYPASS_ARMOR),
         DamageOverTime(30.0, 3)
@@ -5855,7 +5894,7 @@ CounterAbility MinimalCriticalCounterECF3("Minimal Critical Counter", {
     )
 });
 
-Ability MinimalSpeedupStrike44A5("Minimal Speedup Strike", 0, 0, false, {
+Ability MinimalSpeedupStrike44A5("Minimal Speedup Strike", 0, 0, 0, {
     TargetLowestHP(
         Attack(1.0)
     ),
@@ -5883,14 +5922,14 @@ CounterAbility MinorPreciseCounterA27F("Minor Precise Counter", {
     )
 });
 
-Ability MinorRendingAttackEE1F("Minor Rending Attack", 0, 0, false, {
+Ability MinorRendingAttackEE1F("Minor Rending Attack", 0, 0, 0, {
     TargetLowestHP(
         Remove(SHIELD),
         Rend(34.0, BYPASS_ARMOR)
     )
 });
 
-Ability MinorRendingLockdown18B8("Minor Rending Lockdown", 0, 0, false, {
+Ability MinorRendingLockdown18B8("Minor Rending Lockdown", 0, 0, 0, {
     TargetHighestHP(
         Remove(SHIELD),
         Rend(34.0, BYPASS_ARMOR),
@@ -5898,7 +5937,7 @@ Ability MinorRendingLockdown18B8("Minor Rending Lockdown", 0, 0, false, {
     )
 });
 
-Ability MinorSwoop6A00("Minor Swoop", 1, 2, false, {
+Ability MinorSwoop6A00("Minor Swoop", 1, 2, 0, {
     TargetHighestHP(
         DamageOverTime(20.0, 3)
     ),
@@ -5907,7 +5946,7 @@ Ability MinorSwoop6A00("Minor Swoop", 1, 2, false, {
     )
 });
 
-Ability MutualFury2752("Mutual Fury", 0, 1, false, {
+Ability MutualFury2752("Mutual Fury", 0, 1, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseDamage(50.0, 3, 2),
@@ -5918,7 +5957,7 @@ Ability MutualFury2752("Mutual Fury", 0, 1, false, {
     )
 });
 
-Ability NecroticImpactBA62("Necrotic Impact", 0, 2, false, {
+Ability NecroticImpactBA62("Necrotic Impact", 0, 2, 0, {
     TargetLowestHP(
         Remove(POSITIVE_EFFECTS),
         DevouringAttack(1.5, 50.0, 2, BYPASS_ARMOR)
@@ -5931,28 +5970,28 @@ CounterAbility NullifyingCounter3724("Nullifying Counter", {
     )
 });
 
-Ability NullifyingImpact65A2("Nullifying Impact", 0, 2, false, {
+Ability NullifyingImpact65A2("Nullifying Impact", 0, 2, 0, {
     TargetMostPositiveEffects(
         Remove(POSITIVE_EFFECTS),
         Attack(1.5)
     )
 });
 
-Ability NullifyingRampage11B6("Nullifying Rampage", 1, 2, false, {
+Ability NullifyingRampage11B6("Nullifying Rampage", 1, 2, 0, {
     TargetMostPositiveEffects(
         Remove(POSITIVE_EFFECTS),
         Attack(2.0)
     )
 });
 
-Ability NullifyingStrike38B2("Nullifying Strike", 0, 0, false, {
+Ability NullifyingStrike38B2("Nullifying Strike", 0, 0, 0, {
     TargetMostPositiveEffects(
         Remove(POSITIVE_EFFECTS),
         Attack(1.0)
     )
 });
 
-Ability ObstructingFierceImpact9462("Obstructing Fierce Impact", 0, 1, false, {
+Ability ObstructingFierceImpact9462("Obstructing Fierce Impact", 0, 1, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -5970,7 +6009,7 @@ CounterAbility PersistentCounter25A1("Persistent Counter", {
     )
 });
 
-Ability PersistentFerociousStrikeAF52("Persistent Ferocious Strike", 0, 0, false, {
+Ability PersistentFerociousStrikeAF52("Persistent Ferocious Strike", 0, 0, 0, {
     TargetSelf(
         IncreaseDamage(50.0, 2, 2)
     ),
@@ -5979,13 +6018,13 @@ Ability PersistentFerociousStrikeAF52("Persistent Ferocious Strike", 0, 0, false
     )
 });
 
-RevengeAbility PiercingRevengeD39D("Piercing Revenge", 1, 1, false, {
+RevengeAbility PiercingRevengeD39D("Piercing Revenge", 1, 1, 0, {
     TargetHighestHP(
         Remove(SHIELD),
         Rend(40.0, BYPASS_ARMOR),
         UnableToSwap(2)
     )
-}, 0, 1, true, {
+}, 0, 1, 1, {
     TargetHighestHP(
         Remove(SHIELD),
         Rend(40.0, BYPASS_ARMOR),
@@ -5993,7 +6032,7 @@ RevengeAbility PiercingRevengeD39D("Piercing Revenge", 1, 1, false, {
     )
 });
 
-Ability PiercingScreechB4D7("Piercing Screech", 0, 3, true, {
+Ability PiercingScreechB4D7("Piercing Screech", 0, 3, 1, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseSpeed(10.0, 1),
@@ -6004,14 +6043,14 @@ Ability PiercingScreechB4D7("Piercing Screech", 0, 3, true, {
     )
 });
 
-Ability PinningStrike3832("Pinning Strike", 0, 0, false, {
+Ability PinningStrike3832("Pinning Strike", 0, 0, 0, {
     TargetLowestHP(
         Attack(1.0),
         UnableToSwap(2)
     )
 });
 
-Ability PlayfulPounce7B7E("Playful Pounce", 0, 2, false, {
+Ability PlayfulPounce7B7E("Playful Pounce", 0, 2, 0, {
     TargetSelf(
         IncreaseSpeed(20.0, 2),
         Dodge(50.0, 66.69998, 1, 2),
@@ -6035,21 +6074,21 @@ CounterAbility PreciseCounterDFAC("Precise Counter", {
     )
 });
 
-Ability PreciseDeceleratingRampageB02E("Precise Decelerating Rampage", 0, 1, false, {
+Ability PreciseDeceleratingRampageB02E("Precise Decelerating Rampage", 0, 1, 0, {
     TargetLowestHP(
         ReduceSpeed(50.0, 2),
         Attack(2.0, PRECISE)
     )
 });
 
-Ability PreciseDistractingImpact90A3("Precise Distracting Impact", 0, 1, false, {
+Ability PreciseDistractingImpact90A3("Precise Distracting Impact", 0, 1, 0, {
     TargetLowestHP(
         Attack(1.5, PRECISE),
         ReduceDamage(50.0, 1, 2)
     )
 });
 
-Ability PreciseDoubleStrike2357("Precise Double Strike", 0, 1, false, {
+Ability PreciseDoubleStrike2357("Precise Double Strike", 0, 1, 0, {
     TargetMostPositiveEffects(
         Attack(1.0, PRECISE),
         Attack(1.0, PRECISE)
@@ -6065,13 +6104,13 @@ CounterAbility PreciseGroupCounter7420("Precise Group Counter", {
     )
 });
 
-Ability PreciseImpact9D87("Precise Impact", 0, 1, false, {
+Ability PreciseImpact9D87("Precise Impact", 0, 1, 0, {
     TargetLowestHP(
         Attack(1.5, PRECISE)
     )
 });
 
-Ability PreciseImpactAndRunF059("Precise Impact And Run", 1, 1, false, {
+Ability PreciseImpactAndRunF059("Precise Impact And Run", 1, 1, 0, {
     TargetLowestHP(
         Attack(1.5, PRECISE)
     ),
@@ -6086,30 +6125,30 @@ CounterAbility PrecisePiercingStrike5679("Precise Piercing Strike", {
     )
 });
 
-Ability PrecisePiercingStrike93AA("Precise Piercing Strike", 0, 0, false, {
+Ability PrecisePiercingStrike93AA("Precise Piercing Strike", 0, 0, 0, {
     TargetLowestHP(
         Attack(1.0, BYPASS_ARMOR|PRECISE)
     )
 });
 
-Ability PrecisePounceF675("Precise Pounce", 0, 1, false, {
+Ability PrecisePounceF675("Precise Pounce", 0, 1, 0, {
     TargetLowestHP(
         Attack(2.0, PRECISE),
         ReduceDamage(50.0, 1, 2)
     )
 });
 
-Ability PreciseRampageA036("Precise Rampage", 0, 1, false, {
+Ability PreciseRampageA036("Precise Rampage", 0, 1, 0, {
     TargetLowestHP(
         Attack(2.0, PRECISE)
     )
 });
 
-RevengeAbility PreciseRevenge51B4("Precise Revenge", 0, 1, false, {
+RevengeAbility PreciseRevenge51B4("Precise Revenge", 0, 1, 0, {
     TargetLowestHP(
         Attack(2.0, PRECISE)
     )
-}, 0, 1, false, {
+}, 0, 1, 0, {
     TargetAllOpponents(
         Attack(2.0, PRECISE)
     )
@@ -6122,7 +6161,7 @@ CounterAbility PreciseShatteringCounter4D03("Precise Shattering Counter", {
     )
 });
 
-Ability PredatoryPeck7590("Predatory Peck", 0, 0, false, {
+Ability PredatoryPeck7590("Predatory Peck", 0, 0, 0, {
     TargetSelf(
         IncreaseSpeed(10.0, 2)
     ),
@@ -6134,7 +6173,7 @@ Ability PredatoryPeck7590("Predatory Peck", 0, 0, false, {
     )
 });
 
-ThreatenedAbility ProtectiveAlert2FA4("Protective Alert", 0, 3, false, {
+ThreatenedAbility ProtectiveAlert2FA4("Protective Alert", 0, 3, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -6142,7 +6181,7 @@ ThreatenedAbility ProtectiveAlert2FA4("Protective Alert", 0, 3, false, {
         ImposeVulnerability(50.0, 2, 4),
         ReduceDamage(50.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 2./3.; }, 0, 3, false, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 2./3; }, 0, 3, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         RallyHeal(33.33333)
@@ -6152,7 +6191,7 @@ ThreatenedAbility ProtectiveAlert2FA4("Protective Alert", 0, 3, false, {
     )
 });
 
-Ability Prowl38DE("Prowl", 0, 0, true, {
+Ability Prowl38DE("Prowl", 0, 0, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(75.0, 67.0, 0, 2),
@@ -6160,7 +6199,7 @@ Ability Prowl38DE("Prowl", 0, 0, true, {
     )
 });
 
-RevengeAbility ProwlingRevengeCloakC144("Prowling Revenge Cloak", 0, 3, true, {
+RevengeAbility ProwlingRevengeCloakC144("Prowling Revenge Cloak", 0, 3, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Cloak(2.0, 75.0, 66.66659, 2)
@@ -6168,7 +6207,7 @@ RevengeAbility ProwlingRevengeCloakC144("Prowling Revenge Cloak", 0, 3, true, {
     TargetFastest(
         ReduceSpeed(50.0, 2)
     )
-}, 0, 1, true, {
+}, 0, 1, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Cloak(3.0, 75.0, 66.66659, 2),
@@ -6179,7 +6218,7 @@ RevengeAbility ProwlingRevengeCloakC144("Prowling Revenge Cloak", 0, 3, true, {
     )
 });
 
-Ability QuillImpact2A70("Quill Impact", 0, 2, false, {
+Ability QuillImpact2A70("Quill Impact", 0, 2, 0, {
     TargetHighestDamage(
         Attack(1.5),
         Stun(75.0, 1),
@@ -6187,7 +6226,7 @@ Ability QuillImpact2A70("Quill Impact", 0, 2, false, {
     )
 });
 
-Ability RakingClawsF16C("Raking Claws", 1, 1, false, {
+Ability RakingClawsF16C("Raking Claws", 1, 1, 0, {
     TargetMostPositiveEffects(
         Remove(CLOAK|DODGE),
         Attack(2.0)
@@ -6201,7 +6240,7 @@ CounterAbility RakingCounterattackC77B("Raking Counter-Attack", {
     )
 });
 
-Ability RampageAndRunB223("Rampage And Run", 1, 1, false, {
+Ability RampageAndRunB223("Rampage And Run", 1, 1, 0, {
     TargetLowestHP(
         Attack(2.0)
     ),
@@ -6210,20 +6249,20 @@ Ability RampageAndRunB223("Rampage And Run", 1, 1, false, {
     )
 });
 
-Ability RampageB9EA("Rampage", 0, 1, false, {
+Ability RampageB9EA("Rampage", 0, 1, 0, {
     TargetLowestHP(
         Attack(2.0)
     )
 });
 
-Ability RavenousRampage476D("Ravenous Rampage", 1, 2, true, {
+Ability RavenousRampage476D("Ravenous Rampage", 1, 2, 1, {
     TargetHighestDamage(
         Remove(DODGE|CLOAK),
         Attack(2.0)
     )
 });
 
-Ability ReadyToCrush43AE("Ready To Crush", 0, 2, false, {
+Ability ReadyToCrush43AE("Ready To Crush", 0, 2, 0, {
     TargetTeam(
         Cleanse(REDUCED_CRIT_CHANCE|REDUCED_DAMAGE),
         IncreaseCritChance(30.0, 4, 2),
@@ -6231,7 +6270,7 @@ Ability ReadyToCrush43AE("Ready To Crush", 0, 2, false, {
     )
 });
 
-Ability Refresh8EAD("Refresh", 0, 2, false, {
+Ability Refresh8EAD("Refresh", 0, 2, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(1.0),
@@ -6239,7 +6278,7 @@ Ability Refresh8EAD("Refresh", 0, 2, false, {
     )
 });
 
-Ability Remedy4769("Remedy", 0, 2, true, {
+Ability Remedy4769("Remedy", 0, 2, 1, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(1.5)
@@ -6249,7 +6288,7 @@ Ability Remedy4769("Remedy", 0, 2, true, {
     )
 });
 
-Ability RendingAttack9BF1("Rending Attack", 0, 1, false, {
+Ability RendingAttack9BF1("Rending Attack", 0, 1, 0, {
     TargetHighestHP(
         Remove(SHIELD),
         Rend(40.0, BYPASS_ARMOR)
@@ -6263,14 +6302,14 @@ CounterAbility RendingCounterattack24B1("Rending Counter-Attack", {
     )
 });
 
-Ability RendingTakedown1CED("Rending Takedown", 1, 1, false, {
+Ability RendingTakedown1CED("Rending Takedown", 1, 1, 0, {
     TargetHighestHP(
         Remove(SHIELD),
         Rend(60.0, BYPASS_ARMOR)
     )
 });
 
-Ability ResilientDevastationF536("Resilient Devastation", 2, 1, false, {
+Ability ResilientDevastationF536("Resilient Devastation", 2, 1, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -6286,7 +6325,7 @@ Ability ResilientDevastationF536("Resilient Devastation", 2, 1, false, {
     )
 });
 
-Ability ResilientImpact7BB4("Resilient Impact", 0, 1, false, {
+Ability ResilientImpact7BB4("Resilient Impact", 0, 1, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -6297,7 +6336,7 @@ Ability ResilientImpact7BB4("Resilient Impact", 0, 1, false, {
     )
 });
 
-Ability ResilientRampageAndRun6933("Resilient Rampage And Run", 1, 2, false, {
+Ability ResilientRampageAndRun6933("Resilient Rampage And Run", 1, 2, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -6311,7 +6350,7 @@ Ability ResilientRampageAndRun6933("Resilient Rampage And Run", 1, 2, false, {
     )
 });
 
-Ability ResilientRampageB23D("Resilient Rampage", 1, 1, false, {
+Ability ResilientRampageB23D("Resilient Rampage", 1, 1, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -6322,7 +6361,7 @@ Ability ResilientRampageB23D("Resilient Rampage", 1, 1, false, {
     )
 });
 
-RevengeAbility ResilientRampageRevenge6F80("Resilient Rampage Revenge", 1, 1, false, {
+RevengeAbility ResilientRampageRevenge6F80("Resilient Rampage Revenge", 1, 1, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -6331,7 +6370,7 @@ RevengeAbility ResilientRampageRevenge6F80("Resilient Rampage Revenge", 1, 1, fa
         Attack(2.0),
         ImposeVulnerability(50.0, 2, 2)
     )
-}, 0, 1, false, {
+}, 0, 1, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -6342,7 +6381,7 @@ RevengeAbility ResilientRampageRevenge6F80("Resilient Rampage Revenge", 1, 1, fa
     )
 });
 
-Ability ResilientShieldedRampageAndRun1618("Resilient Shielded Rampage And Run", 1, 2, false, {
+Ability ResilientShieldedRampageAndRun1618("Resilient Shielded Rampage And Run", 1, 2, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -6357,7 +6396,7 @@ Ability ResilientShieldedRampageAndRun1618("Resilient Shielded Rampage And Run",
     )
 });
 
-Ability ResilientStrikeFEDE("Resilient Strike", 0, 0, false, {
+Ability ResilientStrikeFEDE("Resilient Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -6368,21 +6407,21 @@ Ability ResilientStrikeFEDE("Resilient Strike", 0, 0, false, {
     )
 });
 
-Ability RestrictedGroupDistraction08AC("Restricted Group Distraction", 0, 1, false, {
+Ability RestrictedGroupDistraction08AC("Restricted Group Distraction", 0, 1, 0, {
     TargetAllOpponents(
         Attack(1.5),
         ReduceDamage(50.0, 1, 2)
     )
 });
 
-Ability Retreat5950("Retreat", 0, 0, true, {
+Ability Retreat5950("Retreat", 0, 0, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Swap()
     )
 });
 
-RevengeAbility RevengeCunningRampage422C("Revenge Cunning Rampage", 1, 1, false, {
+RevengeAbility RevengeCunningRampage422C("Revenge Cunning Rampage", 1, 1, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -6392,7 +6431,7 @@ RevengeAbility RevengeCunningRampage422C("Revenge Cunning Rampage", 1, 1, false,
         ReduceCritChance(100.0, 1, 2),
         Attack(2.0)
     )
-}, 0, 1, false, {
+}, 0, 1, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -6404,55 +6443,55 @@ RevengeAbility RevengeCunningRampage422C("Revenge Cunning Rampage", 1, 1, false,
     )
 });
 
-RevengeAbility RevengeDeceleratingImpact6A2C("Revenge Decelerating Impact", 0, 1, false, {
+RevengeAbility RevengeDeceleratingImpact6A2C("Revenge Decelerating Impact", 0, 1, 0, {
     TargetFastest(
         ReduceSpeed(50.0, 2),
         Attack(1.5)
     )
-}, 0, 1, false, {
+}, 0, 1, 0, {
     TargetFastest(
         ReduceSpeed(50.0, 2),
         Attack(2.0)
     )
 });
 
-RevengeAbility RevengeDefiniteRampageED72("Revenge Definite Rampage", 1, 2, false, {
+RevengeAbility RevengeDefiniteRampageED72("Revenge Definite Rampage", 1, 2, 0, {
     TargetMostPositiveEffects(
         Remove(CLOAK|DODGE|SHIELD|TAUNT),
         Attack(2.0, BYPASS_ARMOR)
     )
-}, 0, 2, false, {
+}, 0, 2, 0, {
     TargetMostPositiveEffects(
         Remove(CLOAK|DODGE|SHIELD|TAUNT),
         Attack(2.0, BYPASS_ARMOR)
     )
 });
 
-RevengeAbility RevengeDistractingImpact25D1("Revenge Distracting Impact", 0, 1, false, {
+RevengeAbility RevengeDistractingImpact25D1("Revenge Distracting Impact", 0, 1, 0, {
     TargetHighestDamage(
         ReduceDamage(50.0, 2, 4),
         Attack(1.5)
     )
-}, 0, 1, false, {
+}, 0, 1, 0, {
     TargetHighestDamage(
         ReduceDamage(50.0, 2, 4),
         Attack(2.0)
     )
 });
 
-RevengeAbility RevengeDistractingStrike50E9("Revenge Distracting Strike", 0, 2, false, {
+RevengeAbility RevengeDistractingStrike50E9("Revenge Distracting Strike", 0, 2, 0, {
     TargetHighestDamage(
         ReduceDamage(50.0, 2, 4),
         Attack(1.0)
     )
-}, 0, 2, false, {
+}, 0, 2, 0, {
     TargetHighestDamage(
         ReduceDamage(75.0, 2, 4),
         Attack(1.0)
     )
 });
 
-RevengeAbility RevengeFierceImpact9788("Revenge Fierce Impact", 0, 1, false, {
+RevengeAbility RevengeFierceImpact9788("Revenge Fierce Impact", 0, 1, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -6460,7 +6499,7 @@ RevengeAbility RevengeFierceImpact9788("Revenge Fierce Impact", 0, 1, false, {
         Remove(SHIELD|TAUNT),
         Attack(1.5, BYPASS_ARMOR)
     )
-}, 0, 1, false, {
+}, 0, 1, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -6470,46 +6509,46 @@ RevengeAbility RevengeFierceImpact9788("Revenge Fierce Impact", 0, 1, false, {
     )
 });
 
-RevengeAbility RevengeImpact0707("Revenge Impact", 0, 1, false, {
+RevengeAbility RevengeImpact0707("Revenge Impact", 0, 1, 0, {
     TargetLowestHP(
         Attack(1.5)
     )
-}, 0, 1, false, {
+}, 0, 1, 0, {
     TargetLowestHP(
         Attack(2.0)
     )
 });
 
-RevengeAbility RevengeInstantFerocity9F5A("Revenge Instant Ferocity", 0, 2, true, {
+RevengeAbility RevengeInstantFerocity9F5A("Revenge Instant Ferocity", 0, 2, 1, {
     TargetSelf(
         IncreaseDamage(50.0, 2, 4)
     )
-}, 0, 2, true, {
+}, 0, 2, 1, {
     TargetSelf(
         IncreaseDamage(50.0, 3, 6)
     )
 });
 
-RevengeAbility RevengeNullifyingRampage9284("Revenge Nullifying Rampage", 1, 2, false, {
+RevengeAbility RevengeNullifyingRampage9284("Revenge Nullifying Rampage", 1, 2, 0, {
     TargetMostPositiveEffects(
         Remove(POSITIVE_EFFECTS),
         Attack(2.0)
     )
-}, 0, 2, false, {
+}, 0, 2, 0, {
     TargetMostPositiveEffects(
         Remove(POSITIVE_EFFECTS),
         Attack(2.0)
     )
 });
 
-RevengeAbility RevengeProtection914E("Revenge Protection", 0, 1, false, {
+RevengeAbility RevengeProtection914E("Revenge Protection", 0, 1, 0, {
     TargetLowestHP(
         Attack(1.0)
     ),
     TargetSelf(
         Shield(50.0, 2, 2)
     )
-}, 0, 1, false, {
+}, 0, 1, 0, {
     TargetLowestHP(
         Attack(1.0)
     ),
@@ -6518,24 +6557,24 @@ RevengeAbility RevengeProtection914E("Revenge Protection", 0, 1, false, {
     )
 });
 
-RevengeAbility RevengeRampageACBE("Revenge Rampage", 0, 1, false, {
+RevengeAbility RevengeRampageACBE("Revenge Rampage", 0, 1, 0, {
     TargetLowestHP(
         Attack(2.0)
     )
-}, 0, 0, false, {
+}, 0, 0, 0, {
     TargetLowestHP(
         Attack(2.0)
     )
 });
 
-RevengeAbility RevengeShatteringRampageD874("Revenge Shattering Rampage", 1, 1, false, {
+RevengeAbility RevengeShatteringRampageD874("Revenge Shattering Rampage", 1, 1, 0, {
     TargetHighestHP(
         Remove(SHIELD)
     ),
     TargetHighestHP(
         Attack(2.0, BYPASS_ARMOR)
     )
-}, 0, 1, false, {
+}, 0, 1, 0, {
     TargetHighestHP(
         Remove(SHIELD)
     ),
@@ -6544,19 +6583,19 @@ RevengeAbility RevengeShatteringRampageD874("Revenge Shattering Rampage", 1, 1, 
     )
 });
 
-RevengeAbility RevengeTauntingCloak02DA("Revenge Taunting Cloak", 0, 3, true, {
+RevengeAbility RevengeTauntingCloak02DA("Revenge Taunting Cloak", 0, 3, 1, {
     TargetSelf(
         Cloak(2.0, 75.0, 66.66659, 2),
         Taunt(1)
     )
-}, 0, 3, true, {
+}, 0, 3, 1, {
     TargetSelf(
         Cloak(2.5, 75.0, 66.66659, 2),
         Taunt(1)
     )
 });
 
-Ability Roar3648("Roar", 0, 2, true, {
+Ability Roar3648("Roar", 0, 2, 1, {
     TargetAllOpponents(
         Remove(SHIELD),
         Attack(1.0, BYPASS_ARMOR)
@@ -6588,7 +6627,7 @@ CounterAbility ShatteringAntidoteF861("Shattering Antidote", {
     )
 });
 
-Ability Shelter12ED("Shelter", 0, 2, false, {
+Ability Shelter12ED("Shelter", 0, 2, 0, {
     TargetLowestHPTeammate(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(2.0),
@@ -6596,7 +6635,7 @@ Ability Shelter12ED("Shelter", 0, 2, false, {
     )
 });
 
-Ability ShelteringImpact6881("Sheltering Impact", 0, 2, true, {
+Ability ShelteringImpact6881("Sheltering Impact", 0, 2, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(2.0),
@@ -6607,9 +6646,9 @@ Ability ShelteringImpact6881("Sheltering Impact", 0, 2, true, {
     )
 });
 
-Ability ShieldAdvantage90B9("Shield Advantage", 0, 1, false, {
+Ability ShieldAdvantage90B9("Shield Advantage", 0, 1, 0, {
     TargetSelf(
-        Shield(50.0, 1, 4)
+        Shield(50.0, 1, 1)
     ),
     TargetHighestHP(
         Remove(SHIELD),
@@ -6617,9 +6656,9 @@ Ability ShieldAdvantage90B9("Shield Advantage", 0, 1, false, {
     )
 });
 
-Ability ShieldedDeceleratingImpact426C("Shielded Decelerating Impact", 0, 1, false, {
+Ability ShieldedDeceleratingImpact426C("Shielded Decelerating Impact", 0, 1, 0, {
     TargetSelf(
-        Shield(50.0, 1, 4)
+        Shield(50.0, 1, 1)
     ),
     TargetHighestDamage(
         Attack(1.5, PRECISE),
@@ -6627,9 +6666,9 @@ Ability ShieldedDeceleratingImpact426C("Shielded Decelerating Impact", 0, 1, fal
     )
 });
 
-Ability ShieldedDeceleratingStrike627F("Shielded Decelerating Strike", 0, 0, false, {
+Ability ShieldedDeceleratingStrike627F("Shielded Decelerating Strike", 0, 0, 0, {
     TargetSelf(
-        Shield(50.0, 1, 4)
+        Shield(50.0, 1, 1)
     ),
     TargetLowestHP(
         ReduceSpeed(50.0, 2),
@@ -6637,7 +6676,7 @@ Ability ShieldedDeceleratingStrike627F("Shielded Decelerating Strike", 0, 0, fal
     )
 });
 
-Ability ShieldedDevastation403E("Shielded Devastation", 2, 2, false, {
+Ability ShieldedDevastation403E("Shielded Devastation", 2, 2, 0, {
     TargetHighestHP(
         Attack(3.0, PRECISE)
     ),
@@ -6647,7 +6686,7 @@ Ability ShieldedDevastation403E("Shielded Devastation", 2, 2, false, {
     )
 });
 
-Ability ShieldedEvasiveStrike4571("Shielded Evasive Strike", 0, 1, false, {
+Ability ShieldedEvasiveStrike4571("Shielded Evasive Strike", 0, 1, 0, {
     TargetLowestHP(
         Attack(1.0)
     ),
@@ -6657,7 +6696,7 @@ Ability ShieldedEvasiveStrike4571("Shielded Evasive Strike", 0, 1, false, {
     )
 });
 
-Ability ShieldedHeavyStrike02CB("Shielded Heavy Strike", 0, 0, false, {
+Ability ShieldedHeavyStrike02CB("Shielded Heavy Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY|REDUCED_DAMAGE)
     ),
@@ -6672,18 +6711,18 @@ Ability ShieldedHeavyStrike02CB("Shielded Heavy Strike", 0, 0, false, {
     )
 });
 
-Ability ShieldedLockdown6EE2("Shielded Lockdown", 0, 2, true, {
+Ability ShieldedLockdown6EE2("Shielded Lockdown", 0, 2, 1, {
     TargetSelf(
-        Shield(75.0, 1, 1)
+        Shield(75.0, 1, 2)
     ),
     TargetRandom(
         UnableToSwap(2)
     )
 });
 
-Ability ShieldedTauntingStrike73D4("Shielded Taunting Strike", 0, 0, false, {
+Ability ShieldedTauntingStrike73D4("Shielded Taunting Strike", 0, 0, 0, {
     TargetSelf(
-        Shield(50.0, 1, 4)
+        Shield(50.0, 1, 1)
     ),
     TargetLowestHP(
         Attack(1.0)
@@ -6693,17 +6732,17 @@ Ability ShieldedTauntingStrike73D4("Shielded Taunting Strike", 0, 0, false, {
     )
 });
 
-ThreatenedAbility ShieldingAlertRampage3625("Shielding Alert Rampage", 0, 2, false, {
+ThreatenedAbility ShieldingAlertRampage3625("Shielding Alert Rampage", 0, 2, 0, {
     TargetAllOpponents(
         Remove(CLOAK|DODGE|SHIELD)
     ),
     TargetSelf(
-        Shield(50.0, 1, 4)
+        Shield(50.0, 1, 1)
     ),
     TargetAllOpponents(
         Attack(2.0, BYPASS_ARMOR)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, 0, 2, true, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 2, 1, {
     TargetAllOpponents(
         Remove(CLOAK|DODGE|SHIELD)
     ),
@@ -6715,7 +6754,7 @@ ThreatenedAbility ShieldingAlertRampage3625("Shielding Alert Rampage", 0, 2, fal
     )
 });
 
-Ability ShieldingStrikeEDCA("Shielding Strike", 0, 0, false, {
+Ability ShieldingStrikeEDCA("Shielding Strike", 0, 0, 0, {
     TargetLowestHP(
         Attack(1.0)
     ),
@@ -6724,7 +6763,7 @@ Ability ShieldingStrikeEDCA("Shielding Strike", 0, 0, false, {
     )
 });
 
-Ability ShortDefense7ED4("Short Defense", 0, 2, false, {
+Ability ShortDefense7ED4("Short Defense", 0, 2, 0, {
     TargetLowestHP(
         Attack(1.0)
     ),
@@ -6733,7 +6772,7 @@ Ability ShortDefense7ED4("Short Defense", 0, 2, false, {
     )
 });
 
-Ability Sideflap66AF("Sideflap", 0, 0, true, {
+Ability Sideflap66AF("Sideflap", 0, 0, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(100.0, 67.0, 0, 2),
@@ -6742,7 +6781,7 @@ Ability Sideflap66AF("Sideflap", 0, 0, true, {
     )
 });
 
-Ability Sidestep5439("Sidestep", 0, 0, true, {
+Ability Sidestep5439("Sidestep", 0, 0, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(100.0, 67.0, 0, 2),
@@ -6750,7 +6789,7 @@ Ability Sidestep5439("Sidestep", 0, 0, true, {
     )
 });
 
-Ability SidestepB6BC("Sidestep", 0, 0, true, {
+Ability SidestepB6BC("Sidestep", 0, 0, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(100.0, 67.0, 0, 2),
@@ -6758,7 +6797,7 @@ Ability SidestepB6BC("Sidestep", 0, 0, true, {
     )
 });
 
-Ability Skirmish0914("Skirmish", 1, 1, false, {
+Ability Skirmish0914("Skirmish", 1, 1, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -6768,7 +6807,7 @@ Ability Skirmish0914("Skirmish", 1, 1, false, {
     )
 });
 
-ThreatenedAbility SlipperyAlertB2DD("Slippery Alert", 0, 2, false, {
+ThreatenedAbility SlipperyAlertB2DD("Slippery Alert", 0, 2, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(50.0, 66.69999, 2, 2),
@@ -6777,7 +6816,7 @@ ThreatenedAbility SlipperyAlertB2DD("Slippery Alert", 0, 2, false, {
     TargetHighestDamage(
         ReduceDamage(50.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, 0, 2, true, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 2, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(75.0, 66.69999, 2, 2),
@@ -6788,14 +6827,14 @@ ThreatenedAbility SlipperyAlertB2DD("Slippery Alert", 0, 2, false, {
     )
 });
 
-Ability SlowingImpact145F("Slowing Impact", 0, 1, false, {
+Ability SlowingImpact145F("Slowing Impact", 0, 1, 0, {
     TargetFastest(
         ReduceSpeed(50.0, 3),
         Attack(1.5)
     )
 });
 
-Ability SlowingResilientStrikeB132("Slowing Resilient Strike", 0, 0, false, {
+Ability SlowingResilientStrikeB132("Slowing Resilient Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -6803,11 +6842,11 @@ Ability SlowingResilientStrikeB132("Slowing Resilient Strike", 0, 0, false, {
         Remove(DODGE|CLOAK|INCREASED_SPEED),
         Attack(1.0),
         ImposeVulnerability(50.0, 2, 1),
-        ReduceSpeed(50.0, 1)
+        ReduceSpeed(50.0, 2)
     )
 });
 
-Ability SlyRampageAndRun367D("Sly Rampage And Run", 1, 2, false, {
+Ability SlyRampageAndRun367D("Sly Rampage And Run", 1, 2, 0, {
     TargetHighestDamage(
         Attack(2.0),
         ReduceDamage(50.0, 2, 2)
@@ -6818,7 +6857,7 @@ Ability SlyRampageAndRun367D("Sly Rampage And Run", 1, 2, false, {
     )
 });
 
-Ability StrikeAndRun11DF("Strike And Run", 1, 1, false, {
+Ability StrikeAndRun11DF("Strike And Run", 1, 1, 0, {
     TargetLowestHP(
         Attack(1.0)
     ),
@@ -6827,13 +6866,13 @@ Ability StrikeAndRun11DF("Strike And Run", 1, 1, false, {
     )
 });
 
-Ability StrikeBE64("Strike", 0, 0, false, {
+Ability StrikeBE64("Strike", 0, 0, 0, {
     TargetLowestHP(
         Attack(1.0)
     )
 });
 
-Ability StunningDistractionB884("Stunning Distraction", 0, 2, false, {
+Ability StunningDistractionB884("Stunning Distraction", 0, 2, 0, {
     TargetFastest(
         Attack(1.0),
         Stun(50.0, 1),
@@ -6841,7 +6880,7 @@ Ability StunningDistractionB884("Stunning Distraction", 0, 2, false, {
     )
 });
 
-Ability StunningImpactAndRun3EB7("Stunning Impact And Run", 1, 1, false, {
+Ability StunningImpactAndRun3EB7("Stunning Impact And Run", 1, 1, 0, {
     TargetLowestHP(
         Attack(1.5),
         Stun(75.0, 1)
@@ -6851,7 +6890,7 @@ Ability StunningImpactAndRun3EB7("Stunning Impact And Run", 1, 1, false, {
     )
 });
 
-Ability StunningRampageAndRun9FFA("Stunning Rampage And Run", 1, 1, false, {
+Ability StunningRampageAndRun9FFA("Stunning Rampage And Run", 1, 1, 0, {
     TargetHighestDamage(
         Stun(100.0, 1)
     ),
@@ -6863,14 +6902,14 @@ Ability StunningRampageAndRun9FFA("Stunning Rampage And Run", 1, 1, false, {
     )
 });
 
-Ability StunningRampageBD06("Stunning Rampage", 1, 2, false, {
+Ability StunningRampageBD06("Stunning Rampage", 1, 2, 0, {
     TargetHighestHP(
         Stun(75.0, 1),
         Attack(2.0)
     )
 });
 
-Ability SuperDistractionDE40("Super Distraction", 0, 3, true, {
+Ability SuperDistractionDE40("Super Distraction", 0, 3, 1, {
     TargetHighestDamage(
         Remove(DODGE)
     ),
@@ -6886,7 +6925,7 @@ Ability SuperDistractionDE40("Super Distraction", 0, 3, true, {
     )
 });
 
-Ability SuperiorVulnerability7C25("Superior Vulnerability", 0, 0, false, {
+Ability SuperiorVulnerability7C25("Superior Vulnerability", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -6897,7 +6936,7 @@ Ability SuperiorVulnerability7C25("Superior Vulnerability", 0, 0, false, {
     )
 });
 
-Ability SuperiorityImpact5FE3("Superiority Impact", 0, 1, false, {
+Ability SuperiorityImpact5FE3("Superiority Impact", 0, 1, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -6907,7 +6946,7 @@ Ability SuperiorityImpact5FE3("Superiority Impact", 0, 1, false, {
     )
 });
 
-Ability SuperiorityRampageE910("Superiority Rampage", 1, 1, false, {
+Ability SuperiorityRampageE910("Superiority Rampage", 1, 1, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -6917,7 +6956,7 @@ Ability SuperiorityRampageE910("Superiority Rampage", 1, 1, false, {
     )
 });
 
-Ability SuperiorityStrike2549("Superiority Strike", 0, 0, false, {
+Ability SuperiorityStrike2549("Superiority Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -6927,7 +6966,7 @@ Ability SuperiorityStrike2549("Superiority Strike", 0, 0, false, {
     )
 });
 
-Ability TauntShatteringRampageDE3B("Taunt Shattering Rampage", 1, 2, false, {
+Ability TauntShatteringRampageDE3B("Taunt Shattering Rampage", 1, 2, 0, {
     TargetSelf(
         Taunt(1)
     ),
@@ -6942,7 +6981,7 @@ Ability TauntShatteringRampageDE3B("Taunt Shattering Rampage", 1, 2, false, {
     )
 });
 
-Ability TauntingBellow3BBD("Taunting Bellow", 0, 2, true, {
+Ability TauntingBellow3BBD("Taunting Bellow", 0, 2, 1, {
     TargetSelf(
         Shield(50.0, 0, 4),
         Taunt(1)
@@ -6952,7 +6991,7 @@ Ability TauntingBellow3BBD("Taunting Bellow", 0, 2, true, {
     )
 });
 
-Ability TauntingDefense72E3("Taunting Defense", 0, 2, true, {
+Ability TauntingDefense72E3("Taunting Defense", 0, 2, 1, {
     TargetSelf(
         Shield(50.0, 2, 4),
         Taunt(1),
@@ -6960,7 +6999,7 @@ Ability TauntingDefense72E3("Taunting Defense", 0, 2, true, {
     )
 });
 
-Ability TauntingHealBellow5344("Taunting Heal Bellow", 0, 3, true, {
+Ability TauntingHealBellow5344("Taunting Heal Bellow", 0, 3, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Shield(50.0, 0, 4),
@@ -6974,7 +7013,7 @@ Ability TauntingHealBellow5344("Taunting Heal Bellow", 0, 3, true, {
     )
 });
 
-Ability TauntingRampage3362("Taunting Rampage", 1, 1, false, {
+Ability TauntingRampage3362("Taunting Rampage", 1, 1, 0, {
     TargetLowestHP(
         Attack(2.0)
     ),
@@ -6983,7 +7022,7 @@ Ability TauntingRampage3362("Taunting Rampage", 1, 1, false, {
     )
 });
 
-Ability TauntingResilientGroupImpact240C("Taunting Resilient Group Impact", 0, 2, false, {
+Ability TauntingResilientGroupImpact240C("Taunting Resilient Group Impact", 0, 2, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -7000,9 +7039,9 @@ Ability TauntingResilientGroupImpact240C("Taunting Resilient Group Impact", 0, 2
     )
 });
 
-Ability TauntingShieldRampageE20B("Taunting Shield Rampage", 1, 1, false, {
+Ability TauntingShieldRampageE20B("Taunting Shield Rampage", 1, 1, 0, {
     TargetSelf(
-        Shield(50.0, 1, 4),
+        Shield(50.0, 1, 1),
         Taunt(1)
     ),
     TargetLowestHP(
@@ -7010,7 +7049,7 @@ Ability TauntingShieldRampageE20B("Taunting Shield Rampage", 1, 1, false, {
     )
 });
 
-Ability TauntingShields1CF6("Taunting Shields", 0, 1, false, {
+Ability TauntingShields1CF6("Taunting Shields", 0, 1, 0, {
     TargetLowestHP(
         Attack(1.0)
     ),
@@ -7020,7 +7059,7 @@ Ability TauntingShields1CF6("Taunting Shields", 0, 1, false, {
     )
 });
 
-Ability TauntingShieldsB07B("Taunting Shields", 0, 0, false, {
+Ability TauntingShieldsB07B("Taunting Shields", 0, 0, 0, {
     TargetLowestHP(
         Attack(1.0)
     ),
@@ -7030,7 +7069,7 @@ Ability TauntingShieldsB07B("Taunting Shields", 0, 0, false, {
     )
 });
 
-Ability TauntingVulnerability1DF7("Taunting Vulnerability", 0, 1, false, {
+Ability TauntingVulnerability1DF7("Taunting Vulnerability", 0, 1, 0, {
     TargetSelf(
         Taunt(1)
     ),
@@ -7042,7 +7081,7 @@ Ability TauntingVulnerability1DF7("Taunting Vulnerability", 0, 1, false, {
     )
 });
 
-Ability TipTheScales61DD("Tip The Scales", 0, 1, true, {
+Ability TipTheScales61DD("Tip The Scales", 0, 1, 1, {
     TargetAllOpponents(
         Remove(POSITIVE_EFFECTS)
     ),
@@ -7051,7 +7090,7 @@ Ability TipTheScales61DD("Tip The Scales", 0, 1, true, {
     )
 });
 
-Ability ToughGroupCunningStrike30D1("Tough Group Cunning Strike", 0, 0, false, {
+Ability ToughGroupCunningStrike30D1("Tough Group Cunning Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
     ),
@@ -7063,7 +7102,7 @@ Ability ToughGroupCunningStrike30D1("Tough Group Cunning Strike", 0, 0, false, {
     )
 });
 
-Ability ToxicQuills1E91("Toxic Quills", 0, 3, false, {
+Ability ToxicQuills1E91("Toxic Quills", 0, 3, 0, {
     TargetHighestDamage(
         Attack(1.5),
         Stun(75.0, 1),
@@ -7071,7 +7110,7 @@ Ability ToxicQuills1E91("Toxic Quills", 0, 3, false, {
     )
 });
 
-ThreatenedAbility TyrantsRoarD436("Tyrant'S Roar", 0, 2, false, {
+ThreatenedAbility TyrantsRoarD436("Tyrant'S Roar", 0, 2, 0, {
     TargetHighestHP(
         Attack(1.0, BYPASS_ARMOR)
     ),
@@ -7079,7 +7118,7 @@ ThreatenedAbility TyrantsRoarD436("Tyrant'S Roar", 0, 2, false, {
         IncreaseDamage(50.0, 2, 2),
         IncreaseSpeed(25.0, 1)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2.; }, 0, 2, true, {
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 2, 1, {
     TargetAllOpponents(
         Attack(1.5, BYPASS_ARMOR)
     ),
@@ -7099,21 +7138,21 @@ CounterAbility VenomousCounter56D1("Venomous Counter", {
     )
 });
 
-Ability VulnerabilityImpact2DAA("Vulnerability Impact", 0, 1, false, {
+Ability VulnerabilityImpact2DAA("Vulnerability Impact", 0, 1, 0, {
     TargetHighestHP(
         Attack(1.5),
         ImposeVulnerability(50.0, 2, 2)
     )
 });
 
-Ability VulnerabilityRampage46FB("Vulnerability Rampage", 1, 2, false, {
+Ability VulnerabilityRampage46FB("Vulnerability Rampage", 1, 2, 0, {
     TargetHighestHP(
         Attack(2.0),
         ImposeVulnerability(50.0, 2, 2)
     )
 });
 
-Ability VulnerabilityStrike1E04("Vulnerability Strike", 0, 0, false, {
+Ability VulnerabilityStrike1E04("Vulnerability Strike", 0, 0, 0, {
     TargetHighestHP(
         Attack(1.0),
         ImposeVulnerability(50.0, 1, 2)
@@ -7126,7 +7165,7 @@ CounterAbility WoundingCounterA785("Wounding Counter", {
     )
 });
 
-Ability WoundingDevouringImpactE5D8("Wounding Devouring Impact", 0, 2, false, {
+Ability WoundingDevouringImpactE5D8("Wounding Devouring Impact", 0, 2, 0, {
     TargetLowestHP(
         Remove(SHIELD),
         DevouringAttack(1.5, 60.0, 2, BYPASS_ARMOR),
@@ -7340,10 +7379,10 @@ DinoKind Acrocanthops("Acrocanthops", LEGENDARY, 1, 4500, 1800, 112, 0.0, 20.0, 
     }
 }, nullptr);
 
-DinoKind Acrocanthosaurus("Acrocanthosaurus", EPIC, 1, 4800, 1700, 103, 0.0, 30.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
+DinoKind Acrocanthosaurus("Acrocanthosaurus", EPIC, 1, 4800, 1700, 110, 0.0, 30.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
     {
         &GroupCleansingStrike8B0C,
-        &FierceImpactB3BE,
+        &GroupDefenseShatteringImpact0C66,
         &FierceRampageDC31
     }
 }, nullptr);
@@ -7694,9 +7733,9 @@ DinoKind Arctovasilas("Arctovasilas", APEX, 1, 4800, 1400, 117, 34.99999, 5.0, 0
     }
 }, &CounterPowerHealA54F);
 
-DinoKind Ardentismaxima("Ardentismaxima", UNIQUE, 1, 6000, 1300, 109, 0.0, 30.0, 100.0, 25.0, 0.0, 0.0, 100.0, 100.0, 100.0, 100.0, 100.0, 0.0, {
+DinoKind Ardentismaxima("Ardentismaxima", UNIQUE, 1, 6000, 1300, 109, 10.0, 30.0, 100.0, 25.0, 0.0, 0.0, 100.0, 100.0, 100.0, 100.0, 100.0, 0.0, {
     {
-        &ResilientStrikeFEDE,
+        &GroupResilientStrike74A6,
         &GroupDeceleratingRampageE77E,
         &TauntShatteringRampageDE3B,
         &InstantInvincibilityTaunt6C65
@@ -7828,11 +7867,11 @@ DinoKind Brontotherium("Brontotherium", COMMON, 1, 4200, 1200, 108, 20.0, 5.0, 0
     }
 }, nullptr);
 
-DinoKind Bumpy("Bumpy", EPIC, 1, 4200, 1050, 113, 25.0, 10.0, 0.0, 0.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.0, 100.0, 0.0, {
+DinoKind Bumpy("Bumpy", EPIC, 1, 4400, 1100, 113, 25.0, 10.0, 0.0, 0.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.0, 100.0, 0.0, {
     {
         &SuperiorVulnerability7C25,
         &InstantInvincibilityTaunt6C65,
-        &GroupTauntingShieldImpactB83B
+        &TauntingResilientGroupImpact240C
     }
 }, nullptr);
 
@@ -7870,11 +7909,11 @@ DinoKind Carnotaurus("Carnotaurus", RARE, 1, 3600, 1000, 104, 0.0, 5.0, 0.0, 0.0
     }
 }, &GreaterRendingCounterattackD5C2);
 
-DinoKind Ceramagnus("Ceramagnus", APEX, 1, 4500, 1300, 113, 25.0, 10.0, 0.0, 0.0, 0.0, 0.0, 100.0, 100.0, 0.0, 0.0, 0.0, 0.0, {
+DinoKind Ceramagnus("Ceramagnus", APEX, 1, 4800, 1300, 113, 25.0, 10.0, 0.0, 0.0, 0.0, 0.0, 100.0, 100.0, 50.0, 0.0, 0.0, 0.0, {
     {
         &ResilientStrikeFEDE,
-        &GroupAcceleration6211,
-        &AcuteStun1F1E,
+        &Ids_tip_ability_title_imminent_stampede7426,
+        &Ids_tip_ability_title_instant_charging_impact7672,
         &PreciseRampageA036
     }
 }, nullptr);
@@ -8090,11 +8129,11 @@ DinoKind Dimorphodon("Dimorphodon", COMMON, 1, 2700, 500, 128, 0.0, 5.0, 0.0, 0.
     }
 }, nullptr);
 
-DinoKind Diorajasaur("Diorajasaur", UNIQUE, 1, 4500, 1200, 108, 30.0, 30.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
+DinoKind Diorajasaur("Diorajasaur", UNIQUE, 1, 4800, 1200, 108, 30.0, 30.0, 100.0, 0.0, 75.0, 0.0, 100.0, 50.0, 0.0, 0.0, 50.0, 0.0, {
     {
         &ResilientStrikeFEDE,
         &ResilientRampageB23D,
-        &GroupTauntingShieldsEB4C,
+        &Ids_tip_ability_title_secure_taunt7C74,
         &InstantInvincibilityTaunt6C65
     }
 }, &RakingCounterattackC77B);
@@ -9012,9 +9051,9 @@ DinoKind Monolometrodon("Monolometrodon", LEGENDARY, 1, 4200, 1400, 125, 0.0, 5.
     }
 }, nullptr);
 
-DinoKind Monolophosaurus("Monolophosaurus", EPIC, 1, 3000, 1300, 127, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
+DinoKind Monolophosaurus("Monolophosaurus", EPIC, 1, 3100, 1300, 127, 0.0, 5.0, 0.0, 25.0, 25.0, 0.0, 25.0, 0.0, 0.0, 0.0, 25.0, 0.0, {
     {
-        &CunningStrike75A8,
+        &ToughGroupCunningStrike30D1,
         &DistractingRampageBD0D,
         &CunningImpactEE79
     }
@@ -9135,13 +9174,13 @@ DinoKind Ornithomimus("Ornithomimus", RARE, 1, 3000, 1600, 131, 0.0, 5.0, 0.0, 0
     }
 }, nullptr);
 
-DinoKind Ouranosaurus("Ouranosaurus", EPIC, 1, 3600, 1500, 104, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
+DinoKind Ouranosaurus("Ouranosaurus", EPIC, 1, 3600, 1500, 104, 10.0, 5.0, 0.0, 50.0, 0.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.0, 0.0, {
     {
         &GroupCleansingStrike8B0C,
         &LesserGroupHeal5491,
         &GreaterEmergencyHeal456B
     }
-}, nullptr);
+}, &MinorDeceleratingCounter076E);
 
 DinoKind Ovilophomoloch("Ovilophomoloch", LEGENDARY, 1, 3150, 1250, 129, 0.0, 10.0, 100.0, 0.0, 50.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
     {
@@ -9169,7 +9208,7 @@ DinoKind Oviraptor("Oviraptor", RARE, 1, 2700, 1300, 129, 0.0, 15.0, 100.0, 0.0,
     }
 }, nullptr);
 
-DinoKind OviraptorGen2("Oviraptor Gen 2", EPIC, 1, 2400, 1300, 131, 0.0, 15.0, 100.0, 0.0, 50.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
+DinoKind OviraptorGen2("Oviraptor Gen 2", EPIC, 1, 2600, 1350, 131, 0.0, 15.0, 100.0, 0.0, 50.0, 0.0, 75.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
     {
         &CriticalStrike8706,
         &GroupCriticalAlertF371,
@@ -9356,7 +9395,7 @@ DinoKind Pterovexus("Pterovexus", UNIQUE, 1, 4050, 1300, 130, 0.0, 15.0, 100.0, 
     }
 }, &VenomousCounter56D1);
 
-DinoKind Pulmonoscorpius("Pulmonoscorpius", EPIC, 3, 2400, 1050, 116, 34.99999, 15.0, 100.0, 100.0, 0.0, 33.0, 0.0, 50.0, 0.0, 0.0, 0.0, 0.0, {
+DinoKind Pulmonoscorpius("Pulmonoscorpius", EPIC, 3, 2400, 1000, 116, 30.0, 15.0, 100.0, 100.0, 0.0, 33.0, 0.0, 50.0, 0.0, 0.0, 0.0, 0.0, {
     {
         &EnfeeblingStinger5E49,
         &ObstructingFierceImpact9462,
@@ -10030,10 +10069,10 @@ DinoKind Tryostronix("Tryostronix", LEGENDARY, 1, 4200, 1400, 125, 0.0, 20.0, 0.
 
 DinoKind Tsintamoth("Tsintamoth", LEGENDARY, 1, 4950, 1250, 113, 10.0, 5.0, 0.0, 0.0, 0.0, 0.0, 0.0, 75.0, 75.0, 0.0, 100.0, 0.0, {
     {
-        &PersistentFerociousStrikeAF52,
-        &GroupCleansingImpactC857,
+        &Ids_tip_ability_title_group_persistence_strike0246,
+        &Ids_tip_ability_title_group_fortifying_impact9551,
         &GroupHeal0723,
-        &GroupDeceleratingImpact9451
+        &Ids_tip_title_ability_healing_bellow73D3
     }
 }, nullptr);
 
@@ -10079,7 +10118,7 @@ DinoKind Tyrannolophosaur("Tyrannolophosaur", LEGENDARY, 1, 4200, 1650, 108, 0.0
     }
 }, nullptr);
 
-DinoKind Tyrannometrodon("Tyrannometrodon", UNIQUE, 1, 4950, 1900, 110, 0.0, 34.99999, 100.0, 25.0, 15.0, 50.0, 100.0, 75.0, 50.0, 0.0, 75.0, 0.0, {
+DinoKind Tyrannometrodon("Tyrannometrodon", UNIQUE, 1, 4950, 1900, 110, 0.0, 34.99999, 100.0, 25.0, 15.0, 50.0, 100.0, 75.0, 50.0, 0.0, 100.0, 0.0, {
     {
         &FerociousCleansingStrike120F,
         &GroupDevouringImpactC9D9,

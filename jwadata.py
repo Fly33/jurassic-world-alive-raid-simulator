@@ -104,7 +104,7 @@ def ParseAction(data, guid):
             elif action_data.get("tr", "None") == "LowestSpeed":
                 action["Target"] = "Slowest"
             elif action_data.get("tr", "None") == "None":
-                action["Target"] = "AllOpponents"
+                action["Target"] = "None"
             else:
                 raise Exception(f'Unknown target "{action_data.get("tr")}"')
         elif action_data.get("tg", "None") == "Contextual":
@@ -240,7 +240,7 @@ def ParseAbility(data, guid, l10n):
             'name': Name(name),
             'delay': ability_data['cod'],
             'cooldown': ability_data['c'],
-            'priority': "true" if ability_data['pri'] != 'n' else "false",
+            'priority': "1" if ability_data['pri'] == 'f' else "-1" if ability_data['pri'] == 'l' else 0,
             'actions': []
         }
         default_target = "Unknown"
@@ -637,13 +637,13 @@ def WriteCompactAbilityDex(ability_dex, f):
         if ability["type"] == "CounterAbility" or ability["type"] == "ThreatenedCounterAbility":
             print(f'{GetShort(ability["type"])} {GetCode(ability["dev_name"])}("{ability["name"]}",{{', file=f, end='')
         else:
-            print(f'{GetShort(ability["type"])} {GetCode(ability["dev_name"])}("{ability["name"]}",{ability["delay"]},{ability["cooldown"]},{GetShort(ability["priority"])},{{', file=f, end='')
+            print(f'{GetShort(ability["type"])} {GetCode(ability["dev_name"])}("{ability["name"]}",{ability["delay"]},{ability["cooldown"]},{ability["priority"]},{{', file=f, end='')
         WriteCompactAbilityActions(ability["actions"], f) 
         if ability["type"] == "RevengeAbility":
-            print(f'}},{ability["revenge"]["delay"]},{ability["revenge"]["cooldown"]},{GetShort(ability["revenge"]["priority"])},{{', file=f, end='')
+            print(f'}},{ability["revenge"]["delay"]},{ability["revenge"]["cooldown"]},{ability["revenge"]["priority"]},{{', file=f, end='')
             WriteCompactAbilityActions(ability["revenge"]["actions"], f) 
         elif ability["type"] == "ThreatenedAbility":
-            print(f'}},[]({GetShort("Dino")}&{GetCode("self")}){{return {GetCode("self")}.{GetShort("total_health")}{ability["threatened_compare"]}{GetCode("self")}.{GetShort("max_total_health")}*{ability["threatened_factor"]};}},{ability["threatened"]["delay"]},{ability["threatened"]["cooldown"]},{GetShort(ability["threatened"]["priority"])},{{', file=f, end='')
+            print(f'}},[]({GetShort("Dino")}&{GetCode("self")}){{return {GetCode("self")}.{GetShort("total_health")}{ability["threatened_compare"]}{GetCode("self")}.{GetShort("max_total_health")}*{ability["threatened_factor"]};}},{ability["threatened"]["delay"]},{ability["threatened"]["cooldown"]},{ability["threatened"]["priority"]},{{', file=f, end='')
             WriteCompactAbilityActions(ability["threatened"]["actions"], f) 
         elif ability["type"] == "ThreatenedCounterAbility":
             print(f'}},[]({GetShort("Dino")}&{GetCode("self")}){{return {GetCode("self")}.{GetShort("total_health")}{ability["threatened_compare"]}{GetCode("self")}.{GetShort("max_total_health")}*{ability["threatened_factor"]};}},{{', file=f, end='')

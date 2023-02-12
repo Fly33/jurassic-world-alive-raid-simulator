@@ -148,7 +148,7 @@ struct Dino
     double damage; // базовая атака
     int speed; // текущая скорость
     int ability_id = -1; // номер атаки
-    bool priority = false; // приоритет в текущем ходу
+    int priority = 0; // приоритет в текущем ходу
     bool minor = false;
     bool threatened = false; // угнетение в текущем ходу
     std::vector<modifiers::Mod> mods;

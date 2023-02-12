@@ -8,7 +8,7 @@
 using namespace actions;
 using namespace std;
 
-void Ability::Prepare(Dino &self, int *cooldown, bool *priority) const
+void Ability::Prepare(Dino &self, int *cooldown, int *priority) const
 {
     if (priority != nullptr)
         *priority = this->priority;
@@ -18,6 +18,7 @@ void Ability::Prepare(Dino &self, int *cooldown, bool *priority) const
 
 function<bool(const Dino &,const Dino &)> TargetCmp[] = {
     [](const Dino &dino1, const Dino &dino2) -> bool { return false; },
+    [](const Dino &dino1, const Dino &dino2) -> bool { return dino1.index < dino2.index; },
     [](const Dino &dino1, const Dino &dino2) -> bool { return dino1.total_health < dino2.total_health; },
     [](const Dino &dino1, const Dino &dino2) -> bool { return dino1.total_health > dino2.total_health; },
     [](const Dino &dino1, const Dino &dino2) -> bool { return dino1.Damage() < dino2.Damage(); },
@@ -30,6 +31,7 @@ function<bool(const Dino &,const Dino &)> TargetCmp[] = {
 
 function<bool(const Dino &, const Dino &)> CheckTarget[] = {
     [](const Dino &dino1, const Dino &dino2) -> bool { return dino1.team != dino2.team; }, // random
+    [](const Dino &dino1, const Dino &dino2) -> bool { return dino1.team != dino2.team; }, // none
     [](const Dino &dino1, const Dino &dino2) -> bool { return dino1.team != dino2.team; }, // lowest hp
     [](const Dino &dino1, const Dino &dino2) -> bool { return dino1.team != dino2.team; }, // highest hp
     [](const Dino &dino1, const Dino &dino2) -> bool { return dino1.team != dino2.team; }, // lowest damage
@@ -105,7 +107,7 @@ void Ability::Do(Dino &self, Dino team[], int team_size) const
     }
 }
 
-void RevengeAbility::Prepare(Dino &self, int *cooldown, bool *priority) const
+void RevengeAbility::Prepare(Dino &self, int *cooldown, int *priority) const
 {
     self.revenge_ready = self.revenge;
     if (self.revenge_ready)
@@ -123,7 +125,7 @@ void RevengeAbility::Do(Dino &self, Dino team[], int size) const
         Ability::Do(self, team, size);
 }
 
-void ThreatenedAbility::Prepare(Dino &self, int *cooldown, bool *priority) const
+void ThreatenedAbility::Prepare(Dino &self, int *cooldown, int *priority) const
 {
     self.threatened = threat_checker(self);
     if (self.threatened)

@@ -18,6 +18,7 @@ enum Target
 {
     TARGET_INHERIT = -1,
     TARGET_RANDOM = 0,
+	TARGET_NONE,
     TARGET_LOWEST_HP,
     TARGET_HIGHEST_HP,
     TARGET_LOWEST_DAMAGE,
@@ -57,6 +58,7 @@ template<typename ...Args>
 std::list<std::unique_ptr<Action>> ActionGroupFunction(int target, Args &&...args);
 
 template<typename ...Args> auto TargetRandom(Args ...args) { return actions::ActionGroupFunction(TARGET_RANDOM, std::forward<Args>(args)...); }
+template<typename ...Args> auto TargetNone(Args ...args) { return actions::ActionGroupFunction(TARGET_NONE, std::forward<Args>(args)...); }
 template<typename ...Args> auto TargetLowestHP(Args ...args) { return actions::ActionGroupFunction(TARGET_LOWEST_HP, std::forward<Args>(args)...); }
 template<typename ...Args> auto TargetHighestHP(Args ...args) { return actions::ActionGroupFunction(TARGET_HIGHEST_HP, std::forward<Args>(args)...); }
 template<typename ...Args> auto TargetLowestDamage(Args ...args) { return actions::ActionGroupFunction(TARGET_LOWEST_DAMAGE, std::forward<Args>(args)...); }
