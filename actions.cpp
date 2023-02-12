@@ -10,25 +10,25 @@
 using namespace std;
 using namespace actions;
 
-std::list<std::unique_ptr<Action>> actions::Attack(double _factor, int _flags)
+list<unique_ptr<Action>> actions::Attack(double _factor, int _flags)
 {
-    std::list<std::unique_ptr<Action>> list;
+    list<unique_ptr<Action>> list;
     list.emplace_back(new PrepareAttack(_flags))->target = TARGET_SELF;
     list.emplace_back(new AttackAction(_factor, _flags))->target = TARGET_INHERIT;
     list.emplace_back(new Revenge())->target = TARGET_ALL_OPPONENTS;
     return list;
 }
 
-std::list<std::unique_ptr<Action>> actions::DevouringAttack(double _attack_factor, double _devour_factor, int _duration, int _flags)
+list<unique_ptr<Action>> actions::DevouringAttack(double _attack_factor, double _devour_factor, int _duration, int _flags)
 {
-    std::list<std::unique_ptr<Action>> list = std::move(actions::Attack(_attack_factor, _flags));
+    list<unique_ptr<Action>> list = move(actions::Attack(_attack_factor, _flags));
     list.emplace_back(new DevourHeal(_devour_factor, _duration))->target = TARGET_SELF;
     return list;
 }
 
-std::list<std::unique_ptr<Action>> actions::Rend(double _factor, int _flags)
+list<unique_ptr<Action>> actions::Rend(double _factor, int _flags)
 {
-    return std::move(actions::Attack(_factor / 100., _flags | REND));
+    return move(actions::Attack(_factor / 100., _flags | REND));
 }
 
 void PrepareAttack::Do(Dino &self, Dino &target) const
@@ -96,17 +96,17 @@ void Revenge::Do(Dino &self, Dino &target) const
         target.Revenge(self);
 }
 
-std::list<std::unique_ptr<Action>> actions::Heal(double _factor, int _flags)
+list<unique_ptr<Action>> actions::Heal(double _factor, int _flags)
 {
-    std::list<std::unique_ptr<Action>> list;
+    list<unique_ptr<Action>> list;
     list.emplace_back(new PrepareAttack())->target = TARGET_SELF;
     list.emplace_back(new HealAction(_factor, _flags))->target = TARGET_INHERIT;
     return list;
 }
 
-std::list<std::unique_ptr<Action>> actions::FixedHeal(double _factor, int _flags)
+list<unique_ptr<Action>> actions::FixedHeal(double _factor, int _flags)
 {
-    std::list<std::unique_ptr<Action>> list;
+    list<unique_ptr<Action>> list;
     list.emplace_back(new HealAction(_factor / 100., _flags|FIXED))->target = TARGET_INHERIT;
     return list;
 }
@@ -165,9 +165,9 @@ void Remove::Do(Dino &self, Dino &target) const
     target.Dispose(flags, self);
 }
 
-std::list<std::unique_ptr<Action>> actions::Taunt(int _duration)
+list<unique_ptr<Action>> actions::Taunt(int _duration)
 {
-    std::list<std::unique_ptr<Action>> list;
+    list<unique_ptr<Action>> list;
     list.emplace_back(new Remove(TAUNT))->target = TARGET_TEAM;
     list.emplace_back(new TauntAction(_duration))->target = TARGET_SELF;
     return list;
@@ -249,12 +249,12 @@ void ReduceArmor::Do(Dino &self, Dino &target) const
     target.Impose(&reduced_armor, self);
 }
 
-std::list<std::unique_ptr<Action>> actions::UnableToSwap(int _duration)
+list<unique_ptr<Action>> actions::UnableToSwap(int _duration)
 {
-    return std::move(std::list<std::unique_ptr<Action>>());
+    return move(list<unique_ptr<Action>>());
 }
 
-std::list<std::unique_ptr<Action>> actions::Swap()
+list<unique_ptr<Action>> actions::Swap()
 {
-    return std::move(std::list<std::unique_ptr<Action>>());
+    return move(list<unique_ptr<Action>>());
 }

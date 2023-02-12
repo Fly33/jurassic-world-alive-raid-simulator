@@ -9,7 +9,7 @@
 
 using namespace std;
 
-std::vector<int> Strategy::Next(const Dino team[], int team_size, int &offset) const
+vector<int> Strategy::Next(const Dino team[], int team_size, int &offset) const
 {
     while (offset < (int)instructions.size()) {
         auto &instruction = instructions[offset];
@@ -44,9 +44,9 @@ inline void UngetChar(int ch)
     ungetc(ch, stdin);
 }
 
-std::string GetLine()
+string GetLine()
 {
-    std::string line;
+    string line;
     while(true) {
         int c = GetChar();
         if (c == '\n' || c == -1)
@@ -57,9 +57,9 @@ std::string GetLine()
     return line;
 }
 
-std::string GetIndent()
+string GetIndent()
 {
-    std::string line;
+    string line;
     int c;
     while(true) {
         c = GetChar();
@@ -72,7 +72,7 @@ std::string GetIndent()
     return line;
 }
 
-void UngetLine(const std::string &str)
+void UngetLine(const string &str)
 {
     for (auto i = str.rbegin(); i != str.rend(); ++i)
         UngetChar(*i);
@@ -104,9 +104,9 @@ vector<Instruction> ParseCondition(int team_size, const char *line, const string
 {
     vector<Instruction> result;
     Instruction instruction;
-    instruction.expression = std::move(ParseExpression(line));
+    instruction.expression = move(ParseExpression(line));
     instruction.success = instruction.failure = ++offset;
-    result.push_back(std::move(instruction));
+    result.push_back(move(instruction));
 
     auto curr_indent = GetIndent();
     if (curr_indent.length() <= indent.length() || curr_indent.substr(0, indent.length()) != indent)
@@ -117,7 +117,7 @@ vector<Instruction> ParseCondition(int team_size, const char *line, const string
     offset += success_block.size();
     result.front().failure += success_block.size();
     for (auto it = success_block.begin(); it != success_block.end(); ++it)
-        result.push_back(std::move(*it));
+        result.push_back(move(*it));
 
     curr_indent = GetIndent();
     if (curr_indent != indent) {
@@ -133,11 +133,11 @@ vector<Instruction> ParseCondition(int team_size, const char *line, const string
 
     auto curr_line = GetLine();
     if (*curr_line.c_str() == '?') {
-        auto failure_block = std::move(ParseCondition(team_size, curr_line.c_str(), indent, offset));
+        auto failure_block = move(ParseCondition(team_size, curr_line.c_str(), indent, offset));
         result.back().success += failure_block.size();
         result.back().failure += failure_block.size();
         for (auto it = failure_block.begin(); it != failure_block.end(); ++it)
-            result.push_back(std::move(*it));
+            result.push_back(move(*it));
     } else {
         const char *curr_line_str = curr_line.c_str();
         SkipWhite(curr_line_str);
@@ -147,11 +147,11 @@ vector<Instruction> ParseCondition(int team_size, const char *line, const string
         if (curr_indent.length() <= indent.length() || curr_indent.substr(0, indent.length()) != indent)
             throw invalid_argument("Invalid indent");
         UngetLine(curr_indent);
-        auto failure_block = std::move(ParseBlock(team_size, curr_indent, offset));
+        auto failure_block = move(ParseBlock(team_size, curr_indent, offset));
         result.back().success += failure_block.size();
         result.back().failure += failure_block.size();
         for (auto it = failure_block.begin(); it != failure_block.end(); ++it)
-            result.push_back(std::move(*it));
+            result.push_back(move(*it));
     }
     return result;
 }
@@ -166,10 +166,10 @@ vector<Instruction> ParseLine(int team_size, const string &indent, int offset)
     }
     auto line = GetLine();
     if (*line.c_str() == '?') {
-        return std::move(ParseCondition(team_size, line.c_str(), indent, offset));
+        return move(ParseCondition(team_size, line.c_str(), indent, offset));
     } else if (isdigit(*line.c_str())) {
         vector<Instruction> result;
-        result.push_back(std::move(ParseInstruction(team_size, line.c_str(), offset)));
+        result.push_back(move(ParseInstruction(team_size, line.c_str(), offset)));
         return result;
     } else if (*line.c_str() == '\n' && indent == "") {
         return {};
@@ -186,18 +186,18 @@ vector<Instruction> ParseBlock(int team_size, const string &indent, int offset)
             return result;
         offset += line.size();
         for (auto line_it = line.begin(); line_it != line.end(); ++line_it)
-            result.push_back(std::move(*line_it));
+            result.push_back(move(*line_it));
     }
 }
 
 Strategy ParseStrategy(int team_size)
 {
     Strategy strategy;
-    strategy.instructions = std::move(ParseBlock(team_size, "", 0));
+    strategy.instructions = move(ParseBlock(team_size, "", 0));
     return strategy;
 }
 
-int Input(std::vector<Dino> &team, Strategy &strategy)
+int Input(vector<Dino> &team, Strategy &strategy)
 {
     int team_size, n_turns;
     char end[2];
@@ -257,12 +257,12 @@ int Input(std::vector<Dino> &team, Strategy &strategy)
                     instruction.abilities.push_back(ability[j][i]);
                 instruction.failure = i + 1;
                 instruction.success = i + 1;
-                strategy.instructions.push_back(std::move(instruction));
+                strategy.instructions.push_back(move(instruction));
             }
         } else {
-            strategy = std::move(ParseStrategy(team_size));
+            strategy = move(ParseStrategy(team_size));
         }
-    } catch(std::exception &e) {
+    } catch(exception &e) {
         LOG("Error on line %d: %s", CurrLine, e.what());
         return CurrLine;
     }

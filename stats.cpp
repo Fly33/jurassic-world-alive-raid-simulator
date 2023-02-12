@@ -38,7 +38,7 @@ void BaseStats::RegisterResult(bool result)
 
     for (auto &t: turns) {
         int round, turn;
-        std::tie(round, turn) = t;
+        tie(round, turn) = t;
         if ((int)round_turn_count[result].size() <= round)
             round_turn_count[result].resize(round+1);
         if ((int)round_turn_count[result][round].size() <= turn)
@@ -51,7 +51,7 @@ void BaseStats::RegisterResult(bool result)
         int attacker_index, target_index;
         int target_health;
         int dmg;
-        std::tie(round, turn, attacker_index, target_index, target_health, dmg) = hit;
+        tie(round, turn, attacker_index, target_index, target_health, dmg) = hit;
 
         if ((int)min_hp[result].size() <= round)
             min_hp[result].resize(round+1);
@@ -109,7 +109,7 @@ void BaseStats::Print(Dino team[], int team_size)
         }
         WARNING("%s", s.c_str());
         for (int i = 0; i < team_size; ++i) {
-            std::string s = strprintf("%30s ", team[i].name.c_str());
+            string s = strprintf("%30s ", team[i].name.c_str());
             for (int r = 0; r < (int)death_count[w].size(); ++r) {
                 s += "| ";
                 for (int t = 0; t < (int)death_count[w][r].size(); ++t) {
@@ -133,7 +133,7 @@ void BaseStats::Print(Dino team[], int team_size)
         INFO("%s", s.c_str());
         for (int i = 0; i < team_size; ++i)
         {
-            std::string s = strprintf("%30s ", team[i].name.c_str());
+            string s = strprintf("%30s ", team[i].name.c_str());
             for (int r = 0; r < (int)min_hp[w].size(); ++r)
             {
                 s += "| ";
@@ -161,7 +161,7 @@ void BaseStats::Print(Dino team[], int team_size)
         WARNING("%s", s.c_str());
         for (int r = 0; r < (int)round_turn_count[w].size(); ++r)
         {
-            std::string s = strprintf("%30s | ", strprintf("Round %d", r+1).c_str());
+            string s = strprintf("%30s | ", strprintf("Round %d", r+1).c_str());
             for (int t = 0; t < (int)round_turn_count[w][r].size(); ++t)
             {
                 int rt_count = round_turn_count[w][r][t] - (t+1 < (int)round_turn_count[w][r].size() ? round_turn_count[w][r][t+1] : 0);

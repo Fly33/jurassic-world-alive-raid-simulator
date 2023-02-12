@@ -144,9 +144,9 @@ unique_ptr<Expression> ParseConst(const char *&line)
         int value, n;
         sscanf(line, "%d%n", &value, &n);
         line += n;
-        return std::move(unique_ptr<Expression>(new Const(value)));
+        return move(unique_ptr<Expression>(new Const(value)));
     } else if (isvar(*line)) {
-        std::string name;
+        string name;
         while (isvar(*line))
             name.push_back(*line++);
         SkipWhite(line);
@@ -164,10 +164,10 @@ unique_ptr<Expression> ParseConst(const char *&line)
         ++line; // ]
         if (Properties.find(name) == Properties.end())
             throw invalid_argument(strprintf("Unknown property \"%s\"", name.c_str()));
-        return std::move(unique_ptr<Expression>(new Property(name, index)));
+        return move(unique_ptr<Expression>(new Property(name, index)));
     } else if (*line == '(') {
         ++line; // (
-        unique_ptr<Expression> exp = std::move(ParseOr(line));
+        unique_ptr<Expression> exp = move(ParseOr(line));
         SkipWhite(line);
         if (*line != ')')
             throw invalid_argument(strprintf("Malformed expression near \"%.10s...\"", line));
@@ -182,28 +182,28 @@ unique_ptr<Expression> ParseUnary(const char *&line)
     SkipWhite(line);
     if (strncmp(line, Operator[NOT].c_str(), Operator[NOT].length()) == 0) {
         line += Operator[NOT].length();
-        return std::move(unique_ptr<Expression>(new Unary(std::move(ParseUnary(line)), NOT)));
+        return move(unique_ptr<Expression>(new Unary(move(ParseUnary(line)), NOT)));
     } else if (strncmp(line, Operator[POS].c_str(), Operator[POS].length()) == 0) {
         line += Operator[POS].length();
-        return std::move(unique_ptr<Expression>(new Unary(std::move(ParseUnary(line)), POS)));
+        return move(unique_ptr<Expression>(new Unary(move(ParseUnary(line)), POS)));
     } else if (strncmp(line, Operator[NEG].c_str(), Operator[NEG].length()) == 0) {
         line += Operator[NEG].length();
-        return std::move(unique_ptr<Expression>(new Unary(std::move(ParseUnary(line)), NEG)));
+        return move(unique_ptr<Expression>(new Unary(move(ParseUnary(line)), NEG)));
     } else
-        return std::move(ParseConst(line));
+        return move(ParseConst(line));
 }
 
 unique_ptr<Expression> ParseMultiplication(const char *&line)
 {
-    std::unique_ptr<Expression> op = std::move(ParseUnary(line));
+    unique_ptr<Expression> op = move(ParseUnary(line));
     while (true) {
         SkipWhite(line);
         if (strncmp(line, Operator[MLT].c_str(), Operator[MLT].length()) == 0) {
             line += Operator[MLT].length();
-            op = std::move(unique_ptr<Expression>(new Binary(std::move(op), std::move(ParseMultiplication(line)), MLT)));
+            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseMultiplication(line)), MLT)));
         } else if (strncmp(line, Operator[DIV].c_str(), Operator[DIV].length()) == 0) {
             line += Operator[DIV].length();
-            op = std::move(unique_ptr<Expression>(new Binary(std::move(op), std::move(ParseMultiplication(line)), DIV)));
+            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseMultiplication(line)), DIV)));
         } else
             return op;
     }
@@ -211,15 +211,15 @@ unique_ptr<Expression> ParseMultiplication(const char *&line)
 
 unique_ptr<Expression> ParseAddition(const char *&line)
 {
-    std::unique_ptr<Expression> op = std::move(ParseMultiplication(line));
+    unique_ptr<Expression> op = move(ParseMultiplication(line));
     while (true) {
         SkipWhite(line);
         if (strncmp(line, Operator[ADD].c_str(), Operator[ADD].length()) == 0) {
             line += Operator[ADD].length();
-            op = std::move(unique_ptr<Expression>(new Binary(std::move(op), std::move(ParseAddition(line)), ADD)));
+            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseAddition(line)), ADD)));
         } else if (strncmp(line, Operator[SUB].c_str(), Operator[SUB].length()) == 0) {
             line += Operator[SUB].length();
-            op = std::move(unique_ptr<Expression>(new Binary(std::move(op), std::move(ParseAddition(line)), SUB)));
+            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseAddition(line)), SUB)));
         } else
             return op;
     }
@@ -227,21 +227,21 @@ unique_ptr<Expression> ParseAddition(const char *&line)
 
 unique_ptr<Expression> ParseComparision(const char *&line)
 {
-    std::unique_ptr<Expression> op = std::move(ParseAddition(line));
+    unique_ptr<Expression> op = move(ParseAddition(line));
     while (true) {
         SkipWhite(line);
         if (strncmp(line, Operator[LE].c_str(), Operator[LE].length()) == 0) {
             line += Operator[LE].length();
-            op = std::move(unique_ptr<Expression>(new Binary(std::move(op), std::move(ParseComparision(line)), LE)));
+            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseComparision(line)), LE)));
         } else if (strncmp(line, Operator[LT].c_str(), Operator[LT].length()) == 0) {
             line += Operator[LT].length();
-            op = std::move(unique_ptr<Expression>(new Binary(std::move(op), std::move(ParseComparision(line)), LT)));
+            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseComparision(line)), LT)));
         } else if (strncmp(line, Operator[GE].c_str(), Operator[GE].length()) == 0) {
             line += Operator[GE].length();
-            op = std::move(unique_ptr<Expression>(new Binary(std::move(op), std::move(ParseComparision(line)), GE)));
+            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseComparision(line)), GE)));
         } else if (strncmp(line, Operator[GT].c_str(), Operator[GT].length()) == 0) {
             line += Operator[GT].length();
-            op = std::move(unique_ptr<Expression>(new Binary(std::move(op), std::move(ParseComparision(line)), GT)));
+            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseComparision(line)), GT)));
         } else
             return op;
     }
@@ -249,15 +249,15 @@ unique_ptr<Expression> ParseComparision(const char *&line)
 
 unique_ptr<Expression> ParseEquation(const char *&line)
 {
-    std::unique_ptr<Expression> op = std::move(ParseComparision(line));
+    unique_ptr<Expression> op = move(ParseComparision(line));
     while (true) {
         SkipWhite(line);
         if (strncmp(line, Operator[EQ].c_str(), Operator[EQ].length()) == 0) {
             line += Operator[EQ].length();
-            op = std::move(unique_ptr<Expression>(new Binary(std::move(op), std::move(ParseEquation(line)), EQ)));
+            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseEquation(line)), EQ)));
         } else if (strncmp(line, Operator[NE].c_str(), Operator[NE].length()) == 0) {
             line += Operator[NE].length();
-            op = std::move(unique_ptr<Expression>(new Binary(std::move(op), std::move(ParseEquation(line)), NE)));
+            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseEquation(line)), NE)));
         } else
             return op;
     }
@@ -265,12 +265,12 @@ unique_ptr<Expression> ParseEquation(const char *&line)
 
 unique_ptr<Expression> ParseAnd(const char *&line)
 {
-    std::unique_ptr<Expression> op = std::move(ParseEquation(line));
+    unique_ptr<Expression> op = move(ParseEquation(line));
     while (true) {
         SkipWhite(line);
         if (strncmp(line, Operator[AND].c_str(), Operator[AND].length()) == 0) {
             line += Operator[AND].length();
-            op = std::move(unique_ptr<Expression>(new Binary(std::move(op), std::move(ParseAnd(line)), AND)));
+            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseAnd(line)), AND)));
         } else
             return op;
     }
@@ -278,12 +278,12 @@ unique_ptr<Expression> ParseAnd(const char *&line)
 
 unique_ptr<Expression> ParseOr(const char *&line)
 {
-    std::unique_ptr<Expression> op = std::move(ParseAnd(line));
+    unique_ptr<Expression> op = move(ParseAnd(line));
     while (true) {
         SkipWhite(line);
         if (strncmp(line, Operator[OR].c_str(), Operator[OR].length()) == 0) {
             line += Operator[OR].length();
-            op = std::move(unique_ptr<Expression>(new Binary(std::move(op), std::move(ParseOr(line)), OR)));
+            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseOr(line)), OR)));
         } else
             return op;
     }
@@ -295,7 +295,7 @@ unique_ptr<Expression> ParseExpression(const char *line)
     if (*line != '?')
         throw invalid_argument(strprintf("'?' expected near \"%.10s...\"", line));
     ++line; // ?
-    std::unique_ptr exp = std::move(ParseOr(line));
+    unique_ptr exp = move(ParseOr(line));
     SkipWhite(line);
     if (*line != '\0')
         throw invalid_argument(strprintf("Malformed expression near \"%.10s...\"", line));

@@ -151,7 +151,7 @@ void Dino::DamageOverTime(Dino team[], int team_size)
         INFO("%s is immune to HP changes.", Name().c_str());
 }
 
-std::string Dino::Name() const
+string Dino::Name() const
 {
     return strprintf("%s (+%d,*%d,>%d)", name.c_str(), health, Damage(), Speed());
 }

@@ -193,13 +193,13 @@ int Chance(Dino team0[], int team_size, const Strategy &strategy, int n_checks =
     return 100 * result / n_checks;
 }
 
-std::string Explain(Dino team0[], int team_size, const Strategy &strategy, int n_checks = 1000)
+string Explain(Dino team0[], int team_size, const Strategy &strategy, int n_checks = 1000)
 {
     for (int i = 0; i < n_checks; ++i) {
         Logger::SetBuf();
         vector<Dino> team(team0, team0 + team_size);
         if (!Check(team.data(), team_size, strategy))
-            return std::move(Logger::TakeBuf());
+            return move(Logger::TakeBuf());
         Logger::TakeBuf();
     }
     return "Always succeed";
@@ -385,8 +385,8 @@ Options:
 
 int List(const char *regexp)
 {
-    std::regex r(regexp ? regexp : "", regex_constants::icase);
-    std::smatch sm;
+    regex r(regexp ? regexp : "", regex_constants::icase);
+    smatch sm;
     LOG("Bossdex:");
     for (auto it = BossDex.begin(); it != BossDex.end(); ++it) {
         if (!regex_search(it->first, sm, r))
