@@ -177,7 +177,7 @@ struct Dino
     std::vector<int> flock_segment;
     int n_positive_effects = 0;
     int stun = 0;
-    std::set<double, std::greater<double>> cloak_factor;
+    std::multiset<double, std::greater<double>> cloak_factor;
     std::string name;
 
     Dino(int _team, int _index, int _level, int _health_boost, int _damage_boost, int _speed_boost, const DinoKind *_kind);
