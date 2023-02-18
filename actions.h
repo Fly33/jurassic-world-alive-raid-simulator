@@ -173,6 +173,15 @@ static const int FIXED = 1 << 3;
 std::list<std::unique_ptr<Action>> Heal(double _factor, int _flags = 0);
 std::list<std::unique_ptr<Action>> FixedHeal(double _factor, int _flags = 0);
 
+struct PrepareHeal : public Action
+{
+    int flags;
+    PrepareHeal(int _flags = 0)
+        : flags(_flags)
+    {}
+    virtual void Do(Dino &self, Dino &target) const override;
+};
+
 struct HealAction : public Action
 {
     double factor;
@@ -344,8 +353,8 @@ struct Stun : public Action
 struct Cloak : public Action
 {
     modifiers::Cloak cloak;
-    Cloak(double _attack_factor, double _dodge_chance, double _dodge_factor, int _duration)
-        : cloak(_attack_factor, _dodge_chance / 100., _dodge_factor / 100., _duration)
+    Cloak(double _attack_factor, double _dodge_chance, double _dodge_factor, int _duration, int _number)
+        : cloak(_attack_factor, _dodge_chance / 100., _dodge_factor / 100., _duration, _number)
     {}
     virtual void Do(Dino &self, Dino &target) const override;
 };

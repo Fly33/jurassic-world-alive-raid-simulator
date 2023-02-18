@@ -172,6 +172,7 @@ struct Dino
     std::multiset<std::pair<double, double>, dodge_cmp> dodge{std::make_pair(0, 0)};
     int cooldown[4] = {};
     double prepared_damage_factor = 0;
+    double prepared_cloak_factor = 1;
     bool crit = false;
     bool killer = false;
     std::vector<int> flock_segment;

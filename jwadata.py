@@ -170,7 +170,7 @@ def ParseAction(data, guid):
                 elif type.startswith("BeEfDuDodDa"):
                     action["Action"] = Action("Dodge", action_data["p"] / 100000., action_data["pdr"] / 100000., action_data["d"] if action_data.get("dho") != "END_OF_THIS_TURN" else 0, action_data["eac"])
                 elif type.startswith("BeEfDuInDa"):
-                    action["Action"] = Action("Cloak", action_data["mn"] / 10000000., action_data["p"] / 100000., action_data["pdr"] / 100000., action_data["d"])
+                    action["Action"] = Action("Cloak", action_data["mn"] / 10000000., action_data["p"] / 100000., action_data["pdr"] / 100000., action_data["d"], action_data.get("eac", 0))
                 elif type.startswith("BeEfDuBuDeDa"):
                     if action_data["aa"] == "AttackPower":
                         if action_data["p"] > 0:

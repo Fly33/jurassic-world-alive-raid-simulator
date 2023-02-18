@@ -56,6 +56,10 @@ struct Modifier
     {
         return false;
     }
+    virtual bool OutgoingHeal(Mod *mod) const
+    {
+        return false;
+    }
     virtual bool OnAction(Mod *mod) const
     {
         return false;
@@ -88,6 +92,10 @@ struct Mod
     bool IncomingAttack()
     {
         return modifier->IncomingAttack(this);
+    }
+    bool OutgoingHeal()
+    {
+        return modifier->OutgoingHeal(this);
     }
     bool OnAction()
     {
@@ -200,6 +208,10 @@ struct IncreasedDamage: public Modifier
     {
         return !--mod->number;
     }
+    virtual bool OutgoingHeal(Mod *mod) const override
+    {
+        return !--mod->number;
+    }
     virtual bool OnAction(Mod *mod) const override
     {
         return --mod->duration == 0;
@@ -239,6 +251,10 @@ struct ReducedDamage: public Modifier
         return REDUCED_DAMAGE;
     }
     virtual bool OutgoingAttack(Mod *mod) const override
+    {
+        return !--mod->number;
+    }
+    virtual bool OutgoingHeal(Mod *mod) const override
     {
         return !--mod->number;
     }
@@ -427,8 +443,8 @@ struct Cloak : public Modifier
     double attack_factor;
     double dodge_chance;
     double dodge_factor;
-    Cloak(double _attack_factor, double _dodge_chance, double _dodge_factor, int _duration)
-        : Modifier("cloak", std::max(2, _duration * 2 + 1))
+    Cloak(double _attack_factor, double _dodge_chance, double _dodge_factor, int _duration, int _number = 0)
+        : Modifier("cloak", std::max(2, _duration * 2 + 1), _number)
         , attack_factor(_attack_factor)
         , dodge_chance(_dodge_chance)
         , dodge_factor(_dodge_factor)
@@ -438,6 +454,10 @@ struct Cloak : public Modifier
     virtual int Type() const override
     {
         return CLOAK;
+    }
+    virtual bool IncomingAttack(Mod *mod) const override
+    {
+        return !--mod->number;
     }
     virtual bool OnAction(Mod *mod) const override
     {
@@ -462,13 +482,13 @@ struct IncreasedArmor: public Modifier
     {
         return INCREASED_ARMOR;
     }
-    virtual bool OutgoingAttack(Mod *mod) const override
+    virtual bool IncomingAttack(Mod *mod) const override
     {
         return !--mod->number;
     }
-    virtual bool OnAction(Mod *mod) const override
+    virtual bool OnEndOfTurn(Mod *mod) const override
     {
-        return --mod->duration == 0;
+        return mod->duration-- == 0;
     }
 };
 
@@ -485,13 +505,13 @@ struct ReducedArmor: public Modifier
     {
         return REDUCED_ARMOR;
     }
-    virtual bool OutgoingAttack(Mod *mod) const override
+    virtual bool IncomingAttack(Mod *mod) const override
     {
         return !--mod->number;
     }
-    virtual bool OnAction(Mod *mod) const override
+    virtual bool OnEndOfTurn(Mod *mod) const override
     {
-        return --mod->duration == 0;
+        return mod->duration-- == 0;
     }
 };
 

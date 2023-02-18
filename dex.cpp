@@ -390,7 +390,7 @@ Ability CleverDodge660B("Clever Dodge", 0, 0, 1, {
 
 Ability Cloak2513("Cloak", 0, 3, 1, {
     TargetSelf(
-        Cloak(2.0, 75.0, 66.66659, 2)
+        Cloak(2.0, 75.0, 66.66659, 2, 0)
     )
 });
 
@@ -1294,7 +1294,7 @@ Ability InstantGroupAccelerationStrikeBF5A("Instant Group Acceleration Strike", 
 
 Ability InstantGroupCloakFD16("Instant Group Cloak", 0, 3, 1, {
     TargetTeam(
-        Cloak(2.0, 75.0, 66.66659, 2)
+        Cloak(2.0, 75.0, 66.66659, 2, 1)
     )
 });
 
@@ -1902,7 +1902,7 @@ Ability ResilientVulnerabilityRampage2D5B("Resilient Vulnerability Rampage", 0, 
 
 Ability RevengeCloakB52A("Revenge Cloak", 0, 3, 1, {
     TargetSelf(
-        Cloak(3.0, 75.0, 66.66659, 2)
+        Cloak(3.0, 75.0, 66.66659, 2, 0)
     )
 });
 
@@ -3581,7 +3581,7 @@ Ability BerserkRampagingCloak51AA("Berserk Rampaging Cloak", 1, 2, 0, {
     TargetSelf(
         UnableToSwap(1),
         Sacrifice(33.33333),
-        Cloak(2.0, 75.0, 66.66659, 2)
+        Cloak(2.0, 75.0, 66.66659, 2, 0)
     )
 });
 
@@ -3807,11 +3807,11 @@ Ability CleansingSwoopB410("Cleansing Swoop", 0, 2, 0, {
 
 RevengeAbility Cloak2513("Cloak", 0, 3, 1, {
     TargetSelf(
-        Cloak(2.0, 75.0, 66.66659, 2)
+        Cloak(2.0, 75.0, 66.66659, 2, 0)
     )
 }, 0, 1, 1, {
     TargetSelf(
-        Cloak(3.0, 75.0, 66.66659, 2)
+        Cloak(3.0, 75.0, 66.66659, 2, 0)
     )
 });
 
@@ -3825,7 +3825,7 @@ Ability CloakOfRage7990("Cloak Of Rage", 0, 3, 0, {
         IncreaseDamage(50.0, 2, 1)
     ),
     TargetTeam(
-        Cloak(2.0, 75.0, 66.66659, 2)
+        Cloak(2.0, 75.0, 66.66659, 2, 1)
     ),
     TargetAllOpponents(
         ReduceArmor(100.0, 2, 4)
@@ -6202,7 +6202,7 @@ Ability Prowl38DE("Prowl", 0, 0, 1, {
 RevengeAbility ProwlingRevengeCloakC144("Prowling Revenge Cloak", 0, 3, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
-        Cloak(2.0, 75.0, 66.66659, 2)
+        Cloak(2.0, 75.0, 66.66659, 2, 0)
     ),
     TargetFastest(
         ReduceSpeed(50.0, 2)
@@ -6210,7 +6210,7 @@ RevengeAbility ProwlingRevengeCloakC144("Prowling Revenge Cloak", 0, 3, 1, {
 }, 0, 1, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
-        Cloak(3.0, 75.0, 66.66659, 2),
+        Cloak(3.0, 75.0, 66.66659, 2, 0),
         IncreaseCritChance(100.0, 2, 1)
     ),
     TargetFastest(
@@ -6585,12 +6585,12 @@ RevengeAbility RevengeShatteringRampageD874("Revenge Shattering Rampage", 1, 1, 
 
 RevengeAbility RevengeTauntingCloak02DA("Revenge Taunting Cloak", 0, 3, 1, {
     TargetSelf(
-        Cloak(2.0, 75.0, 66.66659, 2),
+        Cloak(2.0, 75.0, 66.66659, 2, 0),
         Taunt(1)
     )
 }, 0, 3, 1, {
     TargetSelf(
-        Cloak(2.5, 75.0, 66.66659, 2),
+        Cloak(2.5, 75.0, 66.66659, 2, 0),
         Taunt(1)
     )
 });

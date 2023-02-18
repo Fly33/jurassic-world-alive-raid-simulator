@@ -35,7 +35,8 @@ void PrepareAttack::Do(Dino &self, Dino &target) const
 {
     self.crit = (flags & ALWAYS_CRITS) || rand() % 100 < self.CritChanceFactor() * 100;
     self.prepared_damage_factor = self.DamageFactor();
-    REMOVE_MODS(self, mod_it->OutgoingAttack(), DEBUG("%s used out %s", self.Name().c_str(), modifier->name.c_str()));
+    self.prepared_cloak_factor = self.CloakFactor();
+    REMOVE_MODS(self, mod_it->OutgoingAttack() || (mod_it->Type() == CLOAK && !self.attacker), DEBUG("%s used out %s", self.Name().c_str(), modifier->name.c_str()));
     self.killer = false;
     self.last_damage = 0;
 }
@@ -55,12 +56,9 @@ void AttackAction::Do(Dino &self, Dino &target) const
     bool crit = self.crit;
     if (crit)
         damage *= 1.25;
-    bool cloak = self.CloakFactor() != 1;
-    if (cloak) {
-        damage *= self.CloakFactor();
-        if (!self.attacker)
-            REMOVE_MODS(self, mod_it->Type() == CLOAK, DEBUG("%s used out %s", self.Name().c_str(), modifier->name.c_str()));
-    }
+    bool cloak = self.prepared_cloak_factor != 1;
+    if (cloak)
+        damage *= self.prepared_cloak_factor;
     bool shield = target.Shield();
     if (shield)
         damage *= 1 - target.Shield();
@@ -99,7 +97,7 @@ void Revenge::Do(Dino &self, Dino &target) const
 list<unique_ptr<Action>> actions::Heal(double _factor, int _flags)
 {
     list<unique_ptr<Action>> list;
-    list.emplace_back(new PrepareAttack())->target = TARGET_SELF;
+    list.emplace_back(new PrepareHeal(_flags))->target = TARGET_SELF;
     list.emplace_back(new HealAction(_factor, _flags))->target = TARGET_INHERIT;
     return list;
 }
@@ -109,6 +107,14 @@ list<unique_ptr<Action>> actions::FixedHeal(double _factor, int _flags)
     list<unique_ptr<Action>> list;
     list.emplace_back(new HealAction(_factor / 100., _flags|FIXED))->target = TARGET_INHERIT;
     return list;
+}
+
+void PrepareHeal::Do(Dino &self, Dino &target) const
+{
+	if (~flags & FIXED) {
+		self.prepared_damage_factor = self.DamageFactor();
+		REMOVE_MODS(self, mod_it->OutgoingHeal(), DEBUG("%s used out %s", self.Name().c_str(), modifier->name.c_str()));
+	}
 }
 
 void HealAction::Do(Dino &self, Dino &target) const
