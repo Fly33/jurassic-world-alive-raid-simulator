@@ -157,6 +157,7 @@ struct Dino
     double speed_factor = 1;
     double crit_chance_factor;
     double armor;
+    double affliction = 0;
     bool taunt = false;
     int total_health;
     int max_total_health;
@@ -258,6 +259,10 @@ struct Dino
         if (cloak_factor.size() == 0)
             return 1;
         return *cloak_factor.begin();
+    }
+    double ResistanceFactor(double DinoKind::*resistance) const
+    {
+    	return 1 - Norm(kind->*resistance - affliction);
     }
     void Hit(const Dino &attacker, int damage);
     void Heal(const Dino &healer, int heal);

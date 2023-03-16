@@ -171,6 +171,11 @@ def ParseAction(data, guid):
                     action["Action"] = Action("Dodge", action_data["p"] / 100000., action_data["pdr"] / 100000., action_data["d"] if action_data.get("dho") != "END_OF_THIS_TURN" else 0, action_data["eac"])
                 elif type.startswith("BeEfDuInDa"):
                     action["Action"] = Action("Cloak", action_data["mn"] / 10000000., action_data["p"] / 100000., action_data["pdr"] / 100000., action_data["d"], action_data.get("eac", 0))
+                elif type.startswith("BeEfDuReBuDeDa"):
+                    if action_data["p"] > 0:
+                        raise Exception(f'Unknown action type "{type.split(",")[0]}"')
+                    else:
+                        action["Action"] = Action("Affliction", -action_data["p"] / 100000., action_data["d"], action_data["eac"])
                 elif type.startswith("BeEfDuBuDeDa"):
                     if action_data["aa"] == "AttackPower":
                         if action_data["p"] > 0:
@@ -317,7 +322,7 @@ def GetDino(l10n, data, dino_data, ability_dex):
         elif dino_data['lkn'] == 'IDS_BARCTODUS':
             name = "ARCTODUS BOSS"
         else:
-            assert(False)
+            name = dino_data['lkn'][4:]
         dino = {
             'dev_name': DevName(name),
             'name': Name(name),

@@ -377,6 +377,15 @@ struct ReduceArmor : public Action
     virtual void Do(Dino &self, Dino &target) const override;
 };
 
+struct Affliction : public Action
+{
+	modifiers::Affliction affliction;
+	Affliction(double _factor, int _duration, int _number)
+		: affliction(_factor / 100., _duration, _number)
+	{}
+	virtual void Do(Dino &self, Dino &target) const override;
+};
+
 std::list<std::unique_ptr<Action>> UnableToSwap(int _duration);
 std::list<std::unique_ptr<Action>> Swap();
 

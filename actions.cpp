@@ -45,7 +45,7 @@ void AttackAction::Do(Dino &self, Dino &target) const
 {
     double damage;
     if (flags & REND)
-        damage = target.max_total_health * (1 - target.kind->rend_resistance);
+        damage = target.max_total_health * target.ResistanceFactor(&DinoKind::rend_resistance);
     else
         damage = self.damage;
     damage = floor(damage * self.prepared_damage_factor);
@@ -236,7 +236,7 @@ void DamageOverTime::Do(Dino &self, Dino &target) const
 
 void Stun::Do(Dino &self, Dino &target) const
 {
-    if (rand() % 100 < (factor * (1 - target.kind->stun_resistance)) * 100.)
+    if (rand() % 100 < factor * target.ResistanceFactor(&DinoKind::stun_resistance) * 100.)
         target.Impose(&stun, self);
 }
 
@@ -253,6 +253,11 @@ void IncreaseArmor::Do(Dino &self, Dino &target) const
 void ReduceArmor::Do(Dino &self, Dino &target) const
 {
     target.Impose(&reduced_armor, self);
+}
+
+void Affliction::Do(Dino &self, Dino &target) const
+{
+    target.Impose(&affliction, self);
 }
 
 list<unique_ptr<Action>> actions::UnableToSwap(int _duration)
