@@ -291,7 +291,7 @@ int ExplainInput(int argc, char *argv[])
         return -1;
     }
     string result = Explain(team.data(), (int)team.size(), strategy);
-    LOG(result.c_str());
+    LOG("%s", result.c_str());
     return 0;
 }
 
