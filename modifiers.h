@@ -269,10 +269,12 @@ struct Dodge : public Modifier
 {
     double chance;
     double factor;
+    bool this_turn;
     Dodge(double _chance, double _factor, int _duration, int _number)
-        : Modifier("dodge", std::max(2, _duration * 2 + 1), _number)
+        : Modifier("dodge", _duration, _number)
         , chance(_chance)
         , factor(_factor)
+    	, this_turn(_duration == 0)
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
     virtual void Dispose(Dino &target, Mod *mod) const override;
@@ -286,11 +288,11 @@ struct Dodge : public Modifier
     }
     virtual bool OnAction(Mod *mod) const override
     {
-        return --mod->duration == 0;
+        return mod->duration-- == 0 && !this_turn;
     }
     virtual bool OnEndOfTurn(Mod *mod) const override
     {
-        return --mod->duration == 0;
+        return this_turn;
     }
 };
 
@@ -339,9 +341,11 @@ struct ReducedCritChance: public Modifier
 struct Shield : public Modifier
 {
     double factor;
+    bool this_turn;
     Shield(double _factor, int _duration, int _number)
-        : Modifier("shield", std::max(2, _duration * 2 + 1), _number)
+        : Modifier("shield", _duration, _number)
         , factor(_factor)
+    	, this_turn(_duration == 0)
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
     virtual void Dispose(Dino &target, Mod *mod) const override;
@@ -355,11 +359,11 @@ struct Shield : public Modifier
     }
     virtual bool OnAction(Mod *mod) const override
     {
-        return --mod->duration == 0;
+        return mod->duration-- == 0 && !this_turn;
     }
     virtual bool OnEndOfTurn(Mod *mod) const override
     {
-        return --mod->duration == 0;
+        return this_turn;
     }
 };
 
@@ -445,7 +449,7 @@ struct Cloak : public Modifier
     double dodge_chance;
     double dodge_factor;
     Cloak(double _attack_factor, double _dodge_chance, double _dodge_factor, int _duration, int _number = 0)
-        : Modifier("cloak", std::max(2, _duration * 2 + 1), _number)
+        : Modifier("cloak", _duration, _number)
         , attack_factor(_attack_factor)
         , dodge_chance(_dodge_chance)
         , dodge_factor(_dodge_factor)
@@ -462,11 +466,7 @@ struct Cloak : public Modifier
     }
     virtual bool OnAction(Mod *mod) const override
     {
-        return --mod->duration == 0;
-    }
-    virtual bool OnEndOfTurn(Mod *mod) const override
-    {
-        return --mod->duration == 0;
+        return mod->duration-- == 0;
     }
 };
 
