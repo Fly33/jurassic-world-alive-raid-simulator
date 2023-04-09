@@ -97,6 +97,7 @@ void Dino::Attack(Dino team[], int size)
         Ability(ability_id)->Do(*this, team, size);
     }
     REMOVE_MODS(*this, mod_it->OnAction(), DEBUG("%s has %s expired", Name().c_str(), modifier->name.c_str()));
+    affliction += affliction_factor;
 }
 
 void Dino::CounterAttack(Dino team[], int size)

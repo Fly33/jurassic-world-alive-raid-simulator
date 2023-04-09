@@ -158,6 +158,7 @@ struct Dino
     double crit_chance_factor;
     double armor;
     double affliction = 0;
+    double affliction_factor = 0;
     bool taunt = false;
     int total_health;
     int max_total_health;

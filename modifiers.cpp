@@ -206,9 +206,11 @@ void ReducedArmor::Dispose(Dino &target, Mod *mod) const
 void Affliction::Impose(Dino &target, Mod *) const
 {
     target.affliction += factor;
+    target.affliction_factor += factor;
 }
 
 void Affliction::Dispose(Dino &target, Mod *) const
 {
-	target.affliction -= factor;
+	target.affliction -= factor * duration;
+	target.affliction_factor -= factor;
 }

@@ -529,13 +529,13 @@ struct Affliction : public Modifier
     {
         return AFFLICTION;
     }
-    virtual bool IncomingAttack(Mod *mod) const override
+    virtual bool OutgoingAttack(Mod *mod) const override
     {
         return !--mod->number;
     }
-    virtual bool OnEndOfTurn(Mod *mod) const override
+    virtual bool OnAction(Mod *mod) const override
     {
-        return mod->duration-- == 0;
+        return --mod->duration == 0;
     }
 };
 
