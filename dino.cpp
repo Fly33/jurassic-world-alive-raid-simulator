@@ -96,7 +96,7 @@ void Dino::Attack(Dino team[], int size)
         INFO("%s uses %s!", Name().c_str(), Ability(ability_id)->name.c_str());
         Ability(ability_id)->Do(*this, team, size);
     }
-    REMOVE_MODS(*this, mod_it->OnAction(), DEBUG("%s has %s expired", Name().c_str(), modifier->name.c_str()));
+    REMOVE_MODS(*this, mod_it->OnAction(), DEBUG("%s has %s expired", Name().c_str(), mod_it->Name().c_str()));
     affliction += affliction_factor;
 }
 
@@ -111,18 +111,19 @@ void Dino::CounterAttack(Dino team[], int size)
 
 void Dino::Impose(const Modifier *mod, Dino &author)
 {
-    mod->Impose(*this, &mods.emplace_back(mod));
-    INFO("%s imposes %s to %s for %d turn(s)%s", author.Name().c_str(), mod->name.c_str(), Name().c_str(), mod->duration, mod->number ? strprintf(" %d attack(s)", mod->number).c_str() : "");
+	auto mod_it = &mods.emplace_back(mod);
+	mod_it->Impose(*this);
+    INFO("%s imposes %s to %s for %d turn(s)%s", author.Name().c_str(), mod_it->Name().c_str(), Name().c_str(), mod->duration, mod->number ? strprintf(" %d attack(s)", mod->number).c_str() : "");
 }
 
 void Dino::Dispose(int type_flags, Dino &author)
 {
-    REMOVE_MODS(*this, mod_it->Type() & type_flags, INFO("%s disposes %s from %s", author.Name().c_str(), modifier->name.c_str(), Name().c_str()));
+    REMOVE_MODS(*this, mod_it->Type() & type_flags, INFO("%s disposes %s from %s", author.Name().c_str(), mod_it->Name().c_str(), Name().c_str()));
 }
 
 void Dino::PassTurn()
 {
-    REMOVE_MODS(*this, mod_it->OnEndOfTurn(), DEBUG("%s has %s expired", Name().c_str(), modifier->name.c_str()));
+    REMOVE_MODS(*this, mod_it->OnEndOfTurn(), DEBUG("%s has %s expired", Name().c_str(), mod_it->Name().c_str()));
 }
 
 void Dino::DevourHeal()
@@ -142,7 +143,7 @@ void Dino::DamageOverTime(Dino team[], int team_size)
     WARNING("%s is damaged [over time] by %d", Name().c_str(), damage_over_time);
     if (!Alive()) {
         ERROR("%s dies!", Name().c_str());
-        REMOVE_MODS(*this, true, DEBUG("%s took %s to the grave", Name().c_str(), modifier->name.c_str()));
+        REMOVE_MODS(*this, true, DEBUG("%s took %s to the grave", Name().c_str(), mod_it->Name().c_str()));
         for (int i = 0; i < team_size; ++i) {
             if (team[i].team != this->team)
                 continue;

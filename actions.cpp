@@ -67,7 +67,7 @@ void AttackAction::Do(Dino &self, Dino &target) const
     if (armor)
         damage *= 1 - target.Armor();
     damage = floor(damage);
-    REMOVE_MODS(target, mod_it->IncomingAttack(), DEBUG("%s used out %s", target.Name().c_str(), modifier->name.c_str()));
+    REMOVE_MODS(target, mod_it->IncomingAttack(), DEBUG("%s used out %s", target.Name().c_str(), mod_it->Name().c_str()));
     int absorbed = 0;
     if ((~flags & GROUP) && this->target != TARGET_ALL_OPPONENTS) {
         absorbed = (int)damage - target.Absorb((int)damage);
@@ -80,7 +80,7 @@ void AttackAction::Do(Dino &self, Dino &target) const
     WARNING("%s attacks %s for %d%s%s%s%s%s%s%s", self.Name().c_str(), target.Name().c_str(), (int)damage, vulnerability ? " Vulnerability" : "", cloak ? " Cloak" : "", crit ? " Crit" : "", shield ? " Shield" : "", dodge ? " Dodge" : "", armor ? " Armor" : "", absorbed ? " Absorbed" : "");
     if (!target.Alive()) {
         ERROR("%s dies!", target.Name().c_str());
-        REMOVE_MODS(target, true, DEBUG("%s took %s to the grave", target.Name().c_str(), modifier->name.c_str()));
+        REMOVE_MODS(target, true, DEBUG("%s took %s to the grave", target.Name().c_str(), mod_it->Name().c_str()));
         self.killer = true;
     } else if (target.health == 0)
         INFO("%s is immune to HP changes.", target.Name().c_str());
@@ -88,7 +88,7 @@ void AttackAction::Do(Dino &self, Dino &target) const
 
 void FinalizeAttack::Do(Dino &self, Dino &target) const
 {
-    REMOVE_MODS(self, mod_it->OutgoingAttack() || (mod_it->Type() == CLOAK && !self.attacker), DEBUG("%s used out %s", self.Name().c_str(), modifier->name.c_str()));
+    REMOVE_MODS(self, mod_it->OutgoingAttack() || (mod_it->Type() == CLOAK && !self.attacker), DEBUG("%s used out %s", self.Name().c_str(), mod_it->Name().c_str()));
 }
 
 void Revenge::Do(Dino &self, Dino &target) const
@@ -134,7 +134,7 @@ void HealAction::Do(Dino &self, Dino &target) const
 void FinalizeHeal::Do(Dino &self, Dino &target) const
 {
 	if (~flags & FIXED) {
-		REMOVE_MODS(self, mod_it->OutgoingHeal(), DEBUG("%s used out %s", self.Name().c_str(), modifier->name.c_str()));
+		REMOVE_MODS(self, mod_it->OutgoingHeal(), DEBUG("%s used out %s", self.Name().c_str(), mod_it->Name().c_str()));
 	}
 }
 
