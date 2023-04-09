@@ -160,6 +160,15 @@ struct AttackAction : public Action
     virtual void Do(Dino &self, Dino &target) const override;
 };
 
+struct FinalizeAttack : public Action
+{
+    int flags;
+    FinalizeAttack(int _flags = 0)
+        : flags(_flags)
+    {}
+    virtual void Do(Dino &self, Dino &target) const override;
+};
+
 struct Revenge : public Action
 {
     modifiers::Revenge revenge;
@@ -173,15 +182,6 @@ static const int FIXED = 1 << 3;
 std::list<std::unique_ptr<Action>> Heal(double _factor, int _flags = 0);
 std::list<std::unique_ptr<Action>> FixedHeal(double _factor, int _flags = 0);
 
-struct PrepareHeal : public Action
-{
-    int flags;
-    PrepareHeal(int _flags = 0)
-        : flags(_flags)
-    {}
-    virtual void Do(Dino &self, Dino &target) const override;
-};
-
 struct HealAction : public Action
 {
     double factor;
@@ -189,6 +189,15 @@ struct HealAction : public Action
     HealAction(double _factor, int _flags)
         : factor(_factor)
         , flags(_flags)
+    {}
+    virtual void Do(Dino &self, Dino &target) const override;
+};
+
+struct FinalizeHeal : public Action
+{
+    int flags;
+    FinalizeHeal(int _flags = 0)
+        : flags(_flags)
     {}
     virtual void Do(Dino &self, Dino &target) const override;
 };

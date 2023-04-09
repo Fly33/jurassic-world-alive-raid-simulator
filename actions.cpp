@@ -15,6 +15,7 @@ list<unique_ptr<Action>> actions::Attack(double _factor, int _flags)
     list<unique_ptr<Action>> list;
     list.emplace_back(new PrepareAttack(_flags))->target = TARGET_SELF;
     list.emplace_back(new AttackAction(_factor, _flags))->target = TARGET_INHERIT;
+    list.emplace_back(new FinalizeAttack(_flags))->target = TARGET_SELF;
     list.emplace_back(new Revenge())->target = TARGET_ALL_OPPONENTS;
     return list;
 }
@@ -34,9 +35,6 @@ list<unique_ptr<Action>> actions::Rend(double _factor, int _flags)
 void PrepareAttack::Do(Dino &self, Dino &target) const
 {
     self.crit = (flags & ALWAYS_CRITS) || rand() % 100 < self.CritChanceFactor() * 100;
-    self.prepared_damage_factor = self.DamageFactor();
-    self.prepared_cloak_factor = self.CloakFactor();
-    REMOVE_MODS(self, mod_it->OutgoingAttack() || (mod_it->Type() == CLOAK && !self.attacker), DEBUG("%s used out %s", self.Name().c_str(), modifier->name.c_str()));
     self.killer = false;
     self.last_damage = 0;
 }
@@ -48,7 +46,7 @@ void AttackAction::Do(Dino &self, Dino &target) const
         damage = target.max_total_health * target.ResistanceFactor(&DinoKind::rend_resistance);
     else
         damage = self.damage;
-    damage = floor(damage * self.prepared_damage_factor);
+    damage = floor(damage * self.DamageFactor());
     damage *= factor;
     bool vulnerability = target.vulnerability != 0;
     if (vulnerability)
@@ -56,9 +54,9 @@ void AttackAction::Do(Dino &self, Dino &target) const
     bool crit = self.crit;
     if (crit)
         damage *= 1.25;
-    bool cloak = self.prepared_cloak_factor != 1;
+    bool cloak = self.CloakFactor() != 1;
     if (cloak)
-        damage *= self.prepared_cloak_factor;
+        damage *= self.CloakFactor();
     bool shield = target.Shield();
     if (shield)
         damage *= 1 - target.Shield();
@@ -88,6 +86,11 @@ void AttackAction::Do(Dino &self, Dino &target) const
         INFO("%s is immune to HP changes.", target.Name().c_str());
 }
 
+void FinalizeAttack::Do(Dino &self, Dino &target) const
+{
+    REMOVE_MODS(self, mod_it->OutgoingAttack() || (mod_it->Type() == CLOAK && !self.attacker), DEBUG("%s used out %s", self.Name().c_str(), modifier->name.c_str()));
+}
+
 void Revenge::Do(Dino &self, Dino &target) const
 {
     if (self.killer)
@@ -97,8 +100,8 @@ void Revenge::Do(Dino &self, Dino &target) const
 list<unique_ptr<Action>> actions::Heal(double _factor, int _flags)
 {
     list<unique_ptr<Action>> list;
-    list.emplace_back(new PrepareHeal(_flags))->target = TARGET_SELF;
     list.emplace_back(new HealAction(_factor, _flags))->target = TARGET_INHERIT;
+    list.emplace_back(new FinalizeHeal(_flags))->target = TARGET_SELF;
     return list;
 }
 
@@ -109,21 +112,13 @@ list<unique_ptr<Action>> actions::FixedHeal(double _factor, int _flags)
     return list;
 }
 
-void PrepareHeal::Do(Dino &self, Dino &target) const
-{
-	if (~flags & FIXED) {
-		self.prepared_damage_factor = self.DamageFactor();
-		REMOVE_MODS(self, mod_it->OutgoingHeal(), DEBUG("%s used out %s", self.Name().c_str(), modifier->name.c_str()));
-	}
-}
-
 void HealAction::Do(Dino &self, Dino &target) const
 {
     double heal;
     if (flags & FIXED)
         heal = self.max_health;
     else
-        heal = self.damage * self.prepared_damage_factor;
+        heal = self.damage * self.DamageFactor();
     heal = floor(heal);
     heal *= factor;
     heal = floor(heal);
@@ -134,6 +129,13 @@ void HealAction::Do(Dino &self, Dino &target) const
     heal = target.HealAbsorb((int)heal);
     target.Heal(self, (int)heal);
     WARNING("%s heals %s for %d", self.Name().c_str(), target.Name().c_str(), (int)heal);
+}
+
+void FinalizeHeal::Do(Dino &self, Dino &target) const
+{
+	if (~flags & FIXED) {
+		REMOVE_MODS(self, mod_it->OutgoingHeal(), DEBUG("%s used out %s", self.Name().c_str(), modifier->name.c_str()));
+	}
 }
 
 void Sacrifice::Do(Dino &self, Dino &target) const
