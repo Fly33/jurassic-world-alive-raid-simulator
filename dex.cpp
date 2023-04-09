@@ -2454,7 +2454,7 @@ DinoKind BajadasaurusBoss("Bajadasaurus Boss", RARE, 1, 10500, 800, 110, 0.0, 5.
     }
 }, &PowerHeal0329);
 
-DinoKind Bbeelzebuf("Bbeelzebuf", EPIC, 1, 16000, 1450, 115, 15.0, 5.0, 75.0, 89.99999, 75.0, 85.0, 80.0, 100.0, 0.0, 0.0, 60.0, 50.0, {
+DinoKind BeelzebufoBoss("Beelzebufo Boss", EPIC, 1, 16000, 1450, 115, 15.0, 5.0, 75.0, 89.99999, 75.0, 85.0, 80.0, 100.0, 0.0, 0.0, 60.0, 50.0, {
     {
         &AlertAssistBA90,
         &GroupFierceDeceleratingStrike1DAD,
@@ -3156,6 +3156,15 @@ Ability AdrenalinePulse2BA5("Adrenaline Pulse", 0, 3, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(1.0)
+    )
+});
+
+Ability AfflictingStrike3614("Afflicting Strike", 0, 1, 0, {
+    TargetMostPositiveEffects(
+        Affliction(15.0, 2, 4)
+    ),
+    TargetMostPositiveEffects(
+        Attack(1.0)
     )
 });
 
@@ -4603,6 +4612,17 @@ Ability DragonsFlightB1E0("Dragon'S Flight", 0, 2, 0, {
     )
 });
 
+Ability DualClawC2BD("Dual Claw", 0, 1, 0, {
+    TargetSelf(
+        Dodge(50.0, 66.69998, 2, 4)
+    ),
+    TargetMostPositiveEffects(
+        Remove(DODGE),
+        Attack(0.75),
+        Attack(0.75)
+    )
+});
+
 Ability EmergencyGroupHealC79B("Emergency Group Heal", 1, 2, 1, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
@@ -4825,6 +4845,15 @@ Ability FearlessFlap6CE3("Fearless Flap", 0, 2, 0, {
     TargetAllOpponents(
         ReduceDamage(50.0, 2, 2),
         Attack(1.0)
+    )
+});
+
+Ability FeastDEF6("Feast", 1, 2, 0, {
+    TargetAllOpponents(
+        Attack(1.75)
+    ),
+    TargetSelf(
+        RallyHeal(33.0)
     )
 });
 
@@ -5283,6 +5312,16 @@ Ability GroupFierceImpact938B("Group Fierce Impact", 0, 1, 0, {
     )
 });
 
+Ability GroupFortifyingImpact9551("Group Fortifying Impact", 0, 2, 0, {
+    TargetTeam(
+        Cleanse(NEGATIVE_EFFECTS),
+        Heal(0.5)
+    ),
+    TargetHighestHP(
+        Attack(1.5)
+    )
+});
+
 Ability GroupHeal0723("Group Heal", 0, 2, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
@@ -5310,6 +5349,15 @@ Ability GroupMockBlockAndSockD0AE("Group Mock, Block And Sock", 0, 1, 0, {
         Taunt(1)
     ),
     TargetLowestHP(
+        Attack(1.0)
+    )
+});
+
+Ability GroupPersistenceStrike0246("Group Persistence Strike", 0, 0, 0, {
+    TargetTeam(
+        IncreaseDamage(25.0, 2, 2)
+    ),
+    TargetHighestHP(
         Attack(1.0)
     )
 });
@@ -5443,6 +5491,20 @@ Ability HealA906("Heal", 0, 3, 1, {
     )
 });
 
+Ability HealingBellow73D3("Healing Bellow", 0, 2, 1, {
+    TargetTeam(
+        Cleanse(REDUCED_SPEED),
+        Heal(0.5),
+        Shield(50.0, 2, 4)
+    ),
+    TargetSelf(
+        Taunt(1)
+    ),
+    TargetFastest(
+        ReduceSpeed(50.0, 2)
+    )
+});
+
 Ability HeavyStrike5748("Heavy Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY|REDUCED_DAMAGE)
@@ -5499,99 +5561,13 @@ Ability HowlEBEA("Howl", 0, 3, 1, {
     )
 });
 
-Ability Ids_tip_ability_title_afflicting_strike3614("Ids_tip_ability_title_afflicting_strike", 0, 1, 0, {
-    TargetMostPositiveEffects(
-        Affliction(15.0, 2, 4)
-    ),
-    TargetMostPositiveEffects(
-        Attack(1.0)
-    )
-});
-
-Ability Ids_tip_ability_title_dual_clawC2BD("Ids_tip_ability_title_dual_claw", 0, 1, 0, {
-    TargetSelf(
-        Dodge(50.0, 66.69998, 2, 4)
-    ),
-    TargetMostPositiveEffects(
-        Remove(DODGE),
-        Attack(0.75),
-        Attack(0.75)
-    )
-});
-
-Ability Ids_tip_ability_title_feastDEF6("Ids_tip_ability_title_feast", 1, 2, 0, {
-    TargetAllOpponents(
-        Attack(1.75)
-    ),
-    TargetSelf(
-        RallyHeal(33.0)
-    )
-});
-
-Ability Ids_tip_ability_title_group_fortifying_impact9551("Ids_tip_ability_title_group_fortifying_impact", 0, 2, 0, {
-    TargetTeam(
-        Cleanse(NEGATIVE_EFFECTS),
-        Heal(0.5)
-    ),
-    TargetHighestHP(
-        Attack(1.5)
-    )
-});
-
-Ability Ids_tip_ability_title_group_persistence_strike0246("Ids_tip_ability_title_group_persistence_strike", 0, 0, 0, {
-    TargetTeam(
-        IncreaseDamage(25.0, 2, 2)
-    ),
-    TargetHighestHP(
-        Attack(1.0)
-    )
-});
-
-Ability Ids_tip_ability_title_imminent_stampede7426("Ids_tip_ability_title_imminent_stampede", 0, 2, 1, {
+Ability ImminentStampede7426("Imminent Stampede", 0, 2, 1, {
     TargetTeam(
         Cleanse(REDUCED_SPEED),
         IncreaseSpeed(50.0, 2)
     ),
     TargetSelf(
         IncreaseDamage(50.0, 2, 2)
-    )
-});
-
-Ability Ids_tip_ability_title_instant_charging_impact7672("Ids_tip_ability_title_instant_charging_impact", 1, 2, 1, {
-    TargetHighestDamage(
-        Attack(1.5),
-        Stun(75.0, 1)
-    )
-});
-
-Ability Ids_tip_ability_title_rending_strike85FA("Ids_tip_ability_title_rending_strike", 0, 0, 0, {
-    TargetHighestHP(
-        Remove(SHIELD),
-        Rend(25.0, BYPASS_ARMOR)
-    )
-});
-
-Ability Ids_tip_ability_title_secure_taunt7C74("Ids_tip_ability_title_secure_taunt", 0, 1, 1, {
-    TargetTeam(
-        Shield(50.0, 2, 2)
-    ),
-    TargetSelf(
-        IncreaseArmor(20.0, 2, 2),
-        Taunt(1)
-    )
-});
-
-Ability Ids_tip_title_ability_healing_bellow73D3("Ids_tip_title_ability_healing_bellow", 0, 2, 1, {
-    TargetTeam(
-        Cleanse(REDUCED_SPEED),
-        Heal(0.5),
-        Shield(50.0, 2, 4)
-    ),
-    TargetSelf(
-        Taunt(1)
-    ),
-    TargetFastest(
-        ReduceSpeed(50.0, 2)
     )
 });
 
@@ -5646,6 +5622,13 @@ Ability InstantCharge0917("Instant Charge", 1, 2, 1, {
     )
 });
 
+Ability InstantChargingImpact7672("Instant Charging Impact", 1, 2, 1, {
+    TargetHighestDamage(
+        Attack(1.5),
+        Stun(75.0, 1)
+    )
+});
+
 Ability InstantCunningStrike12C2("Instant Cunning Strike", 0, 1, 1, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
@@ -5677,15 +5660,6 @@ Ability InstantDeceleratingPrecision323A("Instant Decelerating Precision", 0, 0,
     ),
     TargetFastest(
         Attack(1.0, PRECISE)
-    )
-});
-
-Ability InstantDefenseShatteringStrikeB62F("Instant Defense Shattering Strike", 0, 0, 1, {
-    TargetHighestHP(
-        Remove(SHIELD)
-    ),
-    TargetHighestHP(
-        Attack(1.0)
     )
 });
 
@@ -5768,6 +5742,15 @@ Ability InstantRumble2784("Instant Rumble", 0, 3, 1, {
     )
 });
 
+Ability InstantShieldBreakingStrikeB62F("Instant Shield Breaking Strike", 0, 0, 1, {
+    TargetHighestHP(
+        Remove(SHIELD)
+    ),
+    TargetHighestHP(
+        Attack(1.0)
+    )
+});
+
 Ability InstantStunningStrikeEA34("Instant Stunning Strike", 0, 3, 1, {
     TargetHighestDamage(
         Attack(1.0),
@@ -5832,6 +5815,13 @@ Ability LesserGroupHeal5491("Lesser Group Heal", 0, 2, 0, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(1.0)
+    )
+});
+
+Ability LesserRendingAttack85FA("Lesser Rending Attack", 0, 0, 0, {
+    TargetHighestHP(
+        Remove(SHIELD),
+        Rend(25.0, BYPASS_ARMOR)
     )
 });
 
@@ -6678,6 +6668,16 @@ CounterAbility RobbingWing33B1("Robbing Wing", {
     )
 });
 
+Ability SecureTaunt7C74("Secure Taunt", 0, 1, 1, {
+    TargetTeam(
+        Shield(50.0, 2, 2)
+    ),
+    TargetSelf(
+        IncreaseArmor(20.0, 2, 2),
+        Taunt(1)
+    )
+});
+
 CounterAbility ShatteringAntidoteF861("Shattering Antidote", {
     TargetAttacker(
         Remove(SHIELD),
@@ -7431,7 +7431,7 @@ DinoKind Acrocanthosaurus("Acrocanthosaurus", EPIC, 1, 4800, 1700, 110, 0.0, 30.
 
 DinoKind Aenocyonyx("Aenocyonyx", UNIQUE, 1, 4800, 1500, 128, 0.0, 25.0, 100.0, 50.0, 0.0, 75.0, 100.0, 50.0, 100.0, 0.0, 100.0, 0.0, {
     {
-        &InstantDefenseShatteringStrikeB62F,
+        &InstantShieldBreakingStrikeB62F,
         &CrushingProwl3FF5,
         &DevouringWound32A1,
         &DisarmingDecimateAndRunB62E
@@ -7518,7 +7518,7 @@ DinoKind Allodrigues("Allodrigues", UNIQUE, 3, 3300, 1750, 130, 0.0, 15.0, 0.0, 
 
 DinoKind Alloraptor("Alloraptor", LEGENDARY, 1, 3300, 1700, 130, 0.0, 40.0, 0.0, 0.0, 50.0, 0.0, 100.0, 0.0, 100.0, 0.0, 50.0, 0.0, {
     {
-        &Ids_tip_ability_title_rending_strike85FA,
+        &LesserRendingAttack85FA,
         &DistractingRampageBD0D,
         &CunningFerociousStrike6867,
         &CleansingRampageC8DB
@@ -7869,11 +7869,11 @@ DinoKind BaryonyxGen2("Baryonyx Gen 2", RARE, 1, 4350, 1000, 123, 0.0, 20.0, 0.0
     }
 }, nullptr);
 
-DinoKind Beelzebuf("Beelzebuf", EPIC, 3, 3600, 1550, 125, 0.0, 10.0, 0.0, 100.0, 0.0, 33.0, 0.0, 100.0, 0.0, 0.0, 0.0, 0.0, {
+DinoKind Beelzebufo("Beelzebufo", EPIC, 3, 3600, 1550, 125, 0.0, 10.0, 0.0, 100.0, 0.0, 33.0, 0.0, 100.0, 0.0, 0.0, 0.0, 0.0, {
     {
         &CunningStrike75A8,
-        &Ids_tip_ability_title_feastDEF6,
-        &Ids_tip_ability_title_afflicting_strike3614
+        &FeastDEF6,
+        &AfflictingStrike3614
     }
 }, nullptr);
 
@@ -7970,8 +7970,8 @@ DinoKind Carnotaurus("Carnotaurus", RARE, 1, 3600, 1000, 104, 0.0, 5.0, 0.0, 0.0
 DinoKind Ceramagnus("Ceramagnus", APEX, 1, 4800, 1300, 113, 25.0, 10.0, 0.0, 0.0, 0.0, 0.0, 100.0, 100.0, 50.0, 0.0, 0.0, 0.0, {
     {
         &ResilientStrikeFEDE,
-        &Ids_tip_ability_title_imminent_stampede7426,
-        &Ids_tip_ability_title_instant_charging_impact7672,
+        &ImminentStampede7426,
+        &InstantChargingImpact7672,
         &PreciseRampageA036
     }
 }, nullptr);
@@ -8191,7 +8191,7 @@ DinoKind Diorajasaur("Diorajasaur", UNIQUE, 1, 4800, 1200, 108, 30.0, 30.0, 100.
     {
         &ResilientStrikeFEDE,
         &ResilientRampageB23D,
-        &Ids_tip_ability_title_secure_taunt7C74,
+        &SecureTaunt7C74,
         &InstantInvincibilityTaunt6C65
     }
 }, &RakingCounterattackC77B);
@@ -9261,7 +9261,7 @@ DinoKind Ovilophosaurus("Ovilophosaurus", EPIC, 1, 2850, 1200, 127, 0.0, 10.0, 1
 DinoKind Oviraptor("Oviraptor", RARE, 1, 2700, 1300, 129, 0.0, 15.0, 100.0, 0.0, 100.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
     {
         &DeviousStrike53F7,
-        &Ids_tip_ability_title_dual_clawC2BD,
+        &DualClawC2BD,
         &CunningRampage8AEB
     }
 }, nullptr);
@@ -10127,10 +10127,10 @@ DinoKind Tryostronix("Tryostronix", LEGENDARY, 1, 4200, 1400, 125, 0.0, 20.0, 0.
 
 DinoKind Tsintamoth("Tsintamoth", LEGENDARY, 1, 4950, 1250, 113, 10.0, 5.0, 0.0, 0.0, 0.0, 0.0, 0.0, 75.0, 75.0, 0.0, 100.0, 0.0, {
     {
-        &Ids_tip_ability_title_group_persistence_strike0246,
-        &Ids_tip_ability_title_group_fortifying_impact9551,
+        &GroupPersistenceStrike0246,
+        &GroupFortifyingImpact9551,
         &GroupHeal0723,
-        &Ids_tip_title_ability_healing_bellow73D3
+        &HealingBellow73D3
     }
 }, nullptr);
 
@@ -10277,7 +10277,7 @@ map<string, vector<Dino>> BossDex = {
     make_pair<string, vector<Dino>>("Andrewtops", {Dino(0, 0, 24, 8, 12, 4, &AndrewtopsBoss), Dino(0, 5, 23, 12, 7, 4, &ScolosaurusMinion), Dino(0, 6, 23, 9, 9, 6, &DilophosaurusMinion)}),
     make_pair<string, vector<Dino>>("Arctodus", {Dino(0, 0, 9, 0, 0, 0, &ArctodusBoss)}),
     make_pair<string, vector<Dino>>("Bajadasaurus", {Dino(0, 0, 9, 0, 0, 0, &BajadasaurusBoss)}),
-    make_pair<string, vector<Dino>>("Bbeelz", {Dino(0, 0, 30, 10, 13, 7, &Bbeelzebuf), Dino(0, 5, 29, 8, 5, 10, &MajungasaurusMinion), Dino(0, 6, 29, 8, 2, 10, &KoolasuchusGen2Minion)}),
+    make_pair<string, vector<Dino>>("Beelzebufo", {Dino(0, 0, 30, 10, 13, 7, &BeelzebufoBoss), Dino(0, 5, 29, 8, 5, 10, &MajungasaurusMinion), Dino(0, 6, 29, 8, 2, 10, &KoolasuchusGen2Minion)}),
     make_pair<string, vector<Dino>>("Blue", {Dino(0, 0, 14, 0, 0, 0, &BlueBoss)}),
     make_pair<string, vector<Dino>>("Brachiosaurus", {Dino(0, 0, 14, 0, 0, 0, &BrachiosaurusBoss)}),
     make_pair<string, vector<Dino>>("Carnotaurus", {Dino(0, 0, 8, 0, 0, 0, &CarnotaurusBoss)}),
@@ -10373,7 +10373,7 @@ map<string, const DinoKind *> DinoDex = {
     make_pair("Bajatonodon", &Bajatonodon),
     make_pair("Baryonyx", &Baryonyx),
     make_pair("BaryonyxGen2", &BaryonyxGen2),
-    make_pair("Beelzebuf", &Beelzebuf),
+    make_pair("Beelzebufo", &Beelzebufo),
     make_pair("Beta", &Beta),
     make_pair("Blue", &Blue),
     make_pair("Brachiosaurus", &Brachiosaurus),
