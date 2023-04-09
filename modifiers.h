@@ -483,13 +483,13 @@ struct IncreasedArmor: public Modifier
     {
         return INCREASED_ARMOR;
     }
-    virtual bool IncomingAttack(Mod *mod) const override
+    virtual bool OutgoingAttack(Mod *mod) const override
     {
         return !--mod->number;
     }
     virtual bool OnEndOfTurn(Mod *mod) const override
     {
-        return mod->duration-- == 0;
+        return --mod->duration == 0;
     }
 };
 
@@ -506,13 +506,13 @@ struct ReducedArmor: public Modifier
     {
         return REDUCED_ARMOR;
     }
-    virtual bool IncomingAttack(Mod *mod) const override
+    virtual bool OutgoingAttack(Mod *mod) const override
     {
         return !--mod->number;
     }
     virtual bool OnEndOfTurn(Mod *mod) const override
     {
-        return mod->duration-- == 0;
+        return --mod->duration == 0;
     }
 };
 
