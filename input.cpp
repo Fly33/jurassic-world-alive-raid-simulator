@@ -225,10 +225,9 @@ int Input(vector<Dino> &team, Strategy &strategy)
             if (dino_it == DinoDex.end())
                 throw invalid_argument(strprintf("Unable to find %s", dino));
             if (level < 1 || 30 < level ||
-                health_boost < 0 || 20 < health_boost ||
-                damage_boost < 0 || 20 < damage_boost ||
-                speed_boost < 0 || 20 < speed_boost ||
-                health_boost + damage_boost + speed_boost > 30)
+                health_boost < 0 ||
+                damage_boost < 0 ||
+                speed_boost < 0)
                 throw invalid_argument("Invalid dino parameters");
             team.push_back(Dino(1, i+1, level, health_boost, damage_boost, speed_boost, dino_it->second));
         }
