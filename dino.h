@@ -169,7 +169,7 @@ struct Dino
     bool revenge_ready = false;
     int last_damage = 0;
     int devour_heal = 0;
-    int damage_over_time = 0;
+    double damage_over_time = 0;
     std::multiset<double, std::greater<double>> shield{0};
     std::multiset<std::pair<double, double>, dodge_cmp> dodge{std::make_pair(0, 0)};
     int cooldown[4] = {};

@@ -139,8 +139,9 @@ void Dino::DamageOverTime(Dino team[], int team_size)
 {
     if (health == 0 || damage_over_time == 0)
         return;
-    Hit(*this, damage_over_time);
-    WARNING("%s is damaged [over time] by %d", Name().c_str(), damage_over_time);
+    int dot = Round(max_total_health * damage_over_time);
+    Hit(*this, dot);
+    WARNING("%s is damaged [over time] by %d", Name().c_str(), dot);
     if (!Alive()) {
         ERROR("%s dies!", Name().c_str());
         REMOVE_MODS(*this, true, DEBUG("%s took %s to the grave", Name().c_str(), mod_it->Name().c_str()));

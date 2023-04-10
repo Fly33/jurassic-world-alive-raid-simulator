@@ -474,7 +474,7 @@ struct DamageOverTime : public Modifier
     virtual void Dispose(Dino &target, Mod *mod) const override;
     virtual std::string Name(const Mod *mod) const
     {
-    	return strprintf("%s by %.0lf", name.c_str(), mod->value);
+    	return strprintf("%s by %.1lf%%", name.c_str(), mod->value * 100);
     }
     virtual int Type() const override
     {

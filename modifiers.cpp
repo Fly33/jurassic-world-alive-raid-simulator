@@ -147,13 +147,13 @@ void DevourHeal::Dispose(Dino &target, Mod *mod) const
 
 void DamageOverTime::Impose(Dino &target, Mod *mod) const
 {
-	mod->value = Round(target.max_total_health * factor * target.ResistanceFactor(&DinoKind::damage_over_time_resistance));
-    target.damage_over_time += (int)mod->value;
+	mod->value = factor * target.ResistanceFactor(&DinoKind::damage_over_time_resistance);
+    target.damage_over_time += mod->value;
 }
 
 void DamageOverTime::Dispose(Dino &target, Mod *mod) const
 {
-    target.damage_over_time -= (int)mod->value;
+    target.damage_over_time -= mod->value;
 }
 
 void Stun::Impose(Dino &target, Mod *mod) const
