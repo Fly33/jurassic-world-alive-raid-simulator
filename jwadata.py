@@ -307,6 +307,32 @@ def GetAbility(data, ability_data, kind, ability_dex, l10n):
         raise
 
 
+def GetRound(l10n, data, round_data, ability_dex):
+    try:
+        attr = GetGuid(data, round_data['att']['guid'])
+        round = {
+            'health': attr['hp'],
+            'damage': attr['miap'],
+            'speed': attr['s'],
+            'armor': attr['def'] / 100000,
+            'crit': attr['chc'] / 100000,
+            'crit_reduction_resistance': attr['rcrit'] / 100000,
+            'damage_over_time_resistance': attr['rdot'] / 100000,
+            'damage_reduction_resistance': attr['rd'] / 100000,
+            'rend_resistance': attr['rr'] / 100000,
+            'speed_reduction_resistance': attr['rdec'] / 100000,
+            'stun_resistance': attr['rs'] / 100000,
+            'swap_prevention_resistance': attr['rsp'] / 100000,
+            'taunt_resistance': attr['rt'] / 100000,
+            'vulnerable_resistance': attr['rv'] / 100000,
+            'armor_reduction_resistance': attr.get('rarm', 0) / 100000,
+            'ability': [GetAbility(data, ability_data, '', ability_dex, l10n=l10n)['dev_name'] for ability_data in round_data['al']],
+            'counter': GetAbility(data, round_data['ac'], 'Counter', ability_dex, l10n=l10n)['dev_name'] if round_data['ac'] else None,
+        }
+        return round
+    except:
+        raise
+
 def GetDino(l10n, data, dino_data, ability_dex):
     try:
         rarity = GetGuid(data, dino_data['r']['guid'])
@@ -328,27 +354,8 @@ def GetDino(l10n, data, dino_data, ability_dex):
             'name': Name(name),
             'rarity': l10n[rarity['localizedName']],
             'flock': 3 if dino_data.get('it', False) else 1,
-            'health': attr['hp'],
-            'damage': attr['miap'],
-            'speed': attr['s'],
-            'armor': attr['def'] / 100000,
-            'crit': attr['chc'] / 100000,
-            'crit_reduction_resistance': attr['rcrit'] / 100000,
-            'damage_over_time_resistance': attr['rdot'] / 100000,
-            'damage_reduction_resistance': attr['rd'] / 100000,
-            'rend_resistance': attr['rr'] / 100000,
-            'speed_reduction_resistance': attr['rdec'] / 100000,
-            'stun_resistance': attr['rs'] / 100000,
-            'swap_prevention_resistance': attr['rsp'] / 100000,
-            'taunt_resistance': attr['rt'] / 100000,
-            'vulnerable_resistance': attr['rv'] / 100000,
-            'armor_reduction_resistance': attr.get('rarm', 0) / 100000,
-            'ability': None,
-            'counter': None,
+            'round': [GetRound(l10n, data, dino_data['rl'][round], ability_dex) for round in range(len(dino_data['rl']))]
         }
-        dino['ability'] = [[GetAbility(data, ability_data, '', ability_dex, l10n=l10n)['dev_name'] for ability_data in dino_data['rl'][round]['al']] for round in range(len(dino_data['rl']))]
-        if dino_data['rl'][0]['ac']:
-            dino['counter'] = GetAbility(data, dino_data['rl'][0]['ac'], 'Counter', ability_dex, l10n=l10n)['dev_name']
         return dino
     except:
         print(dino_data)
@@ -492,47 +499,67 @@ def GetEntity(x, entity):
 
 def WriteDinoDex(dino_dex, f):
     for dino in sorted(dino_dex.values(), key=lambda dino: dino['dev_name']):
-        print(f'DinoKind {dino["dev_name"]}("{dino["name"]}", {dino["rarity"]}, {dino["flock"]}, '\
-              f'{dino["health"]}, {dino["damage"]}, {dino["speed"]}, {dino["armor"]}, {dino["crit"]}, '\
-              f'{dino["crit_reduction_resistance"]}, '\
-              f'{dino["damage_over_time_resistance"]}, '\
-              f'{dino["damage_reduction_resistance"]}, '\
-              f'{dino["rend_resistance"]}, '\
-              f'{dino["speed_reduction_resistance"]}, '\
-              f'{dino["stun_resistance"]}, '\
-              f'{dino["swap_prevention_resistance"]}, '\
-              f'{dino["taunt_resistance"]}, '\
-              f'{dino["vulnerable_resistance"]}, '\
-              f'{dino["armor_reduction_resistance"]}, {{', file=f)
-        for round in range(len(dino['ability'])):
-            print(f'    {{', file=f)
-            for ability in range(len(dino['ability'][round])):
-                print(f'        &{dino["ability"][round][ability]}{"," if ability != len(dino["ability"][round]) - 1 else ""}', file=f)
-            print(f'    }}{"," if round != len(dino["ability"]) - 1 else ""}', file=f)
-        print(f'}}, {"&" + dino["counter"] if dino["counter"] else "nullptr"});', file=f)
+        print(f'DinoKind {dino["dev_name"]}("{dino["name"]}", {dino["rarity"]}, {dino["flock"]}, {{', file=f)
+        for round in range(len(dino['round'])):
+            print(f'    DinoRound({dino["round"][round]["health"]}, {dino["round"][round]["damage"]}, {dino["round"][round]["speed"]}, {dino["round"][round]["armor"]}, {dino["round"][round]["crit"]}, '\
+                  f'{dino["round"][round]["crit_reduction_resistance"]}, '\
+                  f'{dino["round"][round]["damage_over_time_resistance"]}, '\
+                  f'{dino["round"][round]["damage_reduction_resistance"]}, '\
+                  f'{dino["round"][round]["rend_resistance"]}, '\
+                  f'{dino["round"][round]["speed_reduction_resistance"]}, '\
+                  f'{dino["round"][round]["stun_resistance"]}, '\
+                  f'{dino["round"][round]["swap_prevention_resistance"]}, '\
+                  f'{dino["round"][round]["taunt_resistance"]}, '\
+                  f'{dino["round"][round]["vulnerable_resistance"]}, '\
+                  f'{dino["round"][round]["armor_reduction_resistance"]}, {{', file=f)
+            for ability in range(len(dino['round'][round]['ability'])):
+                print(f'        &{dino["round"][round]["ability"][ability]}{"," if ability != len(dino["round"][round]["ability"]) - 1 else ""}', file=f)
+            print(f'    }}, {"&" + dino["round"][round]["counter"] if dino["round"][round]["counter"] else "nullptr"}){"," if round != len(dino["round"]) - 1 else ""}', file=f)
+        print(f'}});', file=f)
         print('', file=f)
 
 
 def WriteCompactDinoDex(dino_dex, f):
     for dino in sorted(dino_dex.values(), key=lambda dino: dino['dev_name']):
-        print(f'{GetShort("DinoKind")} {GetCode(dino["dev_name"])}("{dino["name"]}",{GetShort(dino["rarity"])},{dino["flock"]},'\
-              f'{dino["health"]},{dino["damage"]},{dino["speed"]},{Num(dino["armor"])},{Num(dino["crit"])},'\
-              f'{Num(dino["crit_reduction_resistance"])},'\
-              f'{Num(dino["damage_over_time_resistance"])},'\
-              f'{Num(dino["damage_reduction_resistance"])},'\
-              f'{Num(dino["rend_resistance"])},'\
-              f'{Num(dino["speed_reduction_resistance"])},'\
-              f'{Num(dino["stun_resistance"])},'\
-              f'{Num(dino["swap_prevention_resistance"])},'\
-              f'{Num(dino["taunt_resistance"])},'\
-              f'{Num(dino["vulnerable_resistance"])},'\
-              f'{Num(dino["armor_reduction_resistance"])},{{', file=f, end='')
-        for round in range(len(dino['ability'])):
-            print(f'{{', file=f, end='')
-            for ability in range(len(dino['ability'][round])):
-                print(f'&{GetCode(dino["ability"][round][ability])}{"," if ability != len(dino["ability"][round]) - 1 else ""}', file=f, end='')
-            print(f'}}{"," if round != len(dino["ability"]) - 1 else ""}', file=f, end='')
-        print(f'}},{"&" + GetCode(dino["counter"]) if dino["counter"] else GetShort("nullptr")});', file=f, end='')
+        print(f'{GetShort("DinoKind")} {GetCode(dino["dev_name"])}("{dino["name"]}",{GetShort(dino["rarity"])},{dino["flock"]},{{', file=f, end='')
+        for round in range(len(dino['round'])):
+            print(f'{GetShort("DinoRound")}({dino["round"][round]["health"]},{dino["round"][round]["damage"]},{dino["round"][round]["speed"]},{Num(dino["round"][round]["armor"])},{Num(dino["round"][round]["crit"])},'\
+                  f'{Num(dino["round"][round]["crit_reduction_resistance"])},'\
+                  f'{Num(dino["round"][round]["damage_over_time_resistance"])},'\
+                  f'{Num(dino["round"][round]["damage_reduction_resistance"])},'\
+                  f'{Num(dino["round"][round]["rend_resistance"])},'\
+                  f'{Num(dino["round"][round]["speed_reduction_resistance"])},'\
+                  f'{Num(dino["round"][round]["stun_resistance"])},'\
+                  f'{Num(dino["round"][round]["swap_prevention_resistance"])},'\
+                  f'{Num(dino["round"][round]["taunt_resistance"])},'\
+                  f'{Num(dino["round"][round]["vulnerable_resistance"])},'\
+                  f'{Num(dino["round"][round]["armor_reduction_resistance"])},{{', file=f, end='')
+            for ability in range(len(dino['round'][round]['ability'])):
+                print(f'&{GetCode(dino["round"][round]["ability"][ability])}{"," if ability != len(dino["round"][round]["ability"]) - 1 else ""}', file=f, end='')
+            print(f'}},{"&" + GetCode(dino["round"][round]["counter"]) if dino["round"][round]["counter"] else GetShort("nullptr")}){"," if round != len(dino["round"]) - 1 else ""}', file=f, end='')
+        print(f'}});', file=f, end='')
+
+
+# def WriteCompactDinoDex(dino_dex, f):
+#     for dino in sorted(dino_dex.values(), key=lambda dino: dino['dev_name']):
+#         print(f'{GetShort("DinoKind")} {GetCode(dino["dev_name"])}("{dino["name"]}",{GetShort(dino["rarity"])},{dino["flock"]},'\
+#               f'{dino["health"]},{dino["damage"]},{dino["speed"]},{Num(dino["armor"])},{Num(dino["crit"])},'\
+#               f'{Num(dino["crit_reduction_resistance"])},'\
+#               f'{Num(dino["damage_over_time_resistance"])},'\
+#               f'{Num(dino["damage_reduction_resistance"])},'\
+#               f'{Num(dino["rend_resistance"])},'\
+#               f'{Num(dino["speed_reduction_resistance"])},'\
+#               f'{Num(dino["stun_resistance"])},'\
+#               f'{Num(dino["swap_prevention_resistance"])},'\
+#               f'{Num(dino["taunt_resistance"])},'\
+#               f'{Num(dino["vulnerable_resistance"])},'\
+#               f'{Num(dino["armor_reduction_resistance"])},{{', file=f, end='')
+#         for round in range(len(dino['ability'])):
+#             print(f'{{', file=f, end='')
+#             for ability in range(len(dino['ability'][round])):
+#                 print(f'&{GetCode(dino["ability"][round][ability])}{"," if ability != len(dino["ability"][round]) - 1 else ""}', file=f, end='')
+#             print(f'}}{"," if round != len(dino["ability"]) - 1 else ""}', file=f, end='')
+#         print(f'}},{"&" + GetCode(dino["counter"]) if dino["counter"] else GetShort("nullptr")});', file=f, end='')
 
 
 def WriteAbilityActions(actions, f):

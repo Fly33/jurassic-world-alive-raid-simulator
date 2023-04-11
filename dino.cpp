@@ -47,26 +47,26 @@ static const double BoostFactor[] = {1.0, 1.025, 1.05, 1.075, 1.1, 1.125, 1.15, 
 
 Dino::Dino(int _team, int _index, int _level, int _health_boost, int _damage_boost, int _speed_boost, const DinoKind *_kind)
     : kind(_kind)
-    , rounds((int)kind->ability.size())
+    , rounds((int)kind->round.size())
     , team(_team)
     , index(_index)
     , level(_level)
     , health_boost(_health_boost)
     , damage_boost(_damage_boost)
     , speed_boost(_speed_boost)
-    , max_health(health_boost <= 20 ? _kind->health * LevelFactor[level] * BoostFactor[health_boost] : health_boost)
+    , max_health(health_boost <= 20 ? _kind->round[0].health * LevelFactor[level] * BoostFactor[health_boost] : health_boost)
     , health(max_health)
-    , damage(damage_boost <= 20 ? _kind->damage * LevelFactor[level] * BoostFactor[damage_boost] : damage_boost)
-    , speed(speed_boost <= 20 ? _kind->speed + 2 * speed_boost : speed_boost)
-    , crit_chance_factor(_kind->crit)
-    , armor(_kind->armor)
-    , total_health(rounds * (int)(health_boost <= 20 ? kind->health * LevelFactor[level] * BoostFactor[health_boost] : health_boost))
-    , max_total_health(total_health)
+    , damage(damage_boost <= 20 ? _kind->round[0].damage * LevelFactor[level] * BoostFactor[damage_boost] : damage_boost)
+    , speed(speed_boost <= 20 ? _kind->round[0].speed + 2 * speed_boost : speed_boost)
     , name(team != 0 ? strprintf("%s#%d", kind->name.c_str(), _index) : kind->name)
 {
-    for (int i = 0; i < (int)kind->ability[round].size(); ++i) {
-        cooldown[i] = Ability(i)->delay;
+    for (int i = 0; i < (int)Round(0).ability.size(); ++i) {
+        cooldown[i] = Round(0).ability[i]->delay;
     }
+    for (int i = 0; i < (int)kind->round.size(); ++i) {
+    	max_total_health += health_boost <= 20 ? Round(i).health * LevelFactor[level] * BoostFactor[health_boost] : health_boost;
+    }
+    total_health = max_total_health;
     for (int i = 1; i < kind->flock; ++i) {
         flock_segment.push_back(i * max_health / kind->flock);
     }
@@ -84,7 +84,7 @@ bool Dino::Prepare(int _ability_id, bool minor)
             --cooldown[i];
     }
     ability_id = _ability_id;
-    Ability(ability_id)->Prepare(*this, &cooldown[ability_id], &priority);
+    Round().ability[ability_id]->Prepare(*this, &cooldown[ability_id], &priority);
     return true;
 }
 
@@ -93,8 +93,8 @@ void Dino::Attack(Dino team[], int size)
     if (!Alive())
         return;
     if (!stun) {
-        INFO("%s uses %s!", Name().c_str(), Ability(ability_id)->name.c_str());
-        Ability(ability_id)->Do(*this, team, size);
+        INFO("%s uses %s!", Name().c_str(), Round().ability[ability_id]->name.c_str());
+        Round().ability[ability_id]->Do(*this, team, size);
     }
     REMOVE_MODS(*this, mod_it->OnAction(), DEBUG("%s has %s expired", Name().c_str(), mod_it->Name().c_str()));
     affliction += affliction_factor;
@@ -102,9 +102,9 @@ void Dino::Attack(Dino team[], int size)
 
 void Dino::CounterAttack(Dino team[], int size)
 {
-    if (Alive() && attacker && !stun && kind->counter_attack) {
-        INFO("%s counter-attacks using %s!", Name().c_str(), kind->counter_attack->name.c_str());
-        kind->counter_attack->Do(*this, team, size);
+    if (Alive() && attacker && !stun && Round().counter_attack) {
+        INFO("%s counter-attacks using %s!", Name().c_str(), Round().counter_attack->name.c_str());
+        Round().counter_attack->Do(*this, team, size);
     }
     attacker = nullptr;
 }
@@ -139,7 +139,7 @@ void Dino::DamageOverTime(Dino team[], int team_size)
 {
     if (health == 0 || damage_over_time == 0)
         return;
-    int dot = Round(max_total_health * damage_over_time);
+    int dot = ::Round(max_total_health * damage_over_time);
     Hit(*this, dot);
     WARNING("%s is damaged [over time] by %d", Name().c_str(), dot);
     if (!Alive()) {
@@ -163,11 +163,13 @@ void Dino::Revive(bool total)
 {
     if (total)
         actions::Remove(ALL_EFFECTS).Do(*this, *this);
-    health = max_health;
+    health = max_health = health_boost <= 20 ? Round().health * LevelFactor[level] * BoostFactor[health_boost] : health_boost;
+    damage = damage_boost <= 20 ? Round().damage * LevelFactor[level] * BoostFactor[damage_boost] : damage_boost;
+    speed = speed_boost <= 20 ? Round().speed + 2 * speed_boost : speed_boost;
     if (total)
         total_health = max_total_health;
-    for (int i = 0; i < (int)kind->ability[round].size(); ++i) {
-        cooldown[i] = Ability(i)->delay;
+    for (int i = 0; i < (int)Round().ability.size(); ++i) {
+        cooldown[i] = Round().ability[i]->delay;
     }
     INFO("%s is revived!", Name().c_str());
 }

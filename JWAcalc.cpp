@@ -130,15 +130,15 @@ int Step(Dino team[], int team_size)
 bool Check(Dino team[], int team_size, const Strategy &strategy)
 {
     int round = 0;
-    Dino *boss = team;
+    Dino &boss = *team;
     int offset = 0;
     while (true) {
-        if (round < boss->round + 1) {
+        if (round < boss.round + 1) {
             ++round;
             ERROR("Round %d", round);
         }
-        ERROR("Turn %d", boss->turn+1);
-        Stats::NextTurn(boss->round, boss->turn);
+        ERROR("Turn %d", boss.turn+1);
+        Stats::NextTurn(boss.round, boss.turn);
         auto ability = strategy.Next(team, team_size, offset);
         if (ability.size() == 0)
             break;
@@ -146,19 +146,19 @@ bool Check(Dino team[], int team_size, const Strategy &strategy)
             if (!team[i].Alive())
                 continue;
             if (i == 0)
-                boss->Prepare(boss->turn % (int)boss->kind->ability[boss->round].size());
+                boss.Prepare(boss.turn % (int)boss->ability.size());
             else if (team[i].team == 1) { // Teammates
                 bool minor = ability[i-1] < 0;
                 int ability_id = abs(ability[i-1])-1;
                 if (!team[i].Prepare(ability_id, minor)) {
-                    ERROR("%s Can't use %s because of cooldown", team[i].Name().c_str(), team[i].Ability(ability_id)->name.c_str());
+                    ERROR("%s Can't use %s because of cooldown", team[i].Name().c_str(), team[i]->ability[ability_id]->name.c_str());
                     return false;
                 }
             } else { // Minions
-                while (!team[i].Prepare(rand() % team[i].kind->ability[team[i].round].size()))
+                while (!team[i].Prepare(rand() % team[i]->ability.size()))
                     ;
             }
-            WARNING("%s chose %s", team[i].Name().c_str(), team[i].Ability(team[i].ability_id)->name.c_str());
+            WARNING("%s chose %s", team[i].Name().c_str(), team[i]->ability[team[i].ability_id]->name.c_str());
         }
 
         int result = Step(team, team_size);

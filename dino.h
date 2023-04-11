@@ -23,30 +23,26 @@ static const int LEGENDARY = 3;
 static const int UNIQUE = 4;
 static const int APEX = 5;
 
-struct DinoKind
+struct DinoRound
 {
-    std::string name;
-    int rarity;
-    int flock;
-    int health;
-    int damage;
-    int speed;
-    double armor;
-    double crit;
-    double crit_reduction_resistance;
-    double damage_over_time_resistance;
-    double damage_reduction_resistance;
-    double rend_resistance;
-    double speed_reduction_resistance;
-    double stun_resistance;
-    double swap_prevention_resistance;
-    double taunt_resistance;
-    double vulnerable_resistance;
-    double armor_reduction_resistance;
-    std::vector<std::vector<const Ability *>> ability;
-    const CounterAbility *counter_attack;
-
-    DinoKind(const std::string &_name, int _rarity, int _flock, int _health, int _damage, int _speed, int _armor, int _crit,
+	int health;
+	int damage;
+	int speed;
+	double armor;
+	double crit;
+	double crit_reduction_resistance;
+	double damage_over_time_resistance;
+	double damage_reduction_resistance;
+	double rend_resistance;
+	double speed_reduction_resistance;
+	double stun_resistance;
+	double swap_prevention_resistance;
+	double taunt_resistance;
+	double vulnerable_resistance;
+	double armor_reduction_resistance;
+	std::vector<const Ability *> ability;
+	const CounterAbility *counter_attack;
+    DinoRound(int _health, int _damage, int _speed, int _armor, int _crit,
             double _crit_reduction_resistance,
             double _damage_over_time_resistance,
             double _damage_reduction_resistance,
@@ -57,11 +53,8 @@ struct DinoKind
             double _taunt_resistance,
             double _vulnerable_resistance,
             double _armor_reduction_resistance,
-            std::initializer_list<std::initializer_list<Ability *>> _ability, CounterAbility *_counter_attack)
-        : name(_name)
-        , rarity(_rarity)
-        , flock(_flock)
-        , health(_health)
+            std::initializer_list<Ability *> _ability, CounterAbility *_counter_attack)
+        : health(_health)
         , damage(_damage)
         , speed(_speed)
         , armor(_armor / 100.)
@@ -76,44 +69,23 @@ struct DinoKind
         , taunt_resistance(_taunt_resistance / 100.)
         , vulnerable_resistance(_vulnerable_resistance / 100.)
         , armor_reduction_resistance(_armor_reduction_resistance / 100.)
-        , counter_attack(_counter_attack)
-    {
-        for (auto &ability_it: _ability)
-            ability.emplace_back(ability_it.begin(), ability_it.end());
-    }
-    DinoKind(const std::string &_name, int _rarity, int _flock, int _health, int _damage, int _speed, int _armor, int _crit,
-            double _crit_reduction_resistance,
-            double _damage_over_time_resistance,
-            double _damage_reduction_resistance,
-            double _rend_resistance,
-            double _speed_reduction_resistance,
-            double _stun_resistance,
-            double _swap_prevention_resistance,
-            double _taunt_resistance,
-            double _vulnerable_resistance,
-            double _armor_reduction_resistance,
-            std::initializer_list<Ability *> _ability, CounterAbility *_counter_attack)
-        : DinoKind(
-            _name,
-            _rarity,
-            _flock,
-            _health,
-            _damage,
-            _speed,
-            _armor,
-            _crit,
-            _crit_reduction_resistance,
-            _damage_over_time_resistance,
-            _damage_reduction_resistance,
-            _rend_resistance,
-            _speed_reduction_resistance,
-            _stun_resistance,
-            _swap_prevention_resistance,
-            _taunt_resistance,
-            _vulnerable_resistance,
-            _armor_reduction_resistance,
-            {_ability},
-            _counter_attack)
+		, ability(_ability.begin(), _ability.end())
+		, counter_attack(_counter_attack)
+    {}
+};
+
+struct DinoKind
+{
+    std::string name;
+    int rarity;
+    int flock;
+    std::vector<DinoRound> round;
+
+    DinoKind(const std::string &_name, int _rarity, int _flock, std::initializer_list<DinoRound> _round)
+        : name(_name)
+        , rarity(_rarity)
+        , flock(_flock)
+        , round(_round.begin(), _round.end())
     {}
 };
 
@@ -155,13 +127,13 @@ struct Dino
     double vulnerability = 0;
     double damage_factor = 1;
     double speed_factor = 1;
-    double crit_chance_factor;
-    double armor;
+    double crit_chance_factor = 0;
+    double armor = 0;
     double affliction = 0;
     double affliction_factor = 0;
     bool taunt = false;
-    int total_health;
-    int max_total_health;
+    int total_health = 0;
+    int max_total_health = 0;
     int round = 0;
     int turn = 0;
     Dino *attacker = nullptr; // это норм
@@ -195,7 +167,7 @@ struct Dino
     }
     int Speed() const
     {
-        return Round(speed * SpeedFactor());
+        return ::Round(speed * SpeedFactor());
     }
     bool Prepare(int ability_id, bool minor = false);
     void Attack(Dino team[], int team_size);
@@ -210,6 +182,7 @@ struct Dino
     }
     double CritChanceFactor() const
     {
+    	double crit_chance_factor = Round().crit + this->crit_chance_factor;
         if (crit_chance_factor < 0)
             return 0;
         if (crit_chance_factor > 1)
@@ -218,6 +191,7 @@ struct Dino
     }
     double Armor() const
     {
+    	double armor = Round().armor + this->armor;
         if (armor < 0)
             return 0;
         if (armor > 1)
@@ -259,18 +233,26 @@ struct Dino
             return 1;
         return *cloak_factor.begin();
     }
-    double ResistanceFactor(double DinoKind::*resistance) const
+    double ResistanceFactor(double DinoRound::*resistance) const
     {
-    	return 1 - Norm(kind->*resistance - affliction);
+    	return 1 - Norm(Round().*resistance - affliction);
     }
     void Hit(const Dino &attacker, int damage);
     void Heal(const Dino &healer, int heal);
     int Absorb(int damage);
     int HealAbsorb(int heal);
-    const ::Ability *Ability(int i) const
+    const DinoRound &Round() const
     {
-        return kind->ability[round][i];
+    	return Round(this->round);
     }
+    const DinoRound &Round(int round) const
+    {
+    	return kind->round[round];
+    }
+    const DinoRound *operator ->() const
+	{
+    	return &Round();
+	}
     void Revenge(Dino &source);
 };
 

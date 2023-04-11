@@ -7,7 +7,7 @@ using namespace modifiers;
 
 void Vulnerability::Impose(Dino &target, Mod *mod) const
 {
-	mod->value = factor * target.ResistanceFactor(&DinoKind::vulnerable_resistance);
+	mod->value = factor * target.ResistanceFactor(&DinoRound::vulnerable_resistance);
     target.vulnerability += mod->value;
 }
 
@@ -54,7 +54,7 @@ void IncreasedDamage::Dispose(Dino &target, Mod *) const
 
 void ReducedSpeed::Impose(Dino &target, Mod *mod) const
 {
-	mod->value = factor * target.ResistanceFactor(&DinoKind::speed_reduction_resistance);
+	mod->value = factor * target.ResistanceFactor(&DinoRound::speed_reduction_resistance);
     target.speed_factor -= mod->value;
 }
 
@@ -65,7 +65,7 @@ void ReducedSpeed::Dispose(Dino &target, Mod *mod) const
 
 void ReducedDamage::Impose(Dino &target, Mod *mod) const
 {
-	mod->value = factor * target.ResistanceFactor(&DinoKind::damage_reduction_resistance);
+	mod->value = factor * target.ResistanceFactor(&DinoRound::damage_reduction_resistance);
     target.damage_factor -= mod->value;
 }
 
@@ -100,7 +100,7 @@ void IncreasedSpeed::Dispose(Dino &target, Mod *) const
 
 void ReducedCritChance::Impose(Dino &target, Mod *mod) const
 {
-	mod->value = factor * target.ResistanceFactor(&DinoKind::crit_reduction_resistance);
+	mod->value = factor * target.ResistanceFactor(&DinoRound::crit_reduction_resistance);
     target.crit_chance_factor -= mod->value;
 }
 
@@ -147,7 +147,7 @@ void DevourHeal::Dispose(Dino &target, Mod *mod) const
 
 void DamageOverTime::Impose(Dino &target, Mod *mod) const
 {
-	mod->value = factor * target.ResistanceFactor(&DinoKind::damage_over_time_resistance);
+	mod->value = factor * target.ResistanceFactor(&DinoRound::damage_over_time_resistance);
     target.damage_over_time += mod->value;
 }
 
@@ -194,7 +194,7 @@ void IncreasedArmor::Dispose(Dino &target, Mod *) const
 
 void ReducedArmor::Impose(Dino &target, Mod *mod) const
 {
-	mod->value = factor * target.ResistanceFactor(&DinoKind::armor_reduction_resistance);
+	mod->value = factor * target.ResistanceFactor(&DinoRound::armor_reduction_resistance);
     target.armor -= mod->value;
 }
 

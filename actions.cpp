@@ -43,7 +43,7 @@ void AttackAction::Do(Dino &self, Dino &target) const
 {
     double damage;
     if (flags & REND)
-        damage = target.max_total_health * target.ResistanceFactor(&DinoKind::rend_resistance);
+        damage = target.max_total_health * target.ResistanceFactor(&DinoRound::rend_resistance);
     else
         damage = self.damage;
     damage = floor(damage * self.DamageFactor());
@@ -238,7 +238,7 @@ void DamageOverTime::Do(Dino &self, Dino &target) const
 
 void Stun::Do(Dino &self, Dino &target) const
 {
-    if (rand() % 100 < factor * target.ResistanceFactor(&DinoKind::stun_resistance) * 100.)
+    if (rand() % 100 < factor * target.ResistanceFactor(&DinoRound::stun_resistance) * 100.)
         target.Impose(&stun, self);
 }
 
