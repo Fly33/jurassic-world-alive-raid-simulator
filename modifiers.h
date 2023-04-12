@@ -3,6 +3,7 @@
 
 #include <string>
 #include "strprintf.h"
+#include "pack.h"
 
 struct Dino;
 
@@ -616,5 +617,7 @@ struct Affliction : public Modifier
 };
 
 } // namespace modifiers
+
+#include "unpack.h"
 
 #endif // __JWA_CALC__MODIFIERS__H__

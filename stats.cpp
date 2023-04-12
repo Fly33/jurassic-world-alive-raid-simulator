@@ -1,6 +1,7 @@
 #include "stats.h"
 #include <vector>
 #include "logger.h"
+#include "pack.h"
 
 #undef SetTurn
 #undef RegisterHit

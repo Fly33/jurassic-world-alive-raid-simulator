@@ -5989,7 +5989,7 @@ Ability MinorRendingLockdown18B8("Minor Rending Lockdown", 0, 0, 0, {
     )
 });
 
-Ability MinorSwoop6A00("Minor Swoop", 1, 2, 0, {
+Ability MinorSwoop6A00("Minorï¿½Swoop", 1, 2, 0, {
     TargetHighestHP(
         DamageOverTime(20.0, 3)
     ),

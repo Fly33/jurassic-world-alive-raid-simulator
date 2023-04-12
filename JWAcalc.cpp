@@ -19,6 +19,7 @@
 #include "dex.h"
 #include "input.h"
 #include "stats.h"
+#include "pack.h"
 
 using namespace std;
 

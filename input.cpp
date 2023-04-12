@@ -6,6 +6,7 @@
 #include <cstring>
 #include "expression.h"
 #include <stdexcept>
+#include "pack.h"
 
 using namespace std;
 

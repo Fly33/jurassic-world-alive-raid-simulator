@@ -1,9 +1,9 @@
 #include "logger.h"
 #include "strprintf.h"
 #include <utility>
-
 #include <cstdio>
 #include <cstdarg>
+#include "pack.h"
 
 int Logger::level = LOG_LEVEL_DEBUG;
 bool Logger::buffered = false;

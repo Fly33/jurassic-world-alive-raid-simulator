@@ -2,6 +2,7 @@
 #define __UTILS__H__
 
 #include <cmath>
+#include "pack.h"
 
 inline int Round(double x)
 {
@@ -14,5 +15,7 @@ inline double Norm(double x)
 		return 0;
 	return x;
 }
+
+#include "unpack.h"
 
 #endif // __UTILS__H__

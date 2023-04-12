@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 #include "dino.h"
+#include "pack.h"
 
 class Expression
 {
@@ -68,5 +69,7 @@ inline void SkipWhite(const char *&line)
 }
 
 std::unique_ptr<Expression> ParseExpression(const char *line);
+
+#include "unpack.h"
 
 #endif // __EXPRESSION__H__

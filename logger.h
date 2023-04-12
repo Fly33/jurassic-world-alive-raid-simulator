@@ -2,6 +2,7 @@
 #define __LOGGER__H__
 
 #include <string>
+#include "pack.h"
 
 enum {
     LOG_LEVEL_NONE = 0,
@@ -29,5 +30,7 @@ public:
 #define WARNING(...) (Logger::level >= LOG_LEVEL_WARNING ? Logger::Log(__VA_ARGS__) : 0)
 #define INFO(...) (Logger::level >= LOG_LEVEL_INFO ? Logger::Log(__VA_ARGS__) : 0)
 #define DEBUG(...) (Logger::level >= LOG_LEVEL_DEBUG ? Logger::Log(__VA_ARGS__) : 0)
+
+#include "unpack.h"
 
 #endif // __LOGGER__H__

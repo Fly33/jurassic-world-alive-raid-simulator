@@ -9,12 +9,12 @@
 #include <functional>
 #include <set>
 #include <list>
-
 #include "ability.h"
 #include "strprintf.h"
 #include "modifiers.h"
 #include "actions.h"
 #include "utils.h"
+#include "pack.h"
 
 static const int COMMON = 0;
 static const int RARE = 1;
@@ -255,5 +255,7 @@ struct Dino
 	}
     void Revenge(Dino &source);
 };
+
+#include "unpack.h"
 
 #endif // __JWA_CALC__DINO__H__
