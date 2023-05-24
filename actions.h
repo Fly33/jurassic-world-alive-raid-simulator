@@ -279,8 +279,8 @@ struct IncreaseDamage : public Action
 struct ReduceSpeed : public Action
 {
     modifiers::ReducedSpeed reduced_speed;
-    ReduceSpeed(double _factor, int _duration)
-        : reduced_speed(_factor / 100., _duration)
+    ReduceSpeed(double _factor, int _duration, int _number)
+        : reduced_speed(_factor / 100., _duration, _number)
     {}
     virtual void Do(Dino &self, Dino &target) const override;
 };
@@ -306,8 +306,8 @@ struct Dodge : public Action
 struct IncreaseSpeed : public Action
 {
     modifiers::IncreasedSpeed increased_speed;
-    IncreaseSpeed(double _factor, int _duration)
-        : increased_speed(_factor / 100., _duration)
+    IncreaseSpeed(double _factor, int _duration, int _number)
+        : increased_speed(_factor / 100., _duration, _number)
     {}
     virtual void Do(Dino &self, Dino &target) const override;
 };

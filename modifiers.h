@@ -251,8 +251,8 @@ struct IncreasedDamage: public Modifier
 struct ReducedSpeed: public Modifier
 {
     double factor;
-    ReducedSpeed(double _factor, int _duration)
-        : Modifier("reduced speed", _duration)
+    ReducedSpeed(double _factor, int _duration, int _number)
+        : Modifier("reduced speed", _duration, _number)
         , factor(_factor)
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
@@ -268,6 +268,10 @@ struct ReducedSpeed: public Modifier
     virtual bool OnEndOfTurn(Mod *mod) const override
     {
         return mod->duration-- == 0;
+    }
+    virtual bool OutgoingAttack(Mod *mod) const override
+    {
+        return !--mod->number;
     }
 };
 
@@ -340,8 +344,8 @@ struct Dodge : public Modifier
 struct IncreasedSpeed: public Modifier
 {
     double factor;
-    IncreasedSpeed(double _factor, int _duration)
-        : Modifier("increased speed", _duration)
+    IncreasedSpeed(double _factor, int _duration, int _number)
+        : Modifier("increased speed", _duration, _number)
         , factor(_factor)
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
@@ -357,6 +361,10 @@ struct IncreasedSpeed: public Modifier
     virtual bool OnEndOfTurn(Mod *mod) const override
     {
         return mod->duration-- == 0;
+    }
+    virtual bool OutgoingAttack(Mod *mod) const override
+    {
+        return !--mod->number;
     }
 };
 

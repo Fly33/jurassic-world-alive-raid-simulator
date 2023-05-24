@@ -189,9 +189,9 @@ def ParseAction(data, guid):
                             action["Action"] = Action("ReduceCritChance", -action_data["p"] / 100000., action_data["d"], action_data["eac"])
                     elif action_data["aa"] == "Speed":
                         if action_data["p"] > 0:
-                            action["Action"] = Action("IncreaseSpeed", action_data["p"] / 100000., action_data["d"])
+                            action["Action"] = Action("IncreaseSpeed", action_data["p"] / 100000., action_data["d"], action_data.get("eac", 0))
                         else:
-                            action["Action"] = Action("ReduceSpeed", -action_data["p"] / 100000., action_data["d"])
+                            action["Action"] = Action("ReduceSpeed", -action_data["p"] / 100000., action_data["d"], action_data.get("eac", 0))
                     elif action_data["aa"] == "Armor":
                         if action_data["p"] > 0:
                             action["Action"] = Action("IncreaseArmor", action_data["p"] / 100000., action_data["d"], action_data["eac"])
