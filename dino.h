@@ -22,6 +22,7 @@ static const int EPIC = 2;
 static const int LEGENDARY = 3;
 static const int UNIQUE = 4;
 static const int APEX = 5;
+static const int OMEGA = 6;
 
 struct DinoRound
 {
