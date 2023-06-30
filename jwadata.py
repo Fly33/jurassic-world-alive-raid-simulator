@@ -326,6 +326,7 @@ def GetRound(l10n, data, round_data, ability_dex):
             'taunt_resistance': attr['rt'] / 100000,
             'vulnerable_resistance': attr['rv'] / 100000,
             'armor_reduction_resistance': attr.get('rarm', 0) / 100000,
+            'affliction_resistance': attr.get('raff', 0) / 100000,
             'ability': [GetAbility(data, ability_data, '', ability_dex, l10n=l10n)['dev_name'] for ability_data in round_data['al']],
             'counter': GetAbility(data, round_data['ac'], 'Counter', ability_dex, l10n=l10n)['dev_name'] if round_data['ac'] else None,
         }
@@ -511,7 +512,8 @@ def WriteDinoDex(dino_dex, f):
                   f'{dino["round"][round]["swap_prevention_resistance"]}, '\
                   f'{dino["round"][round]["taunt_resistance"]}, '\
                   f'{dino["round"][round]["vulnerable_resistance"]}, '\
-                  f'{dino["round"][round]["armor_reduction_resistance"]}, {{', file=f)
+                  f'{dino["round"][round]["armor_reduction_resistance"]}, '\
+                  f'{dino["round"][round]["affliction_resistance"]}, {{', file=f)
             for ability in range(len(dino['round'][round]['ability'])):
                 print(f'        &{dino["round"][round]["ability"][ability]}{"," if ability != len(dino["round"][round]["ability"]) - 1 else ""}', file=f)
             print(f'    }}, {"&" + dino["round"][round]["counter"] if dino["round"][round]["counter"] else "nullptr"}){"," if round != len(dino["round"]) - 1 else ""}', file=f)
@@ -533,7 +535,8 @@ def WriteCompactDinoDex(dino_dex, f):
                   f'{Num(dino["round"][round]["swap_prevention_resistance"])},'\
                   f'{Num(dino["round"][round]["taunt_resistance"])},'\
                   f'{Num(dino["round"][round]["vulnerable_resistance"])},'\
-                  f'{Num(dino["round"][round]["armor_reduction_resistance"])},{{', file=f, end='')
+                  f'{Num(dino["round"][round]["armor_reduction_resistance"])},'\
+                  f'{Num(dino["round"][round]["affliction_resistance"])},{{', file=f, end='')
             for ability in range(len(dino['round'][round]['ability'])):
                 print(f'&{GetCode(dino["round"][round]["ability"][ability])}{"," if ability != len(dino["round"][round]["ability"]) - 1 else ""}', file=f, end='')
             print(f'}},{"&" + GetCode(dino["round"][round]["counter"]) if dino["round"][round]["counter"] else GetShort("nullptr")}){"," if round != len(dino["round"]) - 1 else ""}', file=f, end='')

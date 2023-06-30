@@ -41,6 +41,7 @@ struct DinoRound
 	double taunt_resistance;
 	double vulnerable_resistance;
 	double armor_reduction_resistance;
+	double affliction_resistance;
 	std::vector<const Ability *> ability;
 	const CounterAbility *counter_attack;
     DinoRound(int _health, int _damage, int _speed, int _armor, int _crit,
@@ -54,6 +55,7 @@ struct DinoRound
             double _taunt_resistance,
             double _vulnerable_resistance,
             double _armor_reduction_resistance,
+			double _affliction_resistance,
             std::initializer_list<Ability *> _ability, CounterAbility *_counter_attack)
         : health(_health)
         , damage(_damage)
@@ -70,6 +72,7 @@ struct DinoRound
         , taunt_resistance(_taunt_resistance / 100.)
         , vulnerable_resistance(_vulnerable_resistance / 100.)
         , armor_reduction_resistance(_armor_reduction_resistance / 100.)
+		, affliction_resistance(_affliction_resistance / 100.)
 		, ability(_ability.begin(), _ability.end())
 		, counter_attack(_counter_attack)
     {}
