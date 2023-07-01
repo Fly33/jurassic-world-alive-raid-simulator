@@ -269,10 +269,6 @@ struct ReducedSpeed: public Modifier
     {
         return mod->duration-- == 0;
     }
-    virtual bool OutgoingAttack(Mod *mod) const override
-    {
-        return !--mod->number;
-    }
 };
 
 struct ReducedDamage: public Modifier
@@ -361,10 +357,6 @@ struct IncreasedSpeed: public Modifier
     virtual bool OnEndOfTurn(Mod *mod) const override
     {
         return mod->duration-- == 0;
-    }
-    virtual bool OutgoingAttack(Mod *mod) const override
-    {
-        return !--mod->number;
     }
 };
 
