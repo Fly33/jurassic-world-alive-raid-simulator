@@ -1,14 +1,9 @@
 #include <cstdio>
-#include <memory>
 #include <vector>
 #include <algorithm>
-#include <functional>
-#include <cstdlib>
 #include <string>
-#include <list>
 #include <ctime>
 #include <cstring>
-#include <getopt.h>
 #include <cctype>
 #include <regex>
 #include <cmath>
@@ -19,6 +14,7 @@
 #include "dex.h"
 #include "input.h"
 #include "stats.h"
+#include "arguments.h"
 #include "pack.h"
 
 using namespace std;
@@ -148,18 +144,21 @@ bool Check(Dino team[], int team_size, const Strategy &strategy)
                 continue;
             if (i == 0)
                 boss.Prepare(boss.turn % (int)boss->ability.size());
-            else if (team[i].team == 1) { // Teammates
-                bool minor = ability[i-1] < 0;
-                int ability_id = abs(ability[i-1])-1;
-                if (!team[i].Prepare(ability_id, minor)) {
-                    ERROR("%s Can't use %s because of cooldown", team[i].Name().c_str(), team[i]->ability[ability_id]->name.c_str());
-                    return false;
+            else {
+                int ability_id = i-1 < (int)ability.size() ? ability[i-1] : 0;
+                if (ability_id != 0) {
+                    bool minor = ability_id < 0;
+                    ability_id = abs(ability[i-1])-1;
+                    if (!team[i].Prepare(ability_id, minor)) {
+                        ERROR("%s Can't use %s because of cooldown", team[i].Name().c_str(), team[i]->ability[ability_id]->name.c_str());
+                        return false;
+                    }
+                } else {
+                    while (!team[i].Prepare(rand() % team[i]->ability.size()))
+                        ;
                 }
-            } else { // Minions
-                while (!team[i].Prepare(rand() % team[i]->ability.size()))
-                    ;
             }
-            WARNING("%s chose %s", team[i].Name().c_str(), team[i]->ability[team[i].ability_id]->name.c_str());
+            WARNING("%s chose %s (%d)", team[i].Name().c_str(), team[i]->ability[team[i].ability_id]->name.c_str(), team[i].ability_id + 1);
         }
 
         int result = Step(team, team_size);
@@ -194,15 +193,17 @@ int Chance(Dino team0[], int team_size, const Strategy &strategy, int n_checks =
     return 100 * result / n_checks;
 }
 
-string Explain(Dino team0[], int team_size, const Strategy &strategy, int n_checks = 1000)
+string Explain(Dino team0[], int team_size, const Strategy &strategy, bool win, int n_checks = 1000)
 {
     for (int i = 0; i < n_checks; ++i) {
         Logger::SetBuf();
         vector<Dino> team(team0, team0 + team_size);
-        if (!Check(team.data(), team_size, strategy))
+        if (Check(team.data(), team_size, strategy) == win)
             return move(Logger::TakeBuf());
         Logger::TakeBuf();
     }
+    if (win)
+        return "Always fail";
     return "Always succeed";
 }
 
@@ -230,79 +231,116 @@ string Explain(Dino team0[], int team_size, const Strategy &strategy, int n_chec
 //    }
 //}
 
-int ProcessCommonArgs(int argc, char *argv[])
+bool SetLogLevel(int, char *[], const char *loglevel, void *)
 {
-    while (true) {
-        static struct option long_options[] = {
-            {"loglevel", required_argument, nullptr, 'l'},
-            {0, 0, 0, 0}
-        };
-        int option_index;
-
-        switch (getopt_long(argc, argv, "l:", long_options, &option_index)) {
-        case -1:
-            break;
-        case 'l':
-            if (sscanf(optarg, "%d", &Logger::level) != 1) {
-                LOG("--loglevel takes a number from 0 to 4");
-                return -1;
-            }
-            continue;
-        case '?':
-            return -1;
-        }
-        break;
+    if (sscanf(loglevel, "%d", &Logger::level) != 1) {
+        LOG("--loglevel takes a number from 0 to 4");
+        return false;
     }
-    return 0;
+    return true;
 }
 
-int CheckInput(int argc, char *argv[])
+bool SetInt(int, char *[], const char *value, void *out)
 {
+    if (sscanf(value, "%d", (int *)out) != 1) {
+        LOG("Argumet should be integer");
+        return false;
+    }
+    return true;
+}
+
+bool SetBool(int, char *[], const char *, void *out)
+{
+    *(bool *)out = true;
+    return true;
+}
+
+bool CheckInput(int argc, char *argv[], const char *filename, void *)
+{
+    if (filename) {
+        if (freopen(filename, "r", stdin) == NULL) {
+            LOG("File \"%s\" is not found.", filename);
+            return false;
+        }
+    }
+    vector<Argument> arguments = {
+        {'l', "loglevel", required_argument, SetLogLevel, nullptr}
+    };
+    if (!ParseArguments(argc, argv, arguments))
+        return false;
     Strategy strategy;
     vector<Dino> team;
-    ProcessCommonArgs(argc, argv);
     if (int line = Input(team, strategy)) {
         LOG("Input error in line %d!", line);
-        return -1;
+        return false;
     }
     Check(team.data(), (int)team.size(), strategy);
-    return 0;
+    return false;
 }
 
-int ChanceInput(int argc, char *argv[])
+bool ChanceInput(int argc, char *argv[], const char *filename, void *)
 {
+    if (filename) {
+        if (freopen(filename, "r", stdin) == NULL) {
+            LOG("File \"%s\" is not found.", filename);
+            return false;
+        }
+    }
+    int n_checks = 1000;
+    vector<Argument> arguments = {
+        {'l', "loglevel", required_argument, SetLogLevel, nullptr},
+        {'n', "n-checks", required_argument, SetInt, &n_checks}
+    };
+    if (!ParseArguments(argc, argv, arguments))
+        return false;
     Strategy strategy;
     vector<Dino> team;
-    ProcessCommonArgs(argc, argv);
     if (int line = Input(team, strategy)) {
         LOG("Input error in line %d!", line);
         return -1;
     }
-    Chance(team.data(), (int)team.size(), strategy);
-    return 0;
+    Chance(team.data(), (int)team.size(), strategy, n_checks);
+    return false;
 }
 
-int ExplainInput(int argc, char *argv[])
+bool ExplainInput(int argc, char *argv[], const char *filename, void *)
 {
+    if (filename) {
+        if (freopen(filename, "r", stdin) == NULL) {
+            LOG("File \"%s\" is not found.", filename);
+            return false;
+        }
+    }
+    bool win = false;
+    int n_checks = 1000;
+    vector<Argument> arguments = {
+        {'l', "loglevel", required_argument, SetLogLevel, nullptr},
+        {'n', "n-checks", required_argument, SetInt, &n_checks},
+        {'w', "win", no_argument, SetBool, &win}
+    };
+    if (!ParseArguments(argc, argv, arguments))
+        return false;
     Strategy strategy;
     vector<Dino> team;
-    ProcessCommonArgs(argc, argv);
     if (int line = Input(team, strategy)) {
         LOG("Input error in line %d!", line);
         return -1;
     }
-    string result = Explain(team.data(), (int)team.size(), strategy);
+    string result = Explain(team.data(), (int)team.size(), strategy, win, n_checks);
     LOG("%s", result.c_str());
-    return 0;
+    return false;
 }
 
-int Help()
+bool Help(int, char *[], const char *optarg, void *)
 {
     if (optarg != nullptr && (strcmp(optarg, "check") == 0 || strcmp(optarg, "chance") == 0 || strcmp(optarg, "explain") == 0)) {
-        printf(R"--(Usage: JWAcalc --%s [file] --loglevel <loglevel>
+        printf(R"--(Usage: JWAcalc --%s [file] [-w|--win] [-n|--n-checks <number_of_checks>] [-l|--loglevel <loglevel>]
 
 Options:
         -l, --loglevel <loglevel>   Change the default log level to <loglevel>. It can be a number from 0 to 4.
+        -n, --n-checks              (chance and explain only) The number of checks. (default: 1000)
+        -w, --win                   (explain only) It searches for a won battle. (If it is missed it searches for a lost
+                                    battle.)
 
 Checks a strategy from input or <file> if specified. The strategy has the following format:
         <boss_name>
@@ -314,9 +352,10 @@ Checks a strategy from input or <file> if specified. The strategy has the follow
         ...
         <teammate_N_turn_1_move> ... <teammate_N_turn_M_move>
 
-A move is a number from 1 to 4. But it can be negative to manage the move order of the dinos with equal speed.
-If two or more dinos have completely equal speed (equal speed, level and rarity), those with the positive move
-act first from top to bottom, then those with the negative move act from bottom to top.
+A move is a number from -4 to 4. Positive value means an ability number. 0 means a random ability. Negative value manages
+the move order of the dinos with equal speed. If two or more dinos have completely equal speed (equal speed, level and
+rarity), those with the positive move act first from top to bottom, then those with the negative move act from bottom to
+top.
 
 Also there is alternarive format:
         <boss_name>
@@ -333,7 +372,7 @@ Also there is alternarive format:
 The indent of all lines in the block must be the same.
 
 <line> ::=
-        <teammate_1_turn_X_move> ... <teammate_N_turn_X_move>
+        <teammate_1_turn_X_move> ... <teammate_N_turn_X_move> [<minion_1_turn_X_move> [minion_2_turn_X_move]]
 OR
         ?<condition>
         <indent><block>
@@ -377,14 +416,14 @@ Options:
         -h, --help [command]    this help;
         --check [file]          checks a strategy from input or <file> if specified;
         --chance [file]         calculates a chance of winning using a strategy from input or <file> if specified;
-        --explain [file]        prints a log of a lost battle using a strategy from input or <file> if specified;
+        --explain [file]        prints a log of a won/lost battle using a strategy from input or <file> if specified;
         -l, --list [regexp]     prints a list of available bosses and dinos which meets a match criteria.
         )--");
     }
-    return 0;
+    return false;
 }
 
-int List(const char *regexp)
+bool List(int, char *[], const char *regexp, void *)
 {
     regex r(regexp ? regexp : "", regex_constants::icase);
     smatch sm;
@@ -401,7 +440,7 @@ int List(const char *regexp)
             continue;
         LOG("  %s", it->first.c_str());
     }
-    return 0;
+    return false;
 }
 
 int main(int argc, char *argv[])
@@ -411,48 +450,15 @@ int main(int argc, char *argv[])
     setbuf(stdout, NULL);
 #endif
 
-    while (true) {
-        static struct option long_options[] = {
-            {"check", optional_argument, nullptr, 'c'},
-            {"chance", optional_argument, nullptr, 'p'},
-            {"explain", optional_argument, nullptr, 'e'},
-            {"help", optional_argument, nullptr, 'h'},
-            {"list", optional_argument, nullptr, 'l'},
-            {0, 0, 0, 0}
-        };
-        int option_index;
-
-        switch (getopt_long(argc, argv, "h::l", long_options, &option_index)) {
-        case -1:
-            return 0;
-        case 'c':
-            if(optarg == nullptr && argv[optind] != nullptr && argv[optind][0] != '-')
-                optarg = argv[optind++];
-            if (optarg)
-                freopen(optarg, "r", stdin);
-            return CheckInput(argc, argv);
-        case 'p':
-            if(optarg == nullptr && argv[optind] != nullptr && argv[optind][0] != '-')
-                optarg = argv[optind++];
-            if (optarg)
-                freopen(optarg, "r", stdin);
-            return ChanceInput(argc, argv);
-        case 'e':
-            if(optarg == nullptr && argv[optind] != nullptr && argv[optind][0] != '-')
-                optarg = argv[optind++];
-            if (optarg)
-                freopen(optarg, "r", stdin);
-            return ExplainInput(argc, argv);
-        case '?':
-        case 'h':
-            if(optarg == nullptr && argv[optind] != nullptr && argv[optind][0] != '-')
-                optarg = argv[optind++];
-            return Help();
-        case 'l':
-            if(optarg == nullptr && argv[optind] != nullptr && argv[optind][0] != '-')
-                optarg = argv[optind++];
-            return List(optarg);
-        }
-    }
+    vector<Argument> arguments = {
+        {'c', "check", optional_argument, CheckInput, nullptr},
+        {'p', "chance", optional_argument, ChanceInput, nullptr},
+        {'e', "explain", optional_argument, ExplainInput, nullptr},
+        {'l', "list", optional_argument, List, nullptr},
+        {'h', "help", optional_argument, Help, nullptr},
+        {':', nullptr, no_argument, Help, nullptr},
+        {'?', nullptr, no_argument, Help, nullptr}
+    };
+    ParseArguments(argc, argv, arguments);
     return 0;
 }

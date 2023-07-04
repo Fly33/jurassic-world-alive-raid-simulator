@@ -83,10 +83,13 @@ Instruction ParseInstruction(int team_size, const char *line, int offset)
 {
     Instruction instruction;
     int n, ability;
-    for (int j = 0; j < team_size; ++j) {
-        if (sscanf(line, "%d%n", &ability, &n) != 1)
-            throw invalid_argument(strprintf("Expected a number near \"%.10s...\"", line));
-        if (ability == 0 || 4 < abs(ability))
+    for (int j = 0; j < team_size + 2; ++j) {
+        if (sscanf(line, "%d%n", &ability, &n) != 1) {
+        	if (j < team_size)
+            	throw invalid_argument(strprintf("Expected a number near \"%.10s...\"", line));
+        	break;
+        }
+        if (4 < abs(ability))
             throw invalid_argument("Move should be between 1 and 4");
         line += n;
         instruction.abilities.push_back(ability);
