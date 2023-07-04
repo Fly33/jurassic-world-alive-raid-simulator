@@ -583,7 +583,7 @@ struct ReducedArmor: public Modifier
     {
         return !--mod->number;
     }
-    virtual bool OnEndOfTurn(Mod *mod) const override
+    virtual bool OnAction(Mod *mod) const override
     {
         return --mod->duration == 0;
     }
