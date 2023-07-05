@@ -404,3 +404,21 @@ int Input(vector<Dino> &team, Strategy &strategy)
     }
     return 0;
 }
+
+void MakeStrategy(const vector<vector<int>> &ability, Strategy &strategy)
+{
+    strategy.instructions.clear();
+    int n_turns = 0;
+    for (int j = 0; j < (int)ability.size(); ++j) {
+        if (n_turns < (int)ability[j].size())
+            n_turns = (int)ability[j].size();
+    }
+    for (int i = 0; i < n_turns; ++i) {
+        Instruction instruction;
+        for (int j = 0; j < (int)ability.size(); ++j)
+            instruction.abilities.push_back(i < (int)ability[j].size() ? ability[j][i] : 0);
+        instruction.failure = i + 1;
+        instruction.success = i + 1;
+        strategy.instructions.push_back(move(instruction));
+    }
+}

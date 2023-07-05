@@ -41,6 +41,7 @@ public:
 };
 
 int Input(std::vector<Dino> &team, Strategy &strategy);
+void MakeStrategy(const std::vector<std::vector<int>> &ability, Strategy &strategy);
 
 #include "unpack.h"
 

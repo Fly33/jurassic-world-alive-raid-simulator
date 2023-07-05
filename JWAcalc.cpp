@@ -15,6 +15,7 @@
 #include "input.h"
 #include "stats.h"
 #include "arguments.h"
+#include <omp.h>
 #include "pack.h"
 
 using namespace std;
@@ -161,7 +162,6 @@ bool Check(Dino team[], int team_size, const Strategy &strategy)
             }
             WARNING("%s chose %s (%d)", team[i].Name().c_str(), team[i]->ability[team[i].ability_id]->name.c_str(), team[i].ability_id + 1);
         }
-
         int result = Step(team, team_size);
         if (result == 0)
             continue;
@@ -192,7 +192,29 @@ int Chance(Dino team0[], int team_size, const Strategy &strategy, int n_checks =
     }
     Logger::level = log;
     stats.Print(team0, team_size);
-    return 100 * result / n_checks;
+    return result;
+}
+
+double Chance2(Dino team0[], int team_size, const Strategy &strategy, int max_checks = 1000)
+{
+    int n_win = 0;
+    int n_checks = 0;
+    auto log_level = Logger::level;
+    Logger::level = 0;
+    for (n_checks = 0; n_checks++ < max_checks; ) {
+        vector<Dino> team(team0, team0 + team_size);
+        bool win = Check(team.data(), team_size, strategy);
+        if (win)
+            ++n_win;
+        if (n_checks < 7)
+            continue;
+        double p = (double)n_win / n_checks;
+        double s = sqrt((p - p*p) / n_checks);
+        if (p + s <= log(n_checks) / log(max_checks))
+            break;
+    }
+    Logger::level = log_level;
+    return (double)n_win / n_checks;
 }
 
 string Explain(Dino team0[], int team_size, const Strategy &strategy, bool win, int n_checks = 1000)
@@ -209,29 +231,126 @@ string Explain(Dino team0[], int team_size, const Strategy &strategy, bool win, 
     return "Always succeed";
 }
 
-//int FindAll(Dino boss[], int boss_size, Dino team[], int team_size, int max_turns)
-//{
-//    ;
-//}
-//
-//int Find(Dino team[], int team_size, int max_turns, int turn = 0, int teammate_id = 0)
-//{
-//    if (teammate_id == 0) { // boss
-//        Dino boss = *team;
-//        team->Prepare(team->turn % (int)team->kind->ability[team->round].size());
-//        int r = Find(team, team_size, max_turns, turn, teammate_id + 1);
-//        *team = boss;
-//        return r;
-//    } else if (team[teammate_id] == 1) { // teammate
-//        if (!team[teammate_id].Alive())
-//            return Find(team, team_size, max_turns, turn, teammate_id + 1);
-//        for (int i = 0; i < (int)team[teammate_id].kind->ability[team[teammate_id].round].size(); ++i) {
-//            if (!team[teammate_id].Prepare(i))
-//                continue;
-//            int r = Find(
-//        }
-//    }
-//}
+Strategy Randomize(Dino team0[], int team_size, const Strategy &base_strategy, int n_checks = 1000)
+{
+    auto log = Logger::level;
+    Logger::level = 0;
+    double best = 0;
+    Strategy best_strategy;
+#pragma omp parallel
+    while(best < n_checks) {
+        Strategy strategy = base_strategy;
+        for (int k = 0; k < (int)base_strategy.instructions.size(); ++k) {
+            if (base_strategy.instructions[k].expression.get())
+                continue;
+            for (int j = 0; j < (int)base_strategy.instructions[k].abilities.size(); ++j) {
+                if (team0[j+1].team != 1 || base_strategy.instructions[k].abilities[j] != 0)
+                    continue;
+                strategy.instructions[k].abilities[j] = rand() % team0[j+1]->ability.size() + 1;
+            }
+        }
+        double res = Chance2(team0, team_size, strategy, n_checks);
+#pragma omp critical
+        if (best < res) {
+            best = res;
+            best_strategy = move(strategy);
+            LOG("Found strategy %.1lf%%", best * 100);
+            LOG("%s", best_strategy.ToString().c_str());
+        }
+    }
+    Logger::level = log;
+    return best_strategy;
+}
+
+Strategy Full(Dino team0[], int team_size, Strategy base_strategy, int n_checks = 1000)
+{
+    auto log = Logger::level;
+    Logger::level = 0;
+    int64_t imax = 1;
+    for (int k = 0; k < (int)base_strategy.instructions.size(); ++k) {
+        if (base_strategy.instructions[k].expression.get())
+            continue;
+        for (int j = 0; j < (int)base_strategy.instructions[k].abilities.size(); ++j) {
+            if (team0[j+1].team != 1 || base_strategy.instructions[k].abilities[j] != 0)
+                continue;
+            imax *= (int)team0[j+1]->ability.size();
+            if (imax >= 1000000000) {
+                LOG("Too many checks");
+                return base_strategy;
+            }
+        }
+    }
+    LOG("Checks %d", (int)imax);
+    double best = 0;
+    Strategy best_strategy;
+#pragma omp parallel for schedule(dynamic)
+    for (int i = 0; i < imax; ++i) {
+        Strategy strategy = base_strategy;
+        for (int k = 0, a = i; k < (int)base_strategy.instructions.size(); ++k) {
+            if (base_strategy.instructions[k].expression.get())
+                continue;
+            for (int j = 0; j < (int)base_strategy.instructions[k].abilities.size(); ++j) {
+                if (team0[j+1].team != 1 || base_strategy.instructions[k].abilities[j] != 0)
+                    continue;
+                strategy.instructions[k].abilities[j] = a % (int)team0[j+1]->ability.size() + 1;
+                a /= (int)team0[j+1]->ability.size();
+            }
+        }
+        double res = Chance2(team0, team_size, strategy, n_checks);
+#pragma omp critical
+        if (best < res) {
+            best = res;
+            best_strategy = move(strategy);
+            LOG("%d/%d found strategy %.1lf%% win", i+1, (int)imax, best * 100);
+            LOG("%s", best_strategy.ToString().c_str());
+        }
+        if (100 * i / imax / 5 < 100 * (i+1) / imax / 5)
+            LOG("%d%%", 100 * (i+1) / (int)imax);
+    }
+    Logger::level = log;
+    return best_strategy;
+}
+
+Strategy TurnByTurn(Dino team0[], int team_size, Strategy base_strategy, int n_checks = 1000)
+{
+    auto log = Logger::level;
+    Logger::level = 0;
+    for (int k = 0; k < (int)base_strategy.instructions.size(); ++k) {
+        if (base_strategy.instructions[k].expression.get())
+            continue;
+        int imax = 1;
+        for (int j = 0; j < (int)base_strategy.instructions[k].abilities.size(); ++j) {
+            if (team0[j+1].team != 1 || base_strategy.instructions[k].abilities[j] != 0)
+                continue;
+            imax *= (int)team0[j+1]->ability.size();
+        }
+        LOG("Step %d/%d", k+1, (int)base_strategy.instructions.size());
+        LOG("Checks %d", imax);
+        double best = 0;
+        Strategy best_strategy;
+#pragma omp parallel for schedule(dynamic)
+        for (int i = 0; i < imax; ++i) {
+            Strategy strategy = base_strategy;
+            for (int j = 0, a = i; j < (int)base_strategy.instructions[k].abilities.size(); ++j) {
+                if (team0[j+1].team != 1 || base_strategy.instructions[k].abilities[j] != 0)
+                    continue;
+                strategy.instructions[k].abilities[j] = a % (int)team0[j+1]->ability.size() + 1;
+                a /= (int)team0[j+1]->ability.size();
+            }
+            double res = Chance2(team0, team_size, strategy, n_checks);
+#pragma omp critical
+            if (best < res) {
+                best = res;
+                best_strategy = move(strategy);
+            }
+        }
+        base_strategy = move(best_strategy);
+        LOG("win: %.1lf%%", best * 100);
+        LOG("%s", base_strategy.ToString().c_str());
+    }
+    Logger::level = log;
+    return base_strategy;
+}
 
 bool SetLogLevel(int, char *[], const char *loglevel, void *)
 {
@@ -333,16 +452,63 @@ bool ExplainInput(int argc, char *argv[], const char *filename, void *)
     return false;
 }
 
+bool SearchInput(int argc, char *argv[], const char *filename, void *)
+{
+    if (filename) {
+        if (freopen(filename, "r", stdin) == NULL) {
+            LOG("File \"%s\" is not found.", filename);
+            return false;
+        }
+    }
+    int n_checks = 1000;
+    int n_threads = 4;
+    string method = "random";
+    vector<Argument> arguments = {
+        {'l', "loglevel", required_argument, SetLogLevel, nullptr},
+        {'n', "n-checks", required_argument, SetInt, &n_checks},
+        {'m', "method", required_argument, [](int, char *[], const char *optarg, void *out) -> bool { *(string *)out = optarg; return true; }, &method},
+        {'t', "treads", required_argument, SetInt, &n_threads},
+    };
+    if (!ParseArguments(argc, argv, arguments))
+        return false;
+    Strategy strategy;
+    vector<Dino> team;
+    if (int line = Input(team, strategy)) {
+        LOG("Input error in line %d!", line);
+        return -1;
+    }
+    if (n_threads < 1)
+        n_threads = 1;
+    omp_set_num_threads(n_threads);
+    if (strncmp(method.c_str(), "random", method.length()) == 0)
+        Randomize(team.data(), (int)team.size(), strategy, n_checks);
+    else if (strncmp(method.c_str(), "full", method.length()) == 0)
+        Full(team.data(), (int)team.size(), strategy, n_checks);
+    else if (strncmp(method.c_str(), "turn-by-turn", method.length()) == 0)
+        TurnByTurn(team.data(), (int)team.size(), strategy, n_checks);
+    else
+        LOG("Unknown method \"%s\"", method.c_str());
+    return false;
+}
+
 bool Help(int, char *[], const char *optarg, void *)
 {
-    if (optarg != nullptr && (strcmp(optarg, "check") == 0 || strcmp(optarg, "chance") == 0 || strcmp(optarg, "explain") == 0)) {
-        printf(R"--(Usage: JWAcalc --%s [file] [-w|--win] [-n|--n-checks <number_of_checks>] [-l|--loglevel <loglevel>]
+    if (optarg != nullptr && (strcmp(optarg, "check") == 0 || strcmp(optarg, "chance") == 0 || strcmp(optarg, "explain") == 0 || strcmp(optarg, "search") == 0)) {
+        printf(R"--(Usage: JWAcalc --%s [file] [options]
 
 Options:
         -l, --loglevel <loglevel>   Change the default log level to <loglevel>. It can be a number from 0 to 4.
-        -n, --n-checks              (chance and explain only) The number of checks. (default: 1000)
+        -n, --n-checks              (chance explain and search only) The number of checks. (default: 1000)
         -w, --win                   (explain only) It searches for a won battle. (If it is missed it searches for a lost
                                     battle.)
+        -m, --method <method>       (search only) A method used to search for the best strategy.
+                                    Methods:
+                                        random          It fills all zero abilities with random values before check.
+                                        full            It checks all possible combinations for zero abilities if their
+                                                        number don't exceed 1.000.000.000.
+                                        turn-by-turn    It checks all possible combinations of abilities within one
+                                                        turn, memories the best combination and goes next turn.
+        -t, --threads <int>         (search only) The number of threads.
 
 Checks a strategy from input or <file> if specified. The strategy has the following format:
         <boss_name>
@@ -419,6 +585,7 @@ Options:
         --check [file]          checks a strategy from input or <file> if specified;
         --chance [file]         calculates a chance of winning using a strategy from input or <file> if specified;
         --explain [file]        prints a log of a won/lost battle using a strategy from input or <file> if specified;
+        --search [file]         searches for the best strategy using a template strategy;
         -l, --list [regexp]     prints a list of available bosses and dinos which meets a match criteria.
         )--");
     }
@@ -456,6 +623,7 @@ int main(int argc, char *argv[])
         {'c', "check", optional_argument, CheckInput, nullptr},
         {'p', "chance", optional_argument, ChanceInput, nullptr},
         {'e', "explain", optional_argument, ExplainInput, nullptr},
+        {'s', "search", optional_argument, SearchInput, nullptr},
         {'l', "list", optional_argument, List, nullptr},
         {'h', "help", optional_argument, Help, nullptr},
         {':', nullptr, no_argument, Help, nullptr},
