@@ -181,7 +181,8 @@ void Dino::Hit(const Dino &attacker, int damage)
         damage = health;
     health -= damage;
     total_health -= damage;
-	Stats::RegisterHit(attacker, *this, damage);
+    if (stats)
+        stats->RegisterHit(attacker, *this, damage);
 }
 
 void Dino::Heal(const Dino &healer, int heal)
@@ -190,7 +191,8 @@ void Dino::Heal(const Dino &healer, int heal)
         heal = max_health - health;
     health += heal;
     total_health += heal;
-    Stats::RegisterHit(healer, *this, -heal);
+    if (stats)
+        stats->RegisterHit(healer, *this, -heal);
 }
 
 int Dino::Absorb(int damage)

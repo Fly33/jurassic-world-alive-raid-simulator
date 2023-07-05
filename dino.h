@@ -156,6 +156,7 @@ struct Dino
     int stun = 0;
     std::multiset<double, std::greater<double>> cloak_factor;
     std::string name;
+    class Stats *stats = nullptr;
 
     Dino(int _team, int _index, int _level, int _health_boost, int _damage_boost, int _speed_boost, const DinoKind *_kind);
 

@@ -135,7 +135,8 @@ bool Check(Dino team[], int team_size, const Strategy &strategy)
             ERROR("Round %d", round);
         }
         ERROR("Turn %d", boss.turn+1);
-        Stats::NextTurn(boss.round, boss.turn);
+        if (boss.stats)
+            boss.stats->NextTurn(boss.round, boss.turn);
         auto ability = strategy.Next(team, team_size, offset);
         if (ability.size() == 0)
             break;
@@ -179,17 +180,18 @@ int Chance(Dino team0[], int team_size, const Strategy &strategy, int n_checks =
     int result = 0;
     auto log = Logger::level;
     Logger::level = 0;
-    Stats::on = true;
-    Stats::Init(team_size);
+    Stats stats(team_size);
     for (int i = 0; i < n_checks; ++i) {
         vector<Dino> team(team0, team0 + team_size);
+        for (int j = 0; j < (int)team.size(); ++j)
+            team[j].stats = &stats;
         bool win = Check(team.data(), team_size, strategy);
-        Stats::RegisterResult(win);
+        stats.RegisterResult(win);
         if (win)
             ++result;
     }
     Logger::level = log;
-    Stats::Print(team0, team_size);
+    stats.Print(team0, team_size);
     return 100 * result / n_checks;
 }
 

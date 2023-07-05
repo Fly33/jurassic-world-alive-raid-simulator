@@ -10,13 +10,6 @@
 
 using namespace std;
 
-bool BaseStats::on = false;
-Wrapper<&BaseStats::Init> Stats::Init;
-Wrapper<&BaseStats::NextTurn> Stats::NextTurn;
-Wrapper<&BaseStats::RegisterHit> Stats::RegisterHit;
-Wrapper<&BaseStats::RegisterResult> Stats::RegisterResult;
-Wrapper<&BaseStats::Print> Stats::Print;
-
 /*
  * 1. разделение статистики на выигрышную и проигрышную
  * 2. Кто по кому и сколько ударил в среднем по каждому раунду
@@ -25,12 +18,12 @@ Wrapper<&BaseStats::Print> Stats::Print;
  */
 
 
-void BaseStats::Init(int _team_size)
+Stats::Stats(int _team_size)
+    : team_size(_team_size)
 {
-    team_size = _team_size;
 }
 
-void BaseStats::RegisterResult(bool result)
+void Stats::RegisterResult(bool result)
 {
     if (result)
         win_count++;
@@ -82,19 +75,19 @@ void BaseStats::RegisterResult(bool result)
     turns.clear();
 }
 
-void BaseStats::RegisterHit(const Dino &attacker, const Dino &target, int damage)
+void Stats::RegisterHit(const Dino &attacker, const Dino &target, int damage)
 {
     hit.emplace_back(curr_round, curr_turn, attacker.index, target.index, target.health, damage);
 }
 
-void BaseStats::NextTurn(int round, int turn)
+void Stats::NextTurn(int round, int turn)
 {
     curr_round = round;
     curr_turn = turn;
     turns.emplace_back(round, turn);
 }
 
-void BaseStats::Print(Dino team[], int team_size)
+void Stats::Print(Dino team[], int team_size)
 {
     ERROR("Chance: %d%%", win_count * 100 / (win_count + defeat_count));
 
