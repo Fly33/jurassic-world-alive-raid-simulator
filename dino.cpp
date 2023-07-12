@@ -131,7 +131,7 @@ void Dino::DevourHeal()
 {
     if (health == 0 || devour_heal == 0)
         return;
-    devour_heal = HealAbsorb(devour_heal);
+    int devour_heal = HealAbsorb(this->devour_heal);
     Heal(*this, devour_heal);
     WARNING("%s is [devour] healed by %d", Name().c_str(), devour_heal);
 }
