@@ -26,6 +26,72 @@ vector<int> Strategy::Next(const Dino team[], int team_size, int &offset) const
     return {};
 }
 
+string Strategy::ToPlainString() const
+{
+    string result;
+    for (int k = 0; k < (int)instructions.size(); ++k) {
+        result += strprintf("%3d ", k);
+        if (instructions[k].expression.get()) {
+            result += '?';
+            result += instructions[k].expression->ToString();
+        } else {
+            for (int i = 0; i < (int)instructions[k].abilities.size(); ++i) {
+                result += strprintf("%d", instructions[k].abilities[i]);
+                if (i + 1 < (int)instructions[k].abilities.size())
+                    result += ' ';
+            }
+        }
+        result += strprintf(" %3d %3d\n", instructions[k].success, instructions[k].failure);
+    }
+    return result;
+}
+
+string Strategy::ToString(int indent, int begin, int end) const
+{
+    if (end == -1)
+        end = (int)instructions.size();
+    string result;
+    int offset = begin;
+    while (offset != end) {
+//#ifdef DEBUG
+//        result += strprintf("%3d ", offset);
+//#endif
+        for (int i = 0; i < indent; ++i)
+            result += "  ";
+        if (instructions[offset].expression.get()) {
+            result += '?';
+            result += instructions[offset].expression->ToString();
+//#ifdef DEBUG
+//            result += strprintf(" %3d %3d", instructions[offset].success, instructions[offset].failure);
+//#endif
+            result += "\n";
+            result += ToString(indent+1, instructions[offset].success, instructions[offset].next);
+            if (instructions[offset].failure != instructions[offset].next) {
+//#ifdef DEBUG
+//                result += "    ";
+//#endif
+                for (int i = 0; i < indent; ++i)
+                    result += "  ";
+                result += ":\n";
+                result += ToString(indent+1, instructions[offset].failure, instructions[offset].next);
+            }
+            offset = instructions[offset].next;
+        } else {
+            for (int i = 0; i < (int)instructions[offset].abilities.size(); ++i) {
+                result += strprintf("%d", instructions[offset].abilities[i]);
+                if (i + 1 < (int)instructions[offset].abilities.size())
+                    result += ' ';
+            }
+//#ifdef DEBUG
+//            result += strprintf(" %3d %3d", instructions[offset].success, instructions[offset].failure);
+//#endif
+            result += '\n';
+            offset = instructions[offset].next;
+        }
+    }
+    return result;
+}
+
 static int CurrLine = 1;
 static int NewLine = 1;
 
@@ -79,9 +145,94 @@ void UngetLine(const string &str)
         UngetChar(*i);
 }
 
-Instruction ParseInstruction(int team_size, const char *line, int offset)
+struct Command
 {
-    Instruction instruction;
+    int number;
+    virtual ~Command() {}
+    virtual vector<Instruction> GetInstructions(int next) const = 0;
+    virtual int Enumerate(int index) = 0;
+};
+
+struct Block : public Command
+{
+    vector<unique_ptr<Command>> commands;
+    virtual ~Block() {}
+    virtual int Enumerate(int index = 0) override
+    {
+        number = index;
+        for (int i = 0; i < (int)commands.size(); ++i) {
+            index = commands[i]->Enumerate(index);
+        }
+        return index;
+    }
+    virtual vector<Instruction> GetInstructions(int next) const override
+    {
+        vector<Instruction> result;
+        for (int i = 0; i < (int)commands.size(); ++i) {
+            auto instructions = commands[i]->GetInstructions(i+1 < (int)commands.size() ? commands[i+1]->number : next);
+            for (auto &instruction: instructions)
+                result.push_back(move(instruction));
+        }
+        return result;
+    }
+};
+
+struct Condition : public Command
+{
+    unique_ptr<Expression> expression;
+    unique_ptr<Command> success, failure;
+    virtual ~Condition() {}
+    virtual int Enumerate(int index) override
+    {
+        number = index++;
+        index = success->Enumerate(index);
+        if (failure.get())
+            index = failure->Enumerate(index);
+        return index;
+    }
+    virtual vector<Instruction> GetInstructions(int next) const override
+    {
+        vector<Instruction> result;
+        Instruction condition;
+        condition.expression = move(expression->Copy());
+        condition.success = success->number;
+        condition.failure = failure.get() ? failure->number : next;
+        condition.next = next;
+        result.push_back(move(condition));
+        for (auto &instruction: success->GetInstructions(next))
+            result.push_back(move(instruction));
+        if (failure.get())
+            for (auto &instruction: failure->GetInstructions(next))
+                result.push_back(move(instruction));
+        return result;
+    }
+};
+
+struct Moveset : public Command
+{
+    vector<int> abilities;
+    virtual ~Moveset() {}
+    virtual int Enumerate(int index) override
+    {
+        number = index++;
+        return index;
+    }
+    virtual vector<Instruction> GetInstructions(int next) const override
+    {
+        vector<Instruction> result;
+        Instruction turn;
+        turn.abilities = abilities;
+        turn.success = next;
+        turn.failure = next;
+        turn.next = next;
+        result.push_back(turn);
+        return result;
+    }
+};
+
+unique_ptr<Command> ParseMoveset(int team_size, const char *line, int offset)
+{
+    unique_ptr<Moveset> moveset(new Moveset);
     int n, ability;
     for (int j = 0; j < team_size + 2; ++j) {
         if (sscanf(line, "%d%n", &ability, &n) != 1) {
@@ -90,58 +241,45 @@ Instruction ParseInstruction(int team_size, const char *line, int offset)
         	break;
         }
         if (4 < abs(ability))
-            throw invalid_argument("Move should be between 1 and 4");
+            throw invalid_argument("Move should be between -4 and 4");
         line += n;
-        instruction.abilities.push_back(ability);
+        moveset->abilities.push_back(ability);
     }
     SkipWhite(line);
     if (*line != '\0')
         throw invalid_argument(strprintf("Invalid line format near \"%.10s...\"", line));
-    instruction.success = offset+1;
-    instruction.failure = offset+1;
-    return instruction;
+    return moveset;
 }
 
-vector<Instruction> ParseBlock(int team_size, const string &indent, int offset);
+unique_ptr<Command> ParseBlock(int team_size, const string &indent, int offset);
 
-vector<Instruction> ParseCondition(int team_size, const char *line, const string &indent, int offset)
+unique_ptr<Command> ParseCondition(int team_size, const char *line, const string &indent, int offset)
 {
-    vector<Instruction> result;
-    Instruction instruction;
-    instruction.expression = move(ParseExpression(line));
-    instruction.success = instruction.failure = ++offset;
-    result.push_back(move(instruction));
+    unique_ptr<Condition> result(new Condition);
+    result->expression = move(ParseExpression(line));
 
     auto curr_indent = GetIndent();
     if (curr_indent.length() <= indent.length() || curr_indent.substr(0, indent.length()) != indent)
         throw invalid_argument("Invalid indent");
     UngetLine(curr_indent);
 
-    auto success_block = ParseBlock(team_size, curr_indent, offset);
-    offset += success_block.size();
-    result.front().failure += success_block.size();
-    for (auto it = success_block.begin(); it != success_block.end(); ++it)
-        result.push_back(move(*it));
+    result->success = move(ParseBlock(team_size, curr_indent, offset));
 
     curr_indent = GetIndent();
     if (curr_indent != indent) {
-        UngetLine(indent);
+        UngetLine(curr_indent);
         return result;
     }
     auto ch = GetChar();
     if (ch != ':') {
         UngetChar(ch);
-        UngetLine(indent);
+        UngetLine(curr_indent);
         return result;
     }
 
     auto curr_line = GetLine();
     if (*curr_line.c_str() == '?') {
-        auto failure_block = move(ParseCondition(team_size, curr_line.c_str(), indent, offset));
-        result.back().success += failure_block.size();
-        result.back().failure += failure_block.size();
-        for (auto it = failure_block.begin(); it != failure_block.end(); ++it)
-            result.push_back(move(*it));
+        result->failure = move(ParseCondition(team_size, curr_line.c_str(), indent, offset));
     } else {
         const char *curr_line_str = curr_line.c_str();
         SkipWhite(curr_line_str);
@@ -151,53 +289,48 @@ vector<Instruction> ParseCondition(int team_size, const char *line, const string
         if (curr_indent.length() <= indent.length() || curr_indent.substr(0, indent.length()) != indent)
             throw invalid_argument("Invalid indent");
         UngetLine(curr_indent);
-        auto failure_block = move(ParseBlock(team_size, curr_indent, offset));
-        result.back().success += failure_block.size();
-        result.back().failure += failure_block.size();
-        for (auto it = failure_block.begin(); it != failure_block.end(); ++it)
-            result.push_back(move(*it));
+        result->failure = move(ParseBlock(team_size, curr_indent, offset));
     }
     return result;
 }
 
-vector<Instruction> ParseLine(int team_size, const string &indent, int offset)
+unique_ptr<Command> ParseLine(int team_size, const string &indent, int offset)
 {
     auto curr_indent = GetIndent();
     if (curr_indent != indent) {
         if (indent.substr(0, curr_indent.length()) != curr_indent)
             throw invalid_argument("Invalid indent");
+        UngetLine(curr_indent);
         return {};
     }
     auto line = GetLine();
     if (*line.c_str() == '?') {
-        return move(ParseCondition(team_size, line.c_str(), indent, offset));
+        return ParseCondition(team_size, line.c_str(), indent, offset);
     } else if (isdigit(*line.c_str())) {
-        vector<Instruction> result;
-        result.push_back(move(ParseInstruction(team_size, line.c_str(), offset)));
-        return result;
+        return ParseMoveset(team_size, line.c_str(), offset);
     } else if (*line.c_str() == '\n' && indent == "") {
         return {};
     } else
         throw invalid_argument(strprintf("Invalid line format near \"%.10s...\"", line.c_str()));
 }
 
-vector<Instruction> ParseBlock(int team_size, const string &indent, int offset)
+unique_ptr<Command> ParseBlock(int team_size, const string &indent, int offset)
 {
-    vector<Instruction> result;
+    unique_ptr<Block> result(new Block);
     while (true) {
         auto line = ParseLine(team_size, indent, offset);
-        if (line.size() == 0)
+        if (line.get() == nullptr)
             return result;
-        offset += line.size();
-        for (auto line_it = line.begin(); line_it != line.end(); ++line_it)
-            result.push_back(move(*line_it));
+        result->commands.push_back(move(line));
     }
 }
 
 Strategy ParseStrategy(int team_size)
 {
     Strategy strategy;
-    strategy.instructions = move(ParseBlock(team_size, "", 0));
+    unique_ptr<Command> block = move(ParseBlock(team_size, "", 0));
+    strategy.instructions = block->GetInstructions(block->Enumerate(0));
+//    LOG(strategy.ToString().c_str());
     return strategy;
 }
 
