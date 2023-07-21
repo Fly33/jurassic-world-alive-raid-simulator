@@ -12,7 +12,9 @@ public:
     Expression()
     {}
     virtual ~Expression() {}
-    virtual int Calc(const Dino team[], int team_size) = 0;
+    virtual int Calc(const Dino team[], int team_size) const = 0;
+    virtual std::unique_ptr<Expression> Copy() const = 0;
+    virtual std::string ToString() const = 0;
 };
 
 class Binary : public Expression
@@ -25,7 +27,9 @@ public:
         , op2(std::move(_op2))
         , operation(_operation)
     {}
-    virtual int Calc(const Dino team[], int team_size) override;
+    virtual int Calc(const Dino team[], int team_size) const override;
+    virtual std::unique_ptr<Expression> Copy() const override;
+    virtual std::string ToString() const override;
 };
 
 class Unary : public Expression
@@ -37,7 +41,9 @@ public:
         : op(std::move(_op))
         , operation(_operation)
     {}
-    virtual int Calc(const Dino team[], int team_size) override;
+    virtual int Calc(const Dino team[], int team_size) const override;
+    virtual std::unique_ptr<Expression> Copy() const override;
+    virtual std::string ToString() const override;
 };
 
 class Const : public Expression
@@ -47,7 +53,9 @@ public:
     Const(int _value)
         : value(_value)
     {}
-    virtual int Calc(const Dino team[], int team_size) override;
+    virtual int Calc(const Dino team[], int team_size) const override;
+    virtual std::unique_ptr<Expression>Copy() const override;
+    virtual std::string ToString() const override;
 };
 
 class Property : public Expression
@@ -59,7 +67,9 @@ public:
         : name(_name)
         , index(_index)
     {}
-    virtual int Calc(const Dino team[], int team_size) override;
+    virtual int Calc(const Dino team[], int team_size) const override;
+    virtual std::unique_ptr<Expression> Copy() const override;
+    virtual std::string ToString() const override;
 };
 
 inline void SkipWhite(const char *&line)

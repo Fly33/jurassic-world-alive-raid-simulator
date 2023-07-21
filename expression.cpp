@@ -70,7 +70,7 @@ map<string, function<int(const Dino &)>> Properties = {
     make_pair("stun", [](const Dino &dino) -> int { return dino.stun != 0; }),
 };
 
-int Binary::Calc(const Dino team[], int team_size)
+int Binary::Calc(const Dino team[], int team_size) const
 {
     switch (operation) {
     case OR:
@@ -102,7 +102,17 @@ int Binary::Calc(const Dino team[], int team_size)
     }
 }
 
-int Unary::Calc(const Dino team[], int team_size)
+unique_ptr<Expression> Binary::Copy() const
+{
+    return unique_ptr<Expression>(new Binary(op1->Copy(), op2->Copy(), operation));
+}
+
+string Binary::ToString() const
+{
+    return "(" + op1->ToString() + ")" + Operator[operation] + "(" + op2->ToString() + ")";
+}
+
+int Unary::Calc(const Dino team[], int team_size) const
 {
     switch (operation) {
     case NOT:
@@ -116,12 +126,32 @@ int Unary::Calc(const Dino team[], int team_size)
     }
 }
 
-int Const::Calc(const Dino team[], int team_size)
+unique_ptr<Expression> Unary::Copy() const
+{
+    return unique_ptr<Expression>(new Unary(op->Copy(), operation));
+}
+
+string Unary::ToString() const
+{
+    return string(Operator[operation]) + "(" + op->ToString() + ")";
+}
+
+int Const::Calc(const Dino team[], int team_size) const
 {
     return value;
 }
 
-int Property::Calc(const Dino team[], int team_size)
+unique_ptr<Expression> Const::Copy() const
+{
+    return unique_ptr<Expression>(new Const(value));
+}
+
+string Const::ToString() const
+{
+    return strprintf("%d", value);
+}
+
+int Property::Calc(const Dino team[], int team_size) const
 {
     if (index < 0 || team_size <= index)
         return 0;
@@ -129,6 +159,16 @@ int Property::Calc(const Dino team[], int team_size)
     if (pr_it == Properties.end())
         return 0;
     return pr_it->second(team[index]);
+}
+
+unique_ptr<Expression> Property::Copy() const
+{
+    return unique_ptr<Expression>(new Property(name, index));
+}
+
+string Property::ToString() const
+{
+    return strprintf("%s[%d]", name.c_str(), index);
 }
 
 unique_ptr<Expression> ParseOr(const char *&line);
