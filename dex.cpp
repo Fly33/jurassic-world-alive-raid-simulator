@@ -3329,6 +3329,24 @@ ThreatenedAbility AlertFrenzy3343("Alert Frenzy", 1, 2, 0, {
     )
 });
 
+ThreatenedAbility AlertHarpyD23C("Alert Harpy", 0, 2, 0, {
+    TargetHighestHP(
+        Attack(2.0)
+    ),
+    TargetHighestHP(
+        ReduceSpeed(50.0, 2, 4)
+    ),
+    TargetHighestHP(
+        DamageOverTime(20.0, 2)
+    )
+}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 2, 1, {
+    TargetSelf(
+        Heal(0.5),
+        IncreaseArmor(25.0, 2, 4),
+        IncreaseCritChance(50.0, 2, 1)
+    )
+});
+
 ThreatenedAbility AlertInstantHeal6BB9("Alert Instant Heal", 1, 2, 1, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
@@ -3777,6 +3795,14 @@ Ability CautiousRampage36B3("Cautious Rampage", 1, 2, 0, {
     )
 });
 
+Ability CautiousRetreat5570("Cautious Retreat", 0, 0, 1, {
+    TargetSelf(
+        Cleanse(NEGATIVE_EFFECTS),
+        Dodge(100.0, 67.0, 1, 1),
+        Swap()
+    )
+});
+
 Ability CautiousStrike3CE4("Cautious Strike", 0, 0, 0, {
     TargetSelf(
         IncreaseSpeed(10.0, 1, 0),
@@ -3815,6 +3841,24 @@ ThreatenedAbility ChallengingAlertImpact0839("Challenging Alert Impact", 0, 1, 0
 }, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 0, 1, 0, {
     TargetHighestHP(
         Attack(2.0, BYPASS_ARMOR)
+    )
+});
+
+Ability ClawSleight8F2A("Claw Sleight", 1, 2, 1, {
+    TargetSelf(
+        Cleanse(NEGATIVE_EFFECTS)
+    ),
+    TargetHighestHP(
+        Cleanse(NEGATIVE_EFFECTS)
+    ),
+    TargetSelf(
+        Shield(50.0, 1, 1)
+    ),
+    TargetHighestHP(
+        Swap()
+    ),
+    TargetSelf(
+        Swap()
     )
 });
 
@@ -4370,6 +4414,15 @@ Ability DefiniteStrike51A6("Definite Strike", 0, 0, 0, {
     )
 });
 
+Ability DegeneratingStrikeBC83("Degenerating Strike", 0, 0, 0, {
+    TargetLowestHP(
+        Attack(1.0)
+    ),
+    TargetLowestHP(
+        Affliction(20.0, 3, 6)
+    )
+});
+
 Ability DelayedCunningRampage5557("Delayed Cunning Rampage", 2, 1, 0, {
     TargetSelf(
         Cleanse(DAMAGE_OVER_TIME)
@@ -4440,6 +4493,17 @@ Ability Devastation3723("Devastation", 2, 1, 0, {
     ),
     TargetSelf(
         Taunt(1)
+    )
+});
+
+Ability DeviousImpactAED3("Devious Impact", 0, 1, 0, {
+    TargetLowestHP(
+        Attack(1.5, BYPASS_ARMOR)
+    ),
+    TargetLowestHP(
+        Affliction(40.0, 1, 2),
+        DamageOverTime(33.41, 3),
+        ReduceDamage(50.0, 2, 4)
     )
 });
 
@@ -4915,6 +4979,14 @@ Ability EvasiveWoundingStrikeC8F8("Evasive Wounding Strike", 0, 2, 0, {
     ),
     TargetSelf(
         Dodge(50.0, 66.69998, 2, 4)
+    )
+});
+
+Ability Exhaust71B8("Exhaust", 0, 1, 0, {
+    TargetMostPositiveEffects(
+        Remove(POSITIVE_EFFECTS),
+        Affliction(50.0, 2, 4),
+        Attack(1.25)
     )
 });
 
@@ -6070,6 +6142,30 @@ Ability LimitedEvasiveStrike6F07("Limited Evasive Strike", 0, 1, 0, {
     )
 });
 
+Ability LockdownPressure62CB("Lockdown Pressure", 0, 2, 0, {
+    TargetLowestHP(
+        Affliction(40.0, 1, 2)
+    ),
+    TargetLowestHP(
+        Remove(INCREASED_DAMAGE)
+    ),
+    TargetLowestHP(
+        Remove(INCREASED_SPEED)
+    ),
+    TargetLowestHP(
+        ReduceDamage(50.0, 2, 4)
+    ),
+    TargetLowestHP(
+        ReduceSpeed(50.0, 2, 0)
+    ),
+    TargetLowestHP(
+        UnableToSwap(2)
+    ),
+    TargetSelf(
+        UnableToSwap(2)
+    )
+});
+
 Ability LongDeceleratingStrike7953("Long Decelerating Strike", 0, 0, 0, {
     TargetFastest(
         ReduceSpeed(50.0, 2, 0),
@@ -6281,6 +6377,24 @@ Ability ObstructingFierceImpact9462("Obstructing Fierce Impact", 0, 1, 0, {
         Attack(1.5, BYPASS_ARMOR),
         Remove(TAUNT),
         UnableToSwap(1)
+    )
+});
+
+Ability OverwhelmingImpact226E("Overwhelming Impact", 0, 2, 0, {
+    TargetLowestHP(
+        Remove(SHIELD)
+    ),
+    TargetLowestHP(
+        DevouringAttack(1.5, 60.0, 2, BYPASS_ARMOR)
+    ),
+    TargetLowestHP(
+        Affliction(40.0, 1, 2)
+    ),
+    TargetLowestHP(
+        Stun(75.0, 1)
+    ),
+    TargetLowestHP(
+        DamageOverTime(20.0, 2)
     )
 });
 
@@ -6588,6 +6702,13 @@ Ability RavenousRampage476D("Ravenous Rampage", 1, 2, 1, {
     TargetHighestDamage(
         Remove(DODGE|CLOAK),
         Attack(2.0)
+    )
+});
+
+Ability RazorBeakCE11("Razor Beak", 0, 0, 0, {
+    TargetHighestHP(
+        Attack(0.66, BYPASS_ARMOR),
+        Attack(0.66, BYPASS_ARMOR)
     )
 });
 
@@ -7201,6 +7322,17 @@ Ability SpikedProtection8FA1("Spiked Protection", 0, 2, 1, {
     )
 });
 
+Ability Stall897E("Stall", 1, 3, 1, {
+    TargetMostPositiveEffects(
+        Remove(POSITIVE_EFFECTS)
+    ),
+    TargetSelf(
+        Cleanse(NEGATIVE_EFFECTS),
+        Dodge(66.69998, 66.69998, 0, 1),
+        IncreaseSpeed(50.0, 1, 1)
+    )
+});
+
 Ability StrikeAndRun11DF("Strike And Run", 1, 1, 0, {
     TargetLowestHP(
         Attack(1.0)
@@ -7507,6 +7639,13 @@ Ability UpperClawA90A("Upper Claw", 0, 1, 1, {
     ),
     TargetSelf(
         IncreaseCritChance(25.0, 2, 4)
+    )
+});
+
+CounterAbility VenomousCounter4C31("Venomous Counter", {
+    TargetAttacker(
+        UnableToSwap(1),
+        ReduceDamage(50.0, 1, 2)
     )
 });
 
@@ -8395,6 +8534,15 @@ DinoKind Concavenator("Concavenator", EPIC, 1, {
         &TauntingShields1CF6,
         &DefenseShatteringImpact25E3
     }, &DefenseShatteringCounterCA13)
+});
+
+DinoKind Constrictoraptor("Constrictoraptor", UNIQUE, 1, {
+    DinoRound(4100, 1350, 125, 5.0, 10.0, 100.0, 0.0, 75.0, 0.0, 100.0, 50.0, 100.0, 0.0, 0.0, 0.0, 0.0, {
+        &CautiousRetreat5570,
+        &BerserkClawedRevenge111B,
+        &BerserkBitingRevenge5D5E,
+        &Stall897E
+    }, &VenomousCounter4C31)
 });
 
 DinoKind Dakotanops("Dakotanops", LEGENDARY, 1, {
@@ -9383,6 +9531,15 @@ DinoKind MarsupialLion("Marsupial Lion", RARE, 1, {
     }, &MediumCounterattackE4A7)
 });
 
+DinoKind Megalania("Megalania", OMEGA, 1, {
+    DinoRound(1200, 380, 100, 0.0, 0.0, 0.0, 50.0, 50.0, 100.0, 50.0, 100.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
+        &DegeneratingStrikeBC83,
+        &DeviousImpactAED3,
+        &OverwhelmingImpact226E,
+        &LockdownPressure62CB
+    }, nullptr)
+});
+
 DinoKind Megaloceros("Megaloceros", RARE, 1, {
     DinoRound(3300, 1000, 127, 10.0, 5.0, 0.0, 0.0, 0.0, 0.0, 100.0, 0.0, 100.0, 0.0, 50.0, 0.0, 0.0, {
         &ShieldedDeceleratingStrike627F,
@@ -9819,11 +9976,11 @@ DinoKind Pteraquetzal("Pteraquetzal", LEGENDARY, 1, {
 });
 
 DinoKind Pterovexus("Pterovexus", UNIQUE, 1, {
-    DinoRound(4050, 1300, 130, 0.0, 15.0, 100.0, 100.0, 50.0, 50.0, 100.0, 100.0, 100.0, 0.0, 100.0, 0.0, 0.0, {
-        &PinningStrike3832,
-        &MinorSwoop6A00,
-        &NullifyingImpact65A2,
-        &CunningRampage8AEB
+    DinoRound(4450, 1450, 130, 5.0, 20.0, 100.0, 100.0, 50.0, 50.0, 100.0, 100.0, 100.0, 0.0, 100.0, 0.0, 0.0, {
+        &RazorBeakCE11,
+        &Exhaust71B8,
+        &AlertHarpyD23C,
+        &ClawSleight8F2A
     }, &VenomousCounter56D1)
 });
 
@@ -10806,6 +10963,7 @@ map<string, const DinoKind *> DinoDex = {
     make_pair("CompsognathusGen2", &CompsognathusGen2),
     make_pair("Compsoraptor", &Compsoraptor),
     make_pair("Concavenator", &Concavenator),
+    make_pair("Constrictoraptor", &Constrictoraptor),
     make_pair("Dakotanops", &Dakotanops),
     make_pair("Dakotaraptor", &Dakotaraptor),
     make_pair("Darwezopteryx", &Darwezopteryx),
@@ -10924,6 +11082,7 @@ map<string, const DinoKind *> DinoDex = {
     make_pair("Mammolania", &Mammolania),
     make_pair("Mammotherium", &Mammotherium),
     make_pair("MarsupialLion", &MarsupialLion),
+    make_pair("Megalania", &Megalania),
     make_pair("Megaloceros", &Megaloceros),
     make_pair("Megalogaia", &Megalogaia),
     make_pair("Megalonyx", &Megalonyx),
