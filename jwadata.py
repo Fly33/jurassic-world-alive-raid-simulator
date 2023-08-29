@@ -10,7 +10,7 @@ DATA = "Assets\\Data\\DataDatabase.json"
 
 
 def DevName(s, guid=''):
-    return ''.join(re.split(r'\W+', ''.join(w.capitalize() for w in s.split()))) + guid[:4].upper()
+    return '_'.join(re.split(r'\W+', ''.join(w.capitalize() for w in s.split()))) + guid[:4].upper()
 
 
 def Name(s):
