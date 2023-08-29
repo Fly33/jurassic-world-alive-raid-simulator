@@ -125,7 +125,7 @@ int Step(Dino team[], int team_size)
     return 0;
 }
 
-bool Check(Dino team[], int team_size, const Strategy &strategy)
+int Check(Dino team[], int team_size, const Strategy &strategy)
 {
     int round = 0;
     Dino &boss = *team;
@@ -152,8 +152,8 @@ bool Check(Dino team[], int team_size, const Strategy &strategy)
                     bool minor = ability_id < 0;
                     ability_id = abs(ability[i-1])-1;
                     if (!team[i].Prepare(ability_id, minor)) {
-                        ERROR("%s Can't use %s because of cooldown", team[i].Name().c_str(), team[i]->ability[ability_id]->name.c_str());
-                        return false;
+                        ERROR("%s can't use %s because of cooldown", team[i].Name().c_str(), team[i]->ability[ability_id]->name.c_str());
+                        return -1;
                     }
                 } else {
                     while (!team[i].Prepare(rand() % team[i]->ability.size()))
@@ -165,14 +165,16 @@ bool Check(Dino team[], int team_size, const Strategy &strategy)
         int result = Step(team, team_size);
         if (result == 0)
             continue;
-        if (result == 1)
+        if (result == 1) {
             ERROR("Win!");
-        else
+            return 1;
+        } else {
             ERROR("Defeat!");
-        return result == 1;
+            return 0;
+        }
     }
     ERROR("You are out of turns!");
-    return false;
+    return 0;
 }
 
 int Chance(Dino team0[], int team_size, const Strategy &strategy, int n_checks = 1000)
@@ -185,7 +187,7 @@ int Chance(Dino team0[], int team_size, const Strategy &strategy, int n_checks =
         vector<Dino> team(team0, team0 + team_size);
         for (int j = 0; j < (int)team.size(); ++j)
             team[j].stats = &stats;
-        bool win = Check(team.data(), team_size, strategy);
+        bool win = Check(team.data(), team_size, strategy) == 1;
         stats.RegisterResult(win);
         if (win)
             ++result;
@@ -203,8 +205,12 @@ double Chance2(Dino team0[], int team_size, const Strategy &strategy, int max_ch
     Logger::level = 0;
     for (n_checks = 0; n_checks++ < max_checks; ) {
         vector<Dino> team(team0, team0 + team_size);
-        bool win = Check(team.data(), team_size, strategy);
-        if (win)
+        int result = Check(team.data(), team_size, strategy);
+        if (result == -1) {
+            n_win = 0;
+            break;
+        }
+        if (result == 1)
             ++n_win;
         if (n_checks < 7)
             continue;
@@ -222,7 +228,7 @@ string Explain(Dino team0[], int team_size, const Strategy &strategy, bool win, 
     for (int i = 0; i < n_checks; ++i) {
         Logger::SetBuf();
         vector<Dino> team(team0, team0 + team_size);
-        if (Check(team.data(), team_size, strategy) == win)
+        if ((Check(team.data(), team_size, strategy) == 1) == win)
             return move(Logger::TakeBuf());
         Logger::TakeBuf();
     }
@@ -298,14 +304,16 @@ Strategy Full(Dino team0[], int team_size, Strategy base_strategy, int n_checks 
         }
         double res = Chance2(team0, team_size, strategy, n_checks);
 #pragma omp critical
-        if (best < res) {
-            best = res;
-            best_strategy = move(strategy);
-            LOG("%d/%d found strategy %.1lf%% win", i+1, (int)imax, best * 100);
-            LOG("%s", best_strategy.ToString().c_str());
+        {
+            if (best < res) {
+                best = res;
+                best_strategy = move(strategy);
+                LOG("%d/%d found strategy %.1lf%% win", i+1, (int)imax, best * 100);
+                LOG("%s", best_strategy.ToString().c_str());
+            }
+            if (100 * i / imax / 5 < 100 * (i+1) / imax / 5)
+                LOG("%d%%", 100 * (i+1) / (int)imax);
         }
-        if (100 * i / imax / 5 < 100 * (i+1) / imax / 5)
-            LOG("%d%%", 100 * (i+1) / (int)imax);
     }
     Logger::level = log;
     return best_strategy;
