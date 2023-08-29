@@ -177,9 +177,14 @@ void Dino::Revive(bool total)
 
 void Dino::Hit(const Dino &attacker, int damage)
 {
-    if (damage > health)
-        damage = health;
-    health -= damage;
+    if (damage >= total_health) {
+        damage = total_health;
+        health = 0;
+    } else {
+        if (damage >= health)
+            damage = health;
+        health -= damage;
+    }
     total_health -= damage;
     if (stats)
         stats->RegisterHit(attacker, *this, damage);

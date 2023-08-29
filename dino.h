@@ -205,7 +205,7 @@ struct Dino
     }
     bool Alive() const
     {
-        return health > 0 || round + 1 < rounds;
+        return total_health > 0;
     }
     void PassTurn();
     bool Taunt() const
