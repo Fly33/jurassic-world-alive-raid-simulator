@@ -290,9 +290,9 @@ Strategy Full(Dino team0[], int team_size, Strategy base_strategy, int n_checks 
     double best = 0;
     Strategy best_strategy;
 #pragma omp parallel for schedule(dynamic)
-    for (int i = 0; i < imax; ++i) {
+    for (int64_t i = 0; i < imax; ++i) {
         Strategy strategy = base_strategy;
-        for (int k = 0, a = i; k < (int)base_strategy.instructions.size(); ++k) {
+        for (int k = 0, a = (int)i; k < (int)base_strategy.instructions.size(); ++k) {
             if (base_strategy.instructions[k].expression.get())
                 continue;
             for (int j = 0; j < (int)base_strategy.instructions[k].abilities.size(); ++j) {
@@ -308,11 +308,11 @@ Strategy Full(Dino team0[], int team_size, Strategy base_strategy, int n_checks 
             if (best < res) {
                 best = res;
                 best_strategy = move(strategy);
-                LOG("%d/%d found strategy %.1lf%% win", i+1, (int)imax, best * 100);
+                LOG("%d/%d found strategy %.1lf%% win", (int)i+1, (int)imax, best * 100);
                 LOG("%s", best_strategy.ToString().c_str());
             }
             if (100 * i / imax / 5 < 100 * (i+1) / imax / 5)
-                LOG("%d%%", 100 * (i+1) / (int)imax);
+                LOG("%d%%", (int)(100 * (i+1) / imax));
         }
     }
     Logger::level = log;
