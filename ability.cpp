@@ -3,6 +3,7 @@
 #include <memory.h>
 #include "actions.h"
 #include <cassert>
+#include "utils.h"
 #include "pack.h"
 
 using namespace actions;
@@ -86,7 +87,7 @@ void Ability::Do(Dino &self, Dino team[], int team_size) const
                     continue;
                 if (!CheckTarget[action->target](self, team[i]))
                     continue;
-                if (action->target != TARGET_RANDOM && team[i].team != self.team && team[i].Taunt() && rand() % 100 < self.ResistanceFactor(&DinoRound::taunt_resistance) * 100) {
+                if (action->target != TARGET_RANDOM && team[i].team != self.team && team[i].Taunt() && Rand(100) < self.ResistanceFactor(&DinoRound::taunt_resistance) * 100) {
                     last = &team[i];
                     break;
                 }
@@ -98,7 +99,7 @@ void Ability::Do(Dino &self, Dino team[], int team_size) const
                 else if (TargetCmp[action->target](team[i], *last)) {
                     last = &team[i];
                     count = 1;
-                } else if (rand() % ++count == 0)
+                } else if (Rand(++count) == 0)
                     last = &team[i];
             }
             action->Do(self, *last);

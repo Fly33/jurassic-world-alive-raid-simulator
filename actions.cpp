@@ -6,6 +6,7 @@
 #include "utils.h"
 #include <cmath>
 #include <algorithm>
+#include "utils.h"
 #include "pack.h"
 
 using namespace std;
@@ -35,7 +36,7 @@ list<unique_ptr<Action>> actions::Rend(double _factor, int _flags)
 
 void PrepareAttack::Do(Dino &self, Dino &target) const
 {
-    self.crit = (flags & ALWAYS_CRITS) || rand() % 100 < self.CritChanceFactor() * 100;
+    self.crit = (flags & ALWAYS_CRITS) || Rand(100) < self.CritChanceFactor() * 100;
     self.killer = false;
     self.last_damage = 0;
 }
@@ -61,7 +62,7 @@ void AttackAction::Do(Dino &self, Dino &target) const
     bool shield = target.Shield();
     if (shield)
         damage *= 1 - target.Shield();
-    bool dodge = (~flags & PRECISE) && rand() % 100 < target.DodgeChance() * 100;
+    bool dodge = (~flags & PRECISE) && Rand(100) < target.DodgeChance() * 100;
     if (dodge)
         damage *= 1 - target.DodgeFactor();
     bool armor = (~flags & BYPASS_ARMOR) && target.Armor() > 0;
@@ -239,7 +240,7 @@ void DamageOverTime::Do(Dino &self, Dino &target) const
 
 void Stun::Do(Dino &self, Dino &target) const
 {
-    if (rand() % 100 < factor * target.ResistanceFactor(&DinoRound::stun_resistance) * 100.)
+    if (Rand(100) < factor * target.ResistanceFactor(&DinoRound::stun_resistance) * 100.)
         target.Impose(&stun, self);
 }
 

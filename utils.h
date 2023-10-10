@@ -16,6 +16,9 @@ inline double Norm(double x)
 	return x;
 }
 
+void Srand();
+int Rand(int n);
+
 #include "unpack.h"
 
 #endif // __UTILS__H__

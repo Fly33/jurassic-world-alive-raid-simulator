@@ -16,6 +16,7 @@
 #include "stats.h"
 #include "arguments.h"
 #include <omp.h>
+#include "utils.h"
 #include "pack.h"
 
 using namespace std;
@@ -156,7 +157,7 @@ int Check(Dino team[], int team_size, const Strategy &strategy)
                         return -1;
                     }
                 } else {
-                    while (!team[i].Prepare(rand() % team[i]->ability.size()))
+                    while (!team[i].Prepare(Rand(team[i]->ability.size())))
                         ;
                 }
             }
@@ -252,7 +253,7 @@ Strategy Randomize(Dino team0[], int team_size, const Strategy &base_strategy, i
             for (int j = 0; j < (int)base_strategy.instructions[k].abilities.size(); ++j) {
                 if (team0[j+1].team != 1 || base_strategy.instructions[k].abilities[j] != 0)
                     continue;
-                strategy.instructions[k].abilities[j] = rand() % team0[j+1]->ability.size() + 1;
+                strategy.instructions[k].abilities[j] = Rand(team0[j+1]->ability.size()) + 1;
             }
         }
         double res = Chance2(team0, team_size, strategy, n_checks);
@@ -622,7 +623,7 @@ bool List(int, char *[], const char *regexp, void *)
 
 int main(int argc, char *argv[])
 {
-    srand((unsigned)time(NULL));
+    Srand();
 #ifdef DEBUG
     setbuf(stdout, NULL);
 #endif
