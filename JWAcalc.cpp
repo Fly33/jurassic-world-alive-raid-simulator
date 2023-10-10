@@ -475,7 +475,7 @@ bool SearchInput(int argc, char *argv[], const char *filename, void *)
         {'l', "loglevel", required_argument, SetLogLevel, nullptr},
         {'n', "n-checks", required_argument, SetInt, &n_checks},
         {'m', "method", required_argument, [](int, char *[], const char *optarg, void *out) -> bool { *(string *)out = optarg; return true; }, &method},
-        {'t', "treads", required_argument, SetInt, &n_threads},
+        {'t', "threads", required_argument, SetInt, &n_threads},
     };
     if (!ParseArguments(argc, argv, arguments))
         return false;
