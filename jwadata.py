@@ -773,10 +773,7 @@ def WriteCompactDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_de
     print(f'#include "dino.h"', file=f)
     print(f'#include "compact_dex.h"', file=f)
     print(f'using namespace actions;', file=f)
-    print(f'namespace boss {{', file=f, end='')
-    WriteCompactAbilityDex(boss_ability_dex, f)
-    WriteCompactDinoDex(boss_dex, f)
-    print(f'}}', file=f)
+    print(f'#include "boss_dex.hpp"', file=f)
     WriteCompactAbilityDex(ability_dex, f)
     WriteCompactDinoDex(minion_dex, f)
     WriteCompactDinoDex(dino_dex, f)
@@ -792,6 +789,13 @@ def WriteCompactDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_de
     for dino in sorted(dino_dex.values(), key=lambda dino: dino['dev_name']):
         print(f'{GetShort("std::make_pair")}("{dino["dev_name"]}",&{GetCode(dino["dev_name"])}),', file=f, end='')
     print(f'}};', file=f)
+
+
+def WriteCompactBossDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid_dex, f):
+    print(f'namespace boss {{', file=f, end='')
+    WriteCompactAbilityDex(boss_ability_dex, f)
+    WriteCompactDinoDex(boss_dex, f)
+    print(f'}}', file=f)
 
 
 def WriteShorts(f):
@@ -836,6 +840,8 @@ def GetAll():
         WriteDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid_dex, f)
     with open("compact_dex.cpp", "w") as f:
         WriteCompactDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid_dex, f)
+    with open("boss_dex.hpp", "w") as f:
+        WriteCompactBossDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid_dex, f)
     with open("compact_dex.h", "w") as f:
         WriteShorts(f)
 
