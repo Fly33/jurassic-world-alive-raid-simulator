@@ -216,3 +216,11 @@ void Affliction::Dispose(Dino &target, Mod *mod) const
 	target.affliction -= mod->value * duration;
 	target.affliction_factor -= mod->value;
 }
+
+void UnableToSwap::Impose(Dino &target, Mod *mod) const
+{
+}
+
+void UnableToSwap::Dispose(Dino &target, Mod *mod) const
+{
+}

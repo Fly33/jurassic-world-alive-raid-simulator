@@ -54,7 +54,7 @@ void AttackAction::Do(Dino &self, Dino &target) const
         damage *= 1 + target.vulnerability;
     bool crit = self.crit;
     if (crit)
-        damage *= 1.25;
+        damage *= target.Round().crit_boost;
     bool cloak = self.CloakFactor() != 1;
     if (cloak)
         damage *= self.CloakFactor();
@@ -263,9 +263,9 @@ void Affliction::Do(Dino &self, Dino &target) const
     target.Impose(&affliction, self);
 }
 
-list<unique_ptr<Action>> actions::UnableToSwap(int _duration)
+void UnableToSwap::Do(Dino &self, Dino &target) const
 {
-    return move(list<unique_ptr<Action>>());
+    target.Impose(&unable_to_swap, self);
 }
 
 list<unique_ptr<Action>> actions::Swap()

@@ -141,6 +141,7 @@ def ParseAction(data, guid):
                 elif type.startswith("BeEfInClDa"):
                     action["Action"] = Action("Cleanse", 
                                             NEGATIVE_EFFECTS=not action_data.get("ce") or action_data.get("ce") == "All",
+                                            SWAP_PREVENTION=action_data.get("ce")=="SwapPrevention",
                                             REDUCED_DAMAGE=action_data.get("ce")=="DebuffAttack",
                                             VULNERABILITY=action_data.get("ce")=="Vulnerable",
                                             REDUCED_SPEED=action_data.get("ce")=="DebuffSpeed",
@@ -316,6 +317,7 @@ def GetRound(l10n, data, round_data, ability_dex):
             'speed': attr['s'],
             'armor': attr['def'] / 100000,
             'crit': attr['chc'] / 100000,
+            'crit_boost': attr['chm'] / 100000,
             'crit_reduction_resistance': attr['rcrit'] / 100000,
             'damage_over_time_resistance': attr['rdot'] / 100000,
             'damage_reduction_resistance': attr['rd'] / 100000,
@@ -502,7 +504,7 @@ def WriteDinoDex(dino_dex, f):
     for dino in sorted(dino_dex.values(), key=lambda dino: dino['dev_name']):
         print(f'DinoKind {dino["dev_name"]}("{dino["name"]}", {dino["rarity"]}, {dino["flock"]}, {{', file=f)
         for round in range(len(dino['round'])):
-            print(f'    DinoRound({dino["round"][round]["health"]}, {dino["round"][round]["damage"]}, {dino["round"][round]["speed"]}, {dino["round"][round]["armor"]}, {dino["round"][round]["crit"]}, '\
+            print(f'    DinoRound({dino["round"][round]["health"]}, {dino["round"][round]["damage"]}, {dino["round"][round]["speed"]}, {dino["round"][round]["armor"]}, {dino["round"][round]["crit"]}, {dino["round"][round]["crit_boost"]}, '\
                   f'{dino["round"][round]["crit_reduction_resistance"]}, '\
                   f'{dino["round"][round]["damage_over_time_resistance"]}, '\
                   f'{dino["round"][round]["damage_reduction_resistance"]}, '\
@@ -525,7 +527,7 @@ def WriteCompactDinoDex(dino_dex, f):
     for dino in sorted(dino_dex.values(), key=lambda dino: dino['dev_name']):
         print(f'{GetShort("DinoKind")} {GetCode(dino["dev_name"])}("{dino["name"]}",{GetShort(dino["rarity"])},{dino["flock"]},{{', file=f, end='')
         for round in range(len(dino['round'])):
-            print(f'{GetShort("DinoRound")}({dino["round"][round]["health"]},{dino["round"][round]["damage"]},{dino["round"][round]["speed"]},{Num(dino["round"][round]["armor"])},{Num(dino["round"][round]["crit"])},'\
+            print(f'{GetShort("DinoRound")}({dino["round"][round]["health"]},{dino["round"][round]["damage"]},{dino["round"][round]["speed"]},{Num(dino["round"][round]["armor"])},{Num(dino["round"][round]["crit"])},{Num(dino["round"][round]["crit_boost"])},'\
                   f'{Num(dino["round"][round]["crit_reduction_resistance"])},'\
                   f'{Num(dino["round"][round]["damage_over_time_resistance"])},'\
                   f'{Num(dino["round"][round]["damage_reduction_resistance"])},'\

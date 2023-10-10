@@ -25,8 +25,9 @@ static const int STUN = 1 << 14;
 static const int INCREASED_ARMOR = 1 << 15;
 static const int REDUCED_ARMOR = 1 << 16;
 static const int AFFLICTION = 1 << 17;
+static const int SWAP_PREVENTION = 1 << 18;
 
-static const int NEGATIVE_EFFECTS = REDUCED_DAMAGE|VULNERABILITY|REDUCED_SPEED|DAMAGE_OVER_TIME|REDUCED_CRIT_CHANCE|REDUCED_ARMOR|AFFLICTION;
+static const int NEGATIVE_EFFECTS = REDUCED_DAMAGE|VULNERABILITY|REDUCED_SPEED|DAMAGE_OVER_TIME|REDUCED_CRIT_CHANCE|REDUCED_ARMOR|AFFLICTION|SWAP_PREVENTION;
 static const int POSITIVE_EFFECTS = DODGE|CLOAK|INCREASED_SPEED|SHIELD|TAUNT|INCREASED_CRIT_CHANCE|INCREASED_DAMAGE|DEVOUR_HEAL|INCREASED_ARMOR;
 static const int ALL_EFFECTS = NEGATIVE_EFFECTS|POSITIVE_EFFECTS|REVENGE|STUN;
 
@@ -615,6 +616,24 @@ struct Affliction : public Modifier
         return --mod->duration == 0;
     }
 };
+
+struct UnableToSwap : public Modifier
+{
+    UnableToSwap(int _duration)
+        : Modifier("unable to swap", _duration)
+    {}
+    virtual void Impose(Dino &target, Mod *mod) const override;
+    virtual void Dispose(Dino &target, Mod *mod) const override;
+    virtual int Type() const override
+    {
+        return SWAP_PREVENTION;
+    }
+    virtual bool OnAction(Mod *mod) const override
+    {
+        return --mod->duration == 0;
+    }
+};
+
 
 } // namespace modifiers
 

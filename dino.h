@@ -31,6 +31,7 @@ struct DinoRound
 	int speed;
 	double armor;
 	double crit;
+	double crit_boost;
 	double crit_reduction_resistance;
 	double damage_over_time_resistance;
 	double damage_reduction_resistance;
@@ -44,7 +45,7 @@ struct DinoRound
 	double affliction_resistance;
 	std::vector<const Ability *> ability;
 	const CounterAbility *counter_attack;
-    DinoRound(int _health, int _damage, int _speed, int _armor, int _crit,
+    DinoRound(int _health, int _damage, int _speed, int _armor, int _crit, int _crit_boost,
             double _crit_reduction_resistance,
             double _damage_over_time_resistance,
             double _damage_reduction_resistance,
@@ -62,6 +63,7 @@ struct DinoRound
         , speed(_speed)
         , armor(_armor / 100.)
         , crit(_crit / 100.)
+	    , crit_boost(_crit_boost / 100.)
         , crit_reduction_resistance(_crit_reduction_resistance / 100.)
         , damage_over_time_resistance(_damage_over_time_resistance / 100.)
         , damage_reduction_resistance(_damage_reduction_resistance / 100.)

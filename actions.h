@@ -395,7 +395,15 @@ struct Affliction : public Action
 	virtual void Do(Dino &self, Dino &target) const override;
 };
 
-std::list<std::unique_ptr<Action>> UnableToSwap(int _duration);
+struct UnableToSwap : public Action
+{
+    modifiers::UnableToSwap unable_to_swap;
+    UnableToSwap(int _duration)
+        : unable_to_swap(_duration)
+    {}
+    virtual void Do(Dino &self, Dino &target) const override;
+};
+
 std::list<std::unique_ptr<Action>> Swap();
 
 } // namespace actions
