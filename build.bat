@@ -11,4 +11,4 @@ g++ -std=c++17 -O3 -Wall -c -fmessage-length=0 -fopenmp -o ability.o "ability.cp
 g++ -std=c++17 -O3 -Wall -c -fmessage-length=0 -fopenmp -o modifiers.o "modifiers.cpp" 
 g++ -std=c++17 -O3 -Wall -c -fmessage-length=0 -fopenmp -o dino.o "dino.cpp" 
 g++ -std=c++17 -O3 -Wall -c -fmessage-length=0 -fopenmp -o actions.o "actions.cpp" 
-g++ -fopenmp -o JWAcalc JWAcalc.o ability.o actions.o arguments.o dex.o dino.o expression.o input.o logger.o modifiers.o stats.o strprintf.o utils.o 
+g++ -static -static-libstdc++ -static-libgcc -Wl,--whole-archive -lpthread -Wl,--no-whole-archive -fopenmp -o JWAcalc JWAcalc.o ability.o actions.o arguments.o dex.o dino.o expression.o input.o logger.o modifiers.o stats.o strprintf.o utils.o 
