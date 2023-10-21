@@ -244,7 +244,7 @@ struct Dino
     {
     	return 1 - Norm(Round().*resistance - affliction);
     }
-    void Hit(const Dino &attacker, int damage);
+    void Hit(const Dino &attacker, int damage, bool premature = false);
     void Heal(const Dino &healer, int heal);
     int Absorb(int damage);
     int HealAbsorb(int heal);

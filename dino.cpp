@@ -141,7 +141,7 @@ void Dino::DamageOverTime(Dino team[], int team_size)
     if (health == 0 || damage_over_time == 0)
         return;
     int dot = ::Round(max_total_health * damage_over_time);
-    Hit(*this, dot);
+    Hit(*this, dot, true);
     WARNING("%s is damaged [over time] by %d", Name().c_str(), dot);
     if (!Alive()) {
         ERROR("%s dies!", Name().c_str());
@@ -175,9 +175,9 @@ void Dino::Revive(bool total)
     INFO("%s is revived!", Name().c_str());
 }
 
-void Dino::Hit(const Dino &attacker, int damage)
+void Dino::Hit(const Dino &attacker, int damage, bool premature)
 {
-    if (damage >= total_health) {
+    if (premature && damage >= total_health) {
         damage = total_health;
         health = 0;
     } else {
