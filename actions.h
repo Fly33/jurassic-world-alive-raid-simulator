@@ -31,6 +31,7 @@ enum Target
     TARGET_ATTACKER,
     TARGET_SELF,
     TARGET_TEAM,
+    TARGET_EVERYONE,
     TARGET_LAST
 };
 
@@ -71,6 +72,7 @@ template<typename ...Args> auto TargetAllOpponents(Args ...args) { return action
 template<typename ...Args> auto TargetAttacker(Args ...args) { return actions::ActionGroupFunction(TARGET_ATTACKER, std::forward<Args>(args)...); }
 template<typename ...Args> auto TargetSelf(Args ...args) { return actions::ActionGroupFunction(TARGET_SELF, std::forward<Args>(args)...); }
 template<typename ...Args> auto TargetTeam(Args ...args) { return actions::ActionGroupFunction(TARGET_TEAM, std::forward<Args>(args)...); }
+template<typename ...Args> auto TargetEveryone(Args ...args) { return actions::ActionGroupFunction(TARGET_EVERYONE, std::forward<Args>(args)...); }
 template<typename ...Args> auto TargetLast(Args ...args) { return actions::ActionGroupFunction(TARGET_LAST, std::forward<Args>(args)...); }
 
 template<typename ...Args>

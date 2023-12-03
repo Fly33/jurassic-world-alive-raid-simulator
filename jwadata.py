@@ -109,6 +109,8 @@ def ParseAction(data, guid):
                 raise Exception(f'Unknown target "{action_data.get("tr")}"')
         elif action_data.get("tg", "None") == "Contextual":
             action["Target"] = "Attacker"
+        elif action_data.get("tg", "None") == "Everyone":
+            action["Target"] = "Everyone"
         else:
             raise Exception(f'Unknown target "{action_data.get("tg")}"')
         type = action_data['$type']
@@ -130,6 +132,7 @@ def ParseAction(data, guid):
                     action["Action"] = Action("Remove", POSITIVE_EFFECTS=True)
                 elif type.startswith("BeEfInNuDa"):
                     action["Action"] = Action("Remove",
+                                            POSITIVE_EFFECTS=action_data["ne"]=="All",
                                             DODGE=action_data["ne"]=="Dodge",
                                             CLOAK=action_data["ne"]=="Cloak",
                                             INCREASED_SPEED=action_data["ne"]=="BuffSpeed",
@@ -225,7 +228,7 @@ def ParseAction(data, guid):
         raise
 
 
-ImmutableTargets = ('Self', 'Team', 'AllOpponents', 'Attacker', 'Last')
+ImmutableTargets = ('Self', 'Team', 'AllOpponents', 'Everyone', 'Attacker', 'Last')
 
 
 def ParseAbility(data, guid, l10n):
@@ -240,7 +243,7 @@ def ParseAbility(data, guid, l10n):
                 'actions': []
             }
         ability_data = GetGuid(data, guid)
-        name = l10n.get(ability_data['n'], ability_data['n'])
+        name = l10n.get(ability_data['n'].strip(), ability_data['n'])
         ability = {
             'dev_name': DevName(name, guid),
             'name': Name(name),

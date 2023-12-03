@@ -48,6 +48,13 @@ void Ability::Do(Dino &self, Dino team[], int team_size) const
     Dino *last = nullptr;
     for (const auto &action: actions) {
         switch(action->target) {
+        case TARGET_EVERYONE:
+            for (int i = 0; i < team_size; ++i) {
+                if (!team[i].Alive())
+                    continue;
+                action->Do(self, team[i]);
+            }
+            break;
         case TARGET_ALL_OPPONENTS:
             for (int i = 0; i < team_size; ++i) {
                 if (team[i].team == self.team)
