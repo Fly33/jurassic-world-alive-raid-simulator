@@ -470,7 +470,7 @@ bool SearchInput(int argc, char *argv[], const char *filename, void *)
         }
     }
     int n_checks = 1000;
-    int n_threads = 4;
+    int n_threads = omp_get_max_threads();
     string method = "random";
     vector<Argument> arguments = {
         {'l', "loglevel", required_argument, SetLogLevel, nullptr},
