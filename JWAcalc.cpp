@@ -258,11 +258,13 @@ Strategy Randomize(Dino team0[], int team_size, const Strategy &base_strategy, i
         }
         double res = Chance2(team0, team_size, strategy, n_checks);
 #pragma omp critical
+        if (best < res || (best > 0.8 && best <= res)) {
+            LOG("Found strategy %.1lf%%", res * 100);
+            LOG("%s", strategy.ToString().c_str());
+        }
         if (best < res) {
             best = res;
             best_strategy = move(strategy);
-            LOG("Found strategy %.1lf%%", best * 100);
-            LOG("%s", best_strategy.ToString().c_str());
         }
     }
     Logger::level = log;
@@ -306,11 +308,13 @@ Strategy Full(Dino team0[], int team_size, Strategy base_strategy, int n_checks 
         double res = Chance2(team0, team_size, strategy, n_checks);
 #pragma omp critical
         {
+            if (best < res || (best > 0.8 && best <= res)) {
+                LOG("%d/%d found strategy %.1lf%% win", (int)i+1, (int)imax, res * 100);
+                LOG("%s", strategy.ToString().c_str());
+            }
             if (best < res) {
                 best = res;
                 best_strategy = move(strategy);
-                LOG("%d/%d found strategy %.1lf%% win", (int)i+1, (int)imax, best * 100);
-                LOG("%s", best_strategy.ToString().c_str());
             }
             if (100 * i / imax / 5 < 100 * (i+1) / imax / 5)
                 LOG("%d%%", (int)(100 * (i+1) / imax));
