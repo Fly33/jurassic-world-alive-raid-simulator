@@ -93,11 +93,12 @@ void Dino::Attack(Dino team[], int size)
 {
     if (!Alive())
         return;
+    REMOVE_MODS(*this, mod_it->BeforeAction(), DEBUG("%s has %s expired", Name().c_str(), mod_it->Name().c_str()));
     if (!stun) {
         INFO("%s uses %s!", Name().c_str(), Round().ability[ability_id]->name.c_str());
         Round().ability[ability_id]->Do(*this, team, size);
     }
-    REMOVE_MODS(*this, mod_it->OnAction(), DEBUG("%s has %s expired", Name().c_str(), mod_it->Name().c_str()));
+    REMOVE_MODS(*this, mod_it->AfterAction(), DEBUG("%s has %s expired", Name().c_str(), mod_it->Name().c_str()));
     affliction += affliction_factor;
 }
 

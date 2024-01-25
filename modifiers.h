@@ -64,7 +64,11 @@ struct Modifier
     {
         return false;
     }
-    virtual bool OnAction(Mod *mod) const
+    virtual bool BeforeAction(Mod *mod) const
+    {
+        return false;
+    }
+    virtual bool AfterAction(Mod *mod) const
     {
         return false;
     }
@@ -113,9 +117,13 @@ struct Mod
     {
         return modifier->OutgoingHeal(this);
     }
-    bool OnAction()
+    bool BeforeAction()
     {
-        return modifier->OnAction(this);
+        return modifier->BeforeAction(this);
+    }
+    bool AfterAction()
+    {
+        return modifier->AfterAction(this);
     }
     bool OnEndOfTurn()
     {
@@ -212,7 +220,7 @@ struct IncreasedCritChance: public Modifier
     {
         return !--mod->number;
     }
-    virtual bool OnAction(Mod *mod) const override
+    virtual bool AfterAction(Mod *mod) const override
     {
         return --mod->duration == 0;
     }
@@ -243,7 +251,7 @@ struct IncreasedDamage: public Modifier
     {
         return !--mod->number;
     }
-    virtual bool OnAction(Mod *mod) const override
+    virtual bool AfterAction(Mod *mod) const override
     {
         return --mod->duration == 0;
     }
@@ -297,7 +305,7 @@ struct ReducedDamage: public Modifier
     {
         return !--mod->number;
     }
-    virtual bool OnAction(Mod *mod) const override
+    virtual bool AfterAction(Mod *mod) const override
     {
         return --mod->duration == 0;
     }
@@ -328,9 +336,9 @@ struct Dodge : public Modifier
     {
         return !--mod->number;
     }
-    virtual bool OnAction(Mod *mod) const override
+    virtual bool BeforeAction(Mod *mod) const override
     {
-        return mod->duration-- == 0 && !this_turn;
+        return --mod->duration == 0;
     }
     virtual bool OnEndOfTurn(Mod *mod) const override
     {
@@ -382,7 +390,7 @@ struct ReducedCritChance: public Modifier
     {
         return !--mod->number;
     }
-    virtual bool OnAction(Mod *mod) const override
+    virtual bool AfterAction(Mod *mod) const override
     {
         return --mod->duration == 0;
     }
@@ -411,9 +419,9 @@ struct Shield : public Modifier
     {
         return !--mod->number;
     }
-    virtual bool OnAction(Mod *mod) const override
+    virtual bool BeforeAction(Mod *mod) const override
     {
-        return mod->duration-- == 0 && !this_turn;
+        return --mod->duration == 0;
     }
     virtual bool OnEndOfTurn(Mod *mod) const override
     {
@@ -432,7 +440,7 @@ struct Revenge : public Modifier
     {
         return REVENGE;
     }
-    virtual bool OnAction(Mod *mod) const override
+    virtual bool AfterAction(Mod *mod) const override
     {
         return mod->duration == 0;
     }
@@ -499,7 +507,7 @@ struct Stun : public Modifier
     {
         return STUN;
     }
-    virtual bool OnAction(Mod *mod) const override
+    virtual bool AfterAction(Mod *mod) const override
     {
         return --mod->duration == 0;
     }
@@ -530,9 +538,9 @@ struct Cloak : public Modifier
     {
         return !--mod->number;
     }
-    virtual bool OnAction(Mod *mod) const override
+    virtual bool OnEndOfTurn(Mod *mod) const override
     {
-        return mod->duration-- == 0;
+        return --mod->duration == 0;
     }
 };
 
@@ -584,7 +592,7 @@ struct ReducedArmor: public Modifier
     {
         return !--mod->number;
     }
-    virtual bool OnAction(Mod *mod) const override
+    virtual bool AfterAction(Mod *mod) const override
     {
         return --mod->duration == 0;
     }
@@ -611,7 +619,7 @@ struct Affliction : public Modifier
     {
         return !--mod->number;
     }
-    virtual bool OnAction(Mod *mod) const override
+    virtual bool AfterAction(Mod *mod) const override
     {
         return --mod->duration == 0;
     }
@@ -628,7 +636,7 @@ struct UnableToSwap : public Modifier
     {
         return SWAP_PREVENTION;
     }
-    virtual bool OnAction(Mod *mod) const override
+    virtual bool AfterAction(Mod *mod) const override
     {
         return --mod->duration == 0;
     }
