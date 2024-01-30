@@ -115,8 +115,8 @@ void Stats::Print(Dino team[], int team_size)
     }
 
     for (int w = 1; w >= 0; --w) {
-        string s = strprintf("%-30s   ", w ? strprintf("Death (win: %.1lf%%)", win_count * 100. / (win_count + defeat_count)).c_str()
-                                           : strprintf("Death (defeat: %.1lf%%)", defeat_count * 100. / (win_count + defeat_count)).c_str());
+        string s = strprintf("%-30s   ", w ? strprintf("Minimal HP (win: %.1lf%%)", win_count * 100. / (win_count + defeat_count)).c_str()
+                                           : strprintf("Minimal HP (defeat: %.1lf%%)", defeat_count * 100. / (win_count + defeat_count)).c_str());
         INFO("");
         for (int r = 0; r < (int)min_hp[w].size(); ++r) {
             if (r != 0)
@@ -139,8 +139,8 @@ void Stats::Print(Dino team[], int team_size)
     }
 
     for (int w = 1; w >= 0; --w) {
-        string s = strprintf("%-30s   ", w ? strprintf("Death (win: %.1lf%%)", win_count * 100. / (win_count + defeat_count)).c_str()
-                                           : strprintf("Death (defeat: %.1lf%%)", defeat_count * 100. / (win_count + defeat_count)).c_str());
+        string s = strprintf("%-30s   ", w ? strprintf("Rounds length (win: %.1lf%%)", win_count * 100. / (win_count + defeat_count)).c_str()
+                                           : strprintf("Rounds length (defeat: %.1lf%%)", defeat_count * 100. / (win_count + defeat_count)).c_str());
         WARNING("");
         for (int t = 0; ; ++t) {
             int r;
@@ -169,8 +169,8 @@ void Stats::Print(Dino team[], int team_size)
         DEBUG("");
         DEBUG("%s avg. damage/heal", team[i].name.c_str());
         for (int w = 1; w >= 0; --w) {
-            string s = strprintf("%-30s   ", w ? strprintf("Death (win: %.1lf%%)", win_count * 100. / (win_count + defeat_count)).c_str()
-                                               : strprintf("Death (defeat: %.1lf%%)", defeat_count * 100. / (win_count + defeat_count)).c_str());
+            string s = strprintf("%-30s   ", w ? strprintf("Dealt to (win: %.1lf%%)", win_count * 100. / (win_count + defeat_count)).c_str()
+                                               : strprintf("Dealt to (defeat: %.1lf%%)", defeat_count * 100. / (win_count + defeat_count)).c_str());
             for (int r = 0; r < (int)damage[w].size(); ++r) {
                 if (r != 0)
                     s += "| ";
@@ -190,8 +190,8 @@ void Stats::Print(Dino team[], int team_size)
             }
         }
         for (int w = 1; w >= 0; --w) {
-            string s = strprintf("%-30s   ", w ? strprintf("Death (win: %.1lf%%)", win_count * 100. / (win_count + defeat_count)).c_str()
-                                               : strprintf("Death (defeat: %.1lf%%)", defeat_count * 100. / (win_count + defeat_count)).c_str());
+            string s = strprintf("%-30s   ", w ? strprintf("Received from (win: %.1lf%%)", win_count * 100. / (win_count + defeat_count)).c_str()
+                                               : strprintf("Received from (defeat: %.1lf%%)", defeat_count * 100. / (win_count + defeat_count)).c_str());
             for (int r = 0; r < (int)damage[w].size(); ++r) {
                 if (r != 0)
                     s += "| ";
