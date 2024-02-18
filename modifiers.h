@@ -492,7 +492,7 @@ struct DamageOverTime : public Modifier
     }
     virtual bool OnEndOfTurn(Mod *mod) const override
     {
-        return mod->duration-- == 0;
+        return --mod->duration == 0;
     }
 };
 
