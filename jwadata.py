@@ -97,6 +97,8 @@ def ParseAction(data, guid):
                 action["Target"] = "HighestHP"
             elif action_data.get("tr", "None") == "LowestHP":
                 action["Target"] = "LowestHP"
+            elif action_data.get("tr", "None") == "LowestHPIgnoringMaxHP":
+                action["Target"] = "LowestHP"
             elif action_data.get("tr", "None") == "Random":
                 action["Target"] = "Random"
             elif action_data.get("tr", "None") == "HighestSpeed":
