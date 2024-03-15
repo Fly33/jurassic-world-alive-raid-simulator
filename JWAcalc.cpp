@@ -246,7 +246,7 @@ Strategy Randomize(Dino team0[], int team_size, const Strategy &base_strategy, i
     double best = 0;
     Strategy best_strategy;
 #pragma omp parallel
-    while(best < n_checks) {
+    while(true) {
         Strategy strategy = base_strategy;
         for (int k = 0; k < (int)base_strategy.instructions.size(); ++k) {
             if (base_strategy.instructions[k].expression.get())
