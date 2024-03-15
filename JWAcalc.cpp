@@ -7,6 +7,7 @@
 #include <cctype>
 #include <regex>
 #include <cmath>
+#include <chrono>
 #include "dino.h"
 #include "actions.h"
 #include "modifiers.h"
@@ -493,6 +494,7 @@ bool SearchInput(int argc, char *argv[], const char *filename, void *)
     if (n_threads < 1)
         n_threads = 1;
     omp_set_num_threads(n_threads);
+    auto start = std::chrono::system_clock::now();
     if (strncmp(method.c_str(), "random", method.length()) == 0)
         Randomize(team.data(), (int)team.size(), strategy, n_checks);
     else if (strncmp(method.c_str(), "full", method.length()) == 0)
@@ -501,6 +503,8 @@ bool SearchInput(int argc, char *argv[], const char *filename, void *)
         TurnByTurn(team.data(), (int)team.size(), strategy, n_checks);
     else
         LOG("Unknown method \"%s\"", method.c_str());
+    auto end = std::chrono::system_clock::now();
+    LOG("Duration: %s", ToString(end - start).c_str());
     return false;
 }
 
