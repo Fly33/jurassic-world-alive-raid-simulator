@@ -19,7 +19,7 @@ class Stats
 	std::vector<std::vector<std::vector<int>>> min_hp[2];
 	std::vector<std::vector<int>> round_turn_count[2];
 	std::vector<std::vector<std::vector<std::vector<int>>>> damage[2];
-	std::vector<std::tuple<int, int, int, int, int, int>> hit;
+	std::vector<std::tuple<int, int, int, int, int, int, int, int>> hit;
 	std::vector<std::tuple<int, int>> turns;
 	int curr_turn = 0;
 	int curr_round = 0;
@@ -28,7 +28,7 @@ class Stats
 public:
     Stats(int _team_size);
 	void NextTurn(int round, int turn);
-	void RegisterHit(const Dino &attacker, const Dino &target, int damage);
+	void RegisterHit(int attacker, int target, int old_health, int new_health, int damage, int full_damage);
 	void RegisterResult(bool win);
 	void Print(Dino team[], int team_size);
 };

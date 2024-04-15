@@ -43,30 +43,30 @@ void Stats::RegisterResult(bool result)
     for (auto &hit: this->hit) {
         int round, turn;
         int attacker_index, target_index;
-        int target_health;
-        int dmg;
-        tie(round, turn, attacker_index, target_index, target_health, dmg) = hit;
+        int target_old_health, target_new_health;
+        int dmg, full_dmg;
+        tie(round, turn, attacker_index, target_index, target_old_health, target_new_health, dmg, full_dmg) = hit;
 
         if ((int)min_hp[result].size() <= round)
             min_hp[result].resize(round+1);
         if ((int)min_hp[result][round].size() <= turn)
             min_hp[result][round].resize(turn+1, vector<int>(team_size, -1));
         if (min_hp[result][round][turn][target_index] == -1 ||
-            min_hp[result][round][turn][target_index] > target_health)
-            min_hp[result][round][turn][target_index] = target_health;
+            min_hp[result][round][turn][target_index] > target_new_health)
+            min_hp[result][round][turn][target_index] = target_new_health;
 
         if ((int)death_count[result].size() <= round)
             death_count[result].resize(round+1);
         if ((int)death_count[result][round].size() <= turn)
             death_count[result][round].resize(turn+1, vector<int>(team_size, 0));
-        if (target_health == 0 && dmg > 0)
+        if (target_old_health != 0 && target_new_health == 0)
             ++death_count[result][round][turn][target_index];
 
         if ((int)damage[result].size() <= round)
             damage[result].resize(round+1);
         if ((int)damage[result][round].size() <= turn)
             damage[result][round].resize(turn+1, vector<vector<int>>(team_size, vector<int>(team_size, 0)));
-        damage[result][round][turn][attacker_index][target_index] += dmg;
+        damage[result][round][turn][attacker_index][target_index] += full_dmg;
     }
 
     curr_round = 0;
@@ -75,9 +75,9 @@ void Stats::RegisterResult(bool result)
     turns.clear();
 }
 
-void Stats::RegisterHit(const Dino &attacker, const Dino &target, int damage)
+void Stats::RegisterHit(int attacker, int target, int old_health, int new_health, int damage, int full_damage)
 {
-    hit.emplace_back(curr_round, curr_turn, attacker.index, target.index, target.health, damage);
+    hit.emplace_back(curr_round, curr_turn, attacker, target, old_health, new_health, damage, full_damage);
 }
 
 void Stats::NextTurn(int round, int turn)

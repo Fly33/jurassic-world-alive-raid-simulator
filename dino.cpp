@@ -139,7 +139,7 @@ void Dino::DevourHeal()
 
 void Dino::DamageOverTime(Dino team[], int team_size)
 {
-    if (health == 0 || damage_over_time == 0)
+    if (!Alive() || damage_over_time == 0)
         return;
     int dot = ::Round(max_total_health * damage_over_time);
     Hit(*this, dot, true);
@@ -178,6 +178,8 @@ void Dino::Revive(bool total)
 
 void Dino::Hit(const Dino &attacker, int damage, bool premature)
 {
+    auto old_health = health;
+    auto full_damage = damage;
     if (premature && damage >= total_health) {
         damage = total_health;
         health = 0;
@@ -188,17 +190,19 @@ void Dino::Hit(const Dino &attacker, int damage, bool premature)
     }
     total_health -= damage;
     if (stats)
-        stats->RegisterHit(attacker, *this, damage);
+        stats->RegisterHit(attacker.index, index, old_health, health, full_damage, damage);
 }
 
 void Dino::Heal(const Dino &healer, int heal)
 {
+    auto old_health = health;
+    auto full_heal = heal;
     if (heal > max_health - health)
         heal = max_health - health;
     health += heal;
     total_health += heal;
     if (stats)
-        stats->RegisterHit(healer, *this, -heal);
+        stats->RegisterHit(healer.index, index, old_health, health, -full_heal, -heal);
 }
 
 int Dino::Absorb(int damage)
