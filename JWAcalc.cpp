@@ -325,6 +325,65 @@ Strategy Full(Dino team0[], int team_size, Strategy base_strategy, int n_checks 
     return best_strategy;
 }
 
+Strategy Universal(Dino team0[], int team_size, Strategy base_strategy, int n_checks = 1000)
+{
+    auto log = Logger::level;
+    Logger::level = 0;
+    __int128 imax = 1;
+    for (int k = 0; k < (int)base_strategy.instructions.size(); ++k) {
+        if (base_strategy.instructions[k].expression.get())
+            continue;
+        for (int j = 0; j < (int)base_strategy.instructions[k].abilities.size(); ++j) {
+            if (team0[j+1].team != 1 || base_strategy.instructions[k].abilities[j] != 0)
+                continue;
+            if ((imax * (int)team0[j+1]->ability.size()) / (int)team0[j+1]->ability.size() != imax) {
+                LOG("Too many checks");
+                return base_strategy;
+            }
+            imax *= (int)team0[j+1]->ability.size();
+        }
+    }
+    LOG("Checks: %s", ToString(imax).c_str());
+    __int128 prime;
+    do {
+        prime = Rand128(imax) + 1;
+    } while (GCD(imax, prime) != 1);
+    LOG("Prime: %s", ToString(prime).c_str());
+    double best = 0;
+    Strategy best_strategy;
+#pragma omp parallel for schedule(dynamic)
+    for (__int128 i = 0; i < imax; ++i) {
+        Strategy strategy = base_strategy;
+        __int128 a = Mlt(i, prime, imax);
+        for (int k = 0; k < (int)base_strategy.instructions.size(); ++k) {
+            if (base_strategy.instructions[k].expression.get())
+                continue;
+            for (int j = 0; j < (int)base_strategy.instructions[k].abilities.size(); ++j) {
+                if (team0[j+1].team != 1 || base_strategy.instructions[k].abilities[j] != 0)
+                    continue;
+                strategy.instructions[k].abilities[j] = (int)(a % (int)team0[j+1]->ability.size()) + 1;
+                a /= (int)team0[j+1]->ability.size();
+            }
+        }
+        double res = Chance2(team0, team_size, strategy, n_checks);
+#pragma omp critical
+        {
+            if (best < res || (best > 0.8 && best <= res)) {
+                LOG("%s/%s found strategy %.1lf%% win", ToString(i+1).c_str(), ToString(imax).c_str(), res * 100);
+                LOG("%s", strategy.ToString().c_str());
+            }
+            if (best < res) {
+                best = res;
+                best_strategy = move(strategy);
+            }
+            if (floor(20 * (double)i / (double)imax) < floor(20 * (double)(i+1) / (double)imax))
+                LOG("%d%%", (int)floor(100 * (double)(i+1) / (double)imax));
+        }
+    }
+    Logger::level = log;
+    return best_strategy;
+}
+
 Strategy TurnByTurn(Dino team0[], int team_size, Strategy base_strategy, int n_checks = 1000)
 {
     auto log = Logger::level;
@@ -501,6 +560,8 @@ bool SearchInput(int argc, char *argv[], const char *filename, void *)
         Full(team.data(), (int)team.size(), strategy, n_checks);
     else if (strncmp(method.c_str(), "turn-by-turn", method.length()) == 0)
         TurnByTurn(team.data(), (int)team.size(), strategy, n_checks);
+    else if (strncmp(method.c_str(), "universal", method.length()) == 0)
+        Universal(team.data(), (int)team.size(), strategy, n_checks);
     else
         LOG("Unknown method \"%s\"", method.c_str());
     auto end = std::chrono::system_clock::now();

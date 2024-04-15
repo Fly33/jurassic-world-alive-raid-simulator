@@ -19,8 +19,24 @@ inline double Norm(double x)
 	return x;
 }
 
+template<class T>
+T GCD(T x, T y)
+{
+    while (true) {
+        x %= y;
+        if (x == 0)
+            return y;
+        std::swap<T>(x, y);
+    }
+}
+
+__int128 Mlt(__int128 x, __int128 y, __int128 mod);
+
 void Srand();
 int Rand(int n);
+__int128 Rand128(__int128 n);
+
+std::string ToString(__int128 x);
 
 template<typename Duration>
 std::string ToString(const Duration &d)
