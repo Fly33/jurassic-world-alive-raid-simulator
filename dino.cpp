@@ -141,7 +141,7 @@ void Dino::DamageOverTime(Dino team[], int team_size)
 {
     if (!Alive() || damage_over_time == 0)
         return;
-    int dot = ::Round(max_total_health * damage_over_time);
+    int dot = ::Round(max_health * damage_over_time);
     Hit(*this, dot, true);
     WARNING("%s is damaged [over time] by %d", Name().c_str(), dot);
     if (!Alive()) {
