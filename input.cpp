@@ -356,7 +356,12 @@ int Input(vector<Dino> &team, Strategy &strategy)
         for (int i = 0; i < team_size; ++i) {
             char dino[32];
             int level, health_boost, damage_boost, speed_boost;
-            if (sscanf(GetLine().c_str(), "%s%d%d%d%d%1s", dino, &level, &health_boost, &damage_boost, &speed_boost, end) != 5)
+            bool omega = false;
+            int omega_health_points, omega_damage_points, omega_speed_points, omega_armor_points, omega_crit_chance_points, omega_crit_factor_points;
+            auto line = GetLine();
+            if (sscanf(line.c_str(), "%s%d%d%d%d%d%d%d%d%d%d%1s", dino, &level, &health_boost, &damage_boost, &speed_boost, &omega_health_points, &omega_damage_points, &omega_speed_points, &omega_armor_points, &omega_crit_chance_points, &omega_crit_factor_points, end) == 11) {
+                omega = true;
+            } else if (sscanf(line.c_str(), "%s%d%d%d%d%1s", dino, &level, &health_boost, &damage_boost, &speed_boost, end) != 5)
                 throw invalid_argument("Expected dino description");
             auto dino_it = DinoDex.find(dino);
             if (dino_it == DinoDex.end())
@@ -366,7 +371,14 @@ int Input(vector<Dino> &team, Strategy &strategy)
                 damage_boost < 0 ||
                 speed_boost < 0)
                 throw invalid_argument("Invalid dino parameters");
-            team.push_back(Dino(1, i+1, level, health_boost, damage_boost, speed_boost, dino_it->second));
+            if (omega) {
+                if (omega_health_points < 0 || omega_damage_points < 0 || omega_speed_points < 0 || omega_armor_points < 0 || omega_crit_chance_points < 0 || omega_crit_factor_points < 0)
+                    throw invalid_argument("Invalid omega parameters");
+            }
+            if (omega)
+                team.push_back(Dino(1, i+1, level, health_boost, damage_boost, speed_boost, omega_health_points, omega_damage_points, omega_speed_points, omega_armor_points, omega_crit_chance_points, omega_crit_factor_points, dino_it->second));
+            else
+                team.push_back(Dino(1, i+1, level, health_boost, damage_boost, speed_boost, dino_it->second));
         }
         for (int i = 1; i < (int)boss_it->second.size(); ++i)
             team.push_back(boss_it->second[i]);

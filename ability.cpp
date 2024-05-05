@@ -94,7 +94,7 @@ void Ability::Do(Dino &self, Dino team[], int team_size) const
                     continue;
                 if (!CheckTarget[action->target](self, team[i]))
                     continue;
-                if (action->target != TARGET_RANDOM && team[i].team != self.team && team[i].Taunt() && Rand(100) < self.ResistanceFactor(&DinoRound::taunt_resistance) * 100) {
+                if (action->target != TARGET_RANDOM && team[i].team != self.team && team[i].Taunt() && Rand(100) < self.ResistanceFactor(&Dino::taunt_resistance) * 100) {
                     last = &team[i];
                     break;
                 }

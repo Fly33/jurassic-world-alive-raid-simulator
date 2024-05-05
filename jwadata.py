@@ -4,9 +4,15 @@ import json
 import re
 import traceback
 import json_fix
+import math
+
 
 PATH = "assets\\Database\\"
 DATA = "Assets\\Data\\DataDatabase.json"
+
+
+def Round(x):
+    return int(math.floor(x + 0.5))
 
 
 def DevName(s, guid=''):
@@ -321,8 +327,8 @@ def GetRound(l10n, data, round_data, ability_dex):
             'damage': attr['miap'],
             'speed': attr['s'],
             'armor': attr['def'] / 100000,
-            'crit': attr['chc'] / 100000,
-            'crit_boost': attr['chm'] / 100000,
+            'crit_chance': attr['chc'] / 100000,
+            'crit_factor': attr['chm'] / 100000,
             'crit_reduction_resistance': attr['rcrit'] / 100000,
             'damage_over_time_resistance': attr['rdot'] / 100000,
             'damage_reduction_resistance': attr['rd'] / 100000,
@@ -344,9 +350,9 @@ def GetRound(l10n, data, round_data, ability_dex):
 def GetDino(l10n, data, dino_data, ability_dex):
     try:
         rarity = GetGuid(data, dino_data['r']['guid'])
-        attr = GetGuid(data, dino_data['rl'][0]['att']['guid'])
+        rarity = l10n[rarity['localizedName']]
         if dino_data["dn"] == "BTroodoboa": # исправляем косяки макак
-             dino_data['lkn'] = 'IDS_BTROODOBOA'
+            dino_data['lkn'] = 'IDS_BTROODOBOA'
         elif dino_data['lkn'] == "IDS_MKOOLASUCHUS2":
             dino_data['lkn'] = "IDS_MKOOLASUCH2"
         if dino_data['lkn'].startswith('IDS_M') and dino_data['lkn'][:4] + dino_data['lkn'][5:] in l10n:
@@ -360,10 +366,78 @@ def GetDino(l10n, data, dino_data, ability_dex):
         dino = {
             'dev_name': DevName(name),
             'name': Name(name),
-            'rarity': l10n[rarity['localizedName']],
+            'rarity': rarity,
             'flock': 3 if dino_data.get('it', False) else 1,
             'round': [GetRound(l10n, data, dino_data['rl'][round], ability_dex) for round in range(len(dino_data['rl']))]
         }
+        if 'capd' in dino_data and dino_data['capd']['guid'] and 'mlnc' in dino_data and dino_data['mlnc']['guid']:
+            capd = GetGuid(data, dino_data['capd']['guid'])
+            cap = GetGuid(data, capd['cap']['guid'])
+            app = GetGuid(data, capd['app']['guid'])
+            psd = GetGuid(data, capd['psd']['guid'])
+            cap = {
+                'health': Round((cap['hp'] - dino['round'][0]['health']) / (app['hp'] or 1)),
+                'damage': Round((cap['ap'] - dino['round'][0]['damage']) / (app['ap'] or 1)),
+                'speed': Round((cap['sp'] - dino['round'][0]['speed']) / (app['sp'] or 1)),
+                'armor': Round((cap['def'] / 100000. - dino['round'][0]['armor']) / (app['def'] / 100000. or 1)),
+                'crit_chance': Round((cap['chc'] / 100000. - dino['round'][0]['crit_chance']) / (app['chc'] / 100000. or 1)),
+                'crit_factor': Round((cap['chm'] / 100000. - dino['round'][0]['crit_factor']) / (app['chm'] / 100000. or 1)),
+            }
+            step = {
+                'health': app['hp'],
+                'damage': app['ap'],
+                'speed': app['sp'],
+                'armor': app['def'],
+                'crit_chance': app['chc'],
+                'crit_factor': app['chm'],
+            }
+            points = [0]
+            for i in range(len(psd['psi'])):
+                points.append(points[-1] + psd['psi'][i])
+            
+            mlnc = GetGuid(data, dino_data['mlnc']['guid'])
+            restrictions = []
+            for mln in mlnc['mln']:
+                for msn in mln['msn']:
+                    if 'ai' in msn:
+                        restrictions.append({'level': mln['cl'], 'type': 'Ability', 'value': dino['round'][0]['ability'].index(ability_dex[msn['ai']['guid']]['dev_name'])+1})
+                    # elif 'aw' in msn:
+                    #     restrictions.append({'level': mln['cl'], 'type': 'SwapIn', 'value': 1})
+                    elif 'ra' in msn:
+                        restrictions.append({'level': mln['cl'], 'type': 'Counter', 'value': 1}) 
+                    # elif 'ae' in msn:
+                    #     restrictions.append({'level': mln['cl'], 'type': 'OnEscape', 'value': 1})
+                    elif 'fst' in msn:
+                        if msn['fst'] == 'ResistanceCritical':
+                            restrictions.append({'level': mln['cl'], 'type': 'CritReductionResistance', 'value': msn['fs'] / 100000})
+                        elif msn['fst'] == 'ResistanceDot':
+                            restrictions.append({'level': mln['cl'], 'type': 'DamageOverTimeResistance', 'value': msn['fs'] / 100000})
+                        elif msn['fst'] == 'ResistanceDistraction':
+                            restrictions.append({'level': mln['cl'], 'type': 'DamageReductionResistance', 'value': msn['fs'] / 100000})
+                        elif msn['fst'] == 'ResistanceRend':
+                            restrictions.append({'level': mln['cl'], 'type': 'RendResistance', 'value': msn['fs'] / 100000})
+                        elif msn['fst'] == 'ResistanceDeceleration':
+                            restrictions.append({'level': mln['cl'], 'type': 'SpeedReductionResistance', 'value': msn['fs'] / 100000})
+                        elif msn['fst'] == 'ResistanceStun':
+                            restrictions.append({'level': mln['cl'], 'type': 'StunResistance', 'value': msn['fs'] / 100000})
+                        elif msn['fst'] == 'ResistanceSwap':
+                            restrictions.append({'level': mln['cl'], 'type': 'SwapPreventionResistance', 'value': msn['fs'] / 100000})
+                        elif msn['fst'] == 'ResistanceTaunt':
+                            restrictions.append({'level': mln['cl'], 'type': 'TauntResistance', 'value': msn['fs'] / 100000})
+                        elif msn['fst'] == 'ResistanceVulnerability':
+                            restrictions.append({'level': mln['cl'], 'type': 'VulnerabilityResistance', 'value': msn['fs'] / 100000})
+                        elif msn['fst'] == 'ResistanceArmor':
+                            restrictions.append({'level': mln['cl'], 'type': 'ArmorReductionResistance', 'value': msn['fs'] / 100000})
+                        elif msn['fst'] == 'ResistanceAffliction':
+                            restrictions.append({'level': mln['cl'], 'type': 'AfflictionResistance', 'value': msn['fs'] / 100000})
+                        else:
+                            raise Exception('Unknown fst: {}'.format(msn['fst']))
+            dino['omega'] = {
+                'cap': cap,
+                'step': step,
+                'points': points,
+                'restrictions': restrictions,
+            }
         return dino
     except:
         print(dino_data)
@@ -458,58 +532,19 @@ def GetEntity(x, entity):
     return entity[x]
 
 
-# def WriteDinoDex(dino_file, ability_file, dino_dex):
-    # with open(dino_file + ".json", "w") as f:
-        # json.dump(dino_dex, f, indent=4)
-    # with open(dino_file + ".h", "w") as f:
-        # print(f'#ifndef __{dino_file.upper()}__H__', file=f)
-        # print(f'#define __{dino_file.upper()}__H__', file=f)
-        # print(f'', file=f)
-        # print(f'#include "dino.h"', file=f)
-        # print(f'', file=f)
-        # print(f'namespace {dino_file} {{', file=f)
-        # print(f'', file=f)
-        # for dino in sorted(dino_dex.values(), key=lambda dino: dino['dev_name']):
-            # print(f'extern DinoKind {dino["dev_name"]};', file=f)
-        # print(f'', file=f)
-        # print(f'}} // namespace {dino_file}', file=f)
-        # print(f'', file=f)
-        # print(f'#endif // __{dino_file.upper()}__H__', file=f)
-    # with open(dino_file + ".cpp", "w") as f:
-        # print(f'#include "{dino_file}.h"', file=f)
-        # print(f'#include "{ability_file}.h"', file=f)
-        # print(f'', file=f)
-        # print(f'using namespace {ability_file};', file=f)
-        # print(f'', file=f)
-        # print(f'namespace {dino_file} {{', file=f)
-        # print(f'', file=f)
-        # for dino in sorted(dino_dex.values(), key=lambda dino: dino['dev_name']):
-            # print(f'DinoKind {dino["dev_name"]}("{dino["name"]}", {dino["rarity"]}, {dino["flock"]}, '\
-                  # f'{dino["health"]}, {dino["damage"]}, {dino["speed"]}, {dino["armor"]}, {dino["crit"]}, '\
-                  # f'{dino["crit_reduction_resistance"]}, '\
-                  # f'{dino["damage_over_time_resistance"]}, '\
-                  # f'{dino["damage_reduction_resistance"]}, '\
-                  # f'{dino["rend_resistance"]}, '\
-                  # f'{dino["speed_reduction_resistance"]}, '\
-                  # f'{dino["stun_resistance"]}, '\
-                  # f'{dino["swap_prevention_resistance"]}, '\
-                  # f'{dino["taunt_resistance"]}, '\
-                  # f'{dino["vulnerable_resistance"]}, {{', file=f)
-            # for round in range(len(dino['ability'])):
-                # print(f'    {{', file=f)
-                # for ability in range(len(dino['ability'][round])):
-                    # print(f'        &{dino["ability"][round][ability]}{"," if ability != len(dino["ability"][round]) - 1 else ""}', file=f)
-                # print(f'    }}{"," if round != len(dino["ability"]) - 1 else ""}', file=f)
-            # print(f'}}, {"&" + dino["counter"] if dino["counter"] else "nullptr"});', file=f)
-            # print('', file=f)
-        # print(f'}} // namespace {dino_file}', file=f)
-
-
 def WriteDinoDex(dino_dex, f):
     for dino in sorted(dino_dex.values(), key=lambda dino: dino['dev_name']):
-        print(f'DinoKind {dino["dev_name"]}("{dino["name"]}", {dino["rarity"]}, {dino["flock"]}, {{', file=f)
+        print(f'DinoKind {dino["dev_name"]}("{dino["name"]}", {dino["rarity"]}, {dino["flock"]}, ', end='', file=f)
+        if 'omega' in dino:
+            print(f'{dino["omega"]["step"]["health"]}, {dino["omega"]["step"]["damage"]}, {dino["omega"]["step"]["speed"]}, {dino["omega"]["step"]["armor"]}, {dino["omega"]["step"]["crit_chance"]}, {dino["omega"]["step"]["crit_factor"]}, ', end='', file=f)
+            print(f'{dino["omega"]["cap"]["health"]}, {dino["omega"]["cap"]["damage"]}, {dino["omega"]["cap"]["speed"]}, {dino["omega"]["cap"]["armor"]}, {dino["omega"]["cap"]["crit_chance"]}, {dino["omega"]["cap"]["crit_factor"]},', file=f)
+            print(f'{{{", ".join(str(x) for x in dino["omega"]["points"])}}}, {{', file=f)
+            for i, restriction in enumerate(dino["omega"]['restrictions']):
+                print(f'    {{{restriction["level"]}, RestrictionType::{restriction["type"]}, {restriction["value"]}}}{"," if i != len(dino["omega"]["restrictions"])-1 else ""}', file=f)
+            print(f'}}, ', end='', file=f)
+        print(f'{{', file=f)
         for round in range(len(dino['round'])):
-            print(f'    DinoRound({dino["round"][round]["health"]}, {dino["round"][round]["damage"]}, {dino["round"][round]["speed"]}, {dino["round"][round]["armor"]}, {dino["round"][round]["crit"]}, {dino["round"][round]["crit_boost"]}, '\
+            print(f'    DinoRound({dino["round"][round]["health"]}, {dino["round"][round]["damage"]}, {dino["round"][round]["speed"]}, {dino["round"][round]["armor"]}, {dino["round"][round]["crit_chance"]}, {dino["round"][round]["crit_factor"]}, '\
                   f'{dino["round"][round]["crit_reduction_resistance"]}, '\
                   f'{dino["round"][round]["damage_over_time_resistance"]}, '\
                   f'{dino["round"][round]["damage_reduction_resistance"]}, '\
@@ -526,50 +561,6 @@ def WriteDinoDex(dino_dex, f):
             print(f'    }}, {"&" + dino["round"][round]["counter"] if dino["round"][round]["counter"] else "nullptr"}){"," if round != len(dino["round"]) - 1 else ""}', file=f)
         print(f'}});', file=f)
         print('', file=f)
-
-
-def WriteCompactDinoDex(dino_dex, f):
-    for dino in sorted(dino_dex.values(), key=lambda dino: dino['dev_name']):
-        print(f'{GetShort("DinoKind")} {GetCode(dino["dev_name"])}("{dino["name"]}",{GetShort(dino["rarity"])},{dino["flock"]},{{', file=f, end='')
-        for round in range(len(dino['round'])):
-            print(f'{GetShort("DinoRound")}({dino["round"][round]["health"]},{dino["round"][round]["damage"]},{dino["round"][round]["speed"]},{Num(dino["round"][round]["armor"])},{Num(dino["round"][round]["crit"])},{Num(dino["round"][round]["crit_boost"])},'\
-                  f'{Num(dino["round"][round]["crit_reduction_resistance"])},'\
-                  f'{Num(dino["round"][round]["damage_over_time_resistance"])},'\
-                  f'{Num(dino["round"][round]["damage_reduction_resistance"])},'\
-                  f'{Num(dino["round"][round]["rend_resistance"])},'\
-                  f'{Num(dino["round"][round]["speed_reduction_resistance"])},'\
-                  f'{Num(dino["round"][round]["stun_resistance"])},'\
-                  f'{Num(dino["round"][round]["swap_prevention_resistance"])},'\
-                  f'{Num(dino["round"][round]["taunt_resistance"])},'\
-                  f'{Num(dino["round"][round]["vulnerable_resistance"])},'\
-                  f'{Num(dino["round"][round]["armor_reduction_resistance"])},'\
-                  f'{Num(dino["round"][round]["affliction_resistance"])},{{', file=f, end='')
-            for ability in range(len(dino['round'][round]['ability'])):
-                print(f'&{GetCode(dino["round"][round]["ability"][ability])}{"," if ability != len(dino["round"][round]["ability"]) - 1 else ""}', file=f, end='')
-            print(f'}},{"&" + GetCode(dino["round"][round]["counter"]) if dino["round"][round]["counter"] else GetShort("nullptr")}){"," if round != len(dino["round"]) - 1 else ""}', file=f, end='')
-        print(f'}});', file=f, end='')
-
-
-# def WriteCompactDinoDex(dino_dex, f):
-#     for dino in sorted(dino_dex.values(), key=lambda dino: dino['dev_name']):
-#         print(f'{GetShort("DinoKind")} {GetCode(dino["dev_name"])}("{dino["name"]}",{GetShort(dino["rarity"])},{dino["flock"]},'\
-#               f'{dino["health"]},{dino["damage"]},{dino["speed"]},{Num(dino["armor"])},{Num(dino["crit"])},'\
-#               f'{Num(dino["crit_reduction_resistance"])},'\
-#               f'{Num(dino["damage_over_time_resistance"])},'\
-#               f'{Num(dino["damage_reduction_resistance"])},'\
-#               f'{Num(dino["rend_resistance"])},'\
-#               f'{Num(dino["speed_reduction_resistance"])},'\
-#               f'{Num(dino["stun_resistance"])},'\
-#               f'{Num(dino["swap_prevention_resistance"])},'\
-#               f'{Num(dino["taunt_resistance"])},'\
-#               f'{Num(dino["vulnerable_resistance"])},'\
-#               f'{Num(dino["armor_reduction_resistance"])},{{', file=f, end='')
-#         for round in range(len(dino['ability'])):
-#             print(f'{{', file=f, end='')
-#             for ability in range(len(dino['ability'][round])):
-#                 print(f'&{GetCode(dino["ability"][round][ability])}{"," if ability != len(dino["ability"][round]) - 1 else ""}', file=f, end='')
-#             print(f'}}{"," if round != len(dino["ability"]) - 1 else ""}', file=f, end='')
-#         print(f'}},{"&" + GetCode(dino["counter"]) if dino["counter"] else GetShort("nullptr")});', file=f, end='')
 
 
 def WriteAbilityActions(actions, f):
@@ -591,69 +582,6 @@ def WriteAbilityActions(actions, f):
             print(f'', file=f)
 
 
-def WriteCompactAbilityActions(actions, f):
-    for i in range(len(actions)):
-        if i == 0 or not (
-                actions[i]["Target"] in ImmutableTargets and actions[i-1]["Target"] == actions[i]["Target"] or 
-                actions[i-1]["Target"] not in ImmutableTargets and actions[i]["Target"] == "Last"
-            ):
-            print(f'{GetShort("actions::Target"+actions[i]["Target"])}(', file=f, end='')
-        print(f'{actions[i]["Action"].ToCompact()}', end='', file=f)
-        if i == len(actions)-1 or not (
-                actions[i]["Target"] in ImmutableTargets and actions[i]["Target"] == actions[i+1]["Target"] or 
-                actions[i]["Target"] not in ImmutableTargets and actions[i+1]["Target"] == "Last"
-            ):
-            print(f')', end='', file=f)
-        if i != len(actions)-1:
-            print(f',', file=f, end='')
-
-
-# def WriteAbilityDex(ability_file, ability_dex):
-    # with open(ability_file + ".json", "w") as f:
-        # json.dump(ability_dex, f, indent=4)
-    # with open(ability_file + ".h", "w") as f:
-        # print(f'#ifndef __{ability_file.upper()}__H__', file=f)
-        # print(f'#define __{ability_file.upper()}__H__', file=f)
-        # print(f'', file=f)
-        # print(f'#include "ability.h"', file=f)
-        # print(f'', file=f)
-        # print(f'namespace {ability_file} {{', file=f)
-        # print(f'', file=f)
-        # for ability in sorted(ability_dex.values(), key=lambda ability: ability['dev_name']):
-            # print(f'extern {ability["type"]} {ability["dev_name"]};', file=f)
-        # print(f'', file=f)
-        # print(f'}} // namespace {ability_file}', file=f)
-        # print(f'', file=f)
-        # print(f'#endif // __{ability_file.upper()}__H__', file=f)
-    # with open(ability_file + ".cpp", "w") as f:
-        # print(f'#include "{ability_file}.h"', file=f)
-        # print(f'#include "actions.h"', file=f)
-        # print(f'#include "dino.h"', file=f)
-        # print(f'', file=f)
-        # print(f'using namespace actions;', file=f)
-        # print(f'', file=f)
-        # print(f'namespace {ability_file} {{', file=f)
-        # print(f'', file=f)
-        # for ability in sorted(ability_dex.values(), key=lambda ability: ability['dev_name']):
-            # if ability["type"] == "CounterAbility" or ability["type"] == "ThreatenedCounterAbility":
-                # print(f'{ability["type"]} {ability["dev_name"]}("{ability["name"]}", {{', file=f)
-            # else:
-                # print(f'{ability["type"]} {ability["dev_name"]}("{ability["name"]}", {ability["delay"]}, {ability["cooldown"]}, {ability["priority"]}, {{', file=f)
-            # WriteAbilityActions(ability["actions"], f) 
-            # if ability["type"] == "RevengeAbility":
-                # print(f'}}, {ability["revenge"]["delay"]}, {ability["revenge"]["cooldown"]}, {ability["revenge"]["priority"]}, {{', file=f)
-                # WriteAbilityActions(ability["revenge"]["actions"], f) 
-            # elif ability["type"] == "ThreatenedAbility":
-                # print(f'}}, [](Dino &self) {{ return self.total_health {ability["threatened_compare"]} self.max_total_health * {ability["threatened_factor"]}; }}, {ability["threatened"]["delay"]}, {ability["threatened"]["cooldown"]}, {ability["threatened"]["priority"]}, {{', file=f)
-                # WriteAbilityActions(ability["threatened"]["actions"], f) 
-            # elif ability["type"] == "ThreatenedCounterAbility":
-                # print(f'}}, [](Dino &self) {{ return self.total_health {ability["threatened_compare"]} self.max_total_health * {ability["threatened_factor"]}; }}, {{', file=f)
-                # WriteAbilityActions(ability["threatened"]["actions"], f) 
-            # print(f'}});', file=f)
-            # print(f'', file=f)
-        # print(f'}} // namespace {ability_file}', file=f)
-
-
 def WriteAbilityDex(ability_dex, f):
     for ability in sorted(ability_dex.values(), key=lambda ability: ability['dev_name']):
         if ability["type"] == "CounterAbility" or ability["type"] == "ThreatenedCounterAbility":
@@ -672,65 +600,6 @@ def WriteAbilityDex(ability_dex, f):
             WriteAbilityActions(ability["threatened"]["actions"], f) 
         print(f'}});', file=f)
         print(f'', file=f)
-
-
-def WriteCompactAbilityDex(ability_dex, f):
-    for ability in sorted(ability_dex.values(), key=lambda ability: ability['dev_name']):
-        if ability["type"] == "CounterAbility" or ability["type"] == "ThreatenedCounterAbility":
-            print(f'{GetShort(ability["type"])} {GetCode(ability["dev_name"])}("{ability["name"]}",{{', file=f, end='')
-        else:
-            print(f'{GetShort(ability["type"])} {GetCode(ability["dev_name"])}("{ability["name"]}",{ability["delay"]},{ability["cooldown"]},{ability["priority"]},{{', file=f, end='')
-        WriteCompactAbilityActions(ability["actions"], f) 
-        if ability["type"] == "RevengeAbility":
-            print(f'}},{ability["revenge"]["delay"]},{ability["revenge"]["cooldown"]},{ability["revenge"]["priority"]},{{', file=f, end='')
-            WriteCompactAbilityActions(ability["revenge"]["actions"], f) 
-        elif ability["type"] == "ThreatenedAbility":
-            print(f'}},[]({GetShort("Dino")}&{GetCode("self")}){{return {GetCode("self")}.{GetShort("total_health")}{ability["threatened_compare"]}{GetCode("self")}.{GetShort("max_total_health")}*{ability["threatened_factor"]};}},{ability["threatened"]["delay"]},{ability["threatened"]["cooldown"]},{ability["threatened"]["priority"]},{{', file=f, end='')
-            WriteCompactAbilityActions(ability["threatened"]["actions"], f) 
-        elif ability["type"] == "ThreatenedCounterAbility":
-            print(f'}},[]({GetShort("Dino")}&{GetCode("self")}){{return {GetCode("self")}.{GetShort("total_health")}{ability["threatened_compare"]}{GetCode("self")}.{GetShort("max_total_health")}*{ability["threatened_factor"]};}},{{', file=f, end='')
-            WriteCompactAbilityActions(ability["threatened"]["actions"], f) 
-        print(f'}});', file=f, end='')
-
-
-# def WriteDex(dino_dex, minion_dex, boss_dex, raid_dex):
-    # with open("raid_dex.json", "w") as f:
-        # json.dump(raid_dex, f, indent=4)
-    # with open("dex.h", "w") as f:
-        # print(f'#ifndef __DEX__H__', file=f)
-        # print(f'#define __DEX__H__', file=f)
-        # print(f'', file=f)
-        # print(f'#include <map>', file=f)
-        # print(f'#include <string>', file=f)
-        # print(f'#include "dino.h"', file=f)
-        # print(f'', file=f)
-        # print(f'extern std::map<std::string, std::vector<Dino>> BossDex;', file=f)
-        # print(f'extern std::map<std::string, const DinoKind *> DinoDex;', file=f)
-        # print(f'', file=f)
-        # print(f'#endif // __DEX__H__', file=f)
-    # with open("dex.cpp", "w") as f:
-        # print(f'#include "dex.h"', file=f)
-        # print(f'#include "dino_dex.h"', file=f)
-        # print(f'#include "minion_dex.h"', file=f)
-        # print(f'#include "boss_dex.h"', file=f)
-        # print(f'', file=f)
-        # print(f'using namespace std;', file=f)
-        # print(f'using namespace minion_dex;', file=f)
-        # print(f'using namespace boss_dex;', file=f)
-        # print(f'using namespace dino_dex;', file=f)
-        # print(f'', file=f)
-        # print(f'map<string, vector<Dino>> BossDex = {{', file=f)
-        # for raid in sorted(raid_dex, key=lambda raid: raid["boss"]["dino"]):
-            # print(f'    make_pair<string, vector<Dino>>("{raid["boss"]["dino"]}", {{Dino(0, 0, {raid["boss"]["level"]}, {raid["boss"]["health_boost"]}, {raid["boss"]["damage_boost"]}, {raid["boss"]["speed_boost"]}, &{raid["boss"]["dino"]})', end='', file=f)
-            # for id, minion in enumerate(raid["minion"]):
-                # print(f', Dino(0, {id+5}, {minion["level"]}, {minion["health_boost"]}, {minion["damage_boost"]}, {minion["speed_boost"]}, &{minion["dino"]})', end='', file=f)
-            # print(f'}}),', file=f)
-        # print(f'}};', file=f)
-        # print(f'', file=f)
-        # print(f'map<string, const DinoKind *> DinoDex = {{', file=f)
-        # for dino in sorted(dino_dex.values(), key=lambda dino: dino['dev_name']):
-            # print(f'    make_pair("{dino["dev_name"]}", &{dino["dev_name"]}),', file=f)
-        # print(f'}};', file=f)
 
 
 def WriteDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid_dex, f):
@@ -771,48 +640,12 @@ def WriteDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid
     print(f'}};', file=f)
 
 
-def WriteCompactDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid_dex, f):
-    print(f'#include "dex.h"', file=f)
-    print(f'#include "actions.h"', file=f)
-    print(f'#include "modifiers.h"', file=f)
-    print(f'#include "dino.h"', file=f)
-    print(f'#include "compact_dex.h"', file=f)
-    print(f'using namespace actions;', file=f)
-    print(f'#include "boss_dex.hpp"', file=f)
-    WriteCompactAbilityDex(ability_dex, f)
-    WriteCompactDinoDex(minion_dex, f)
-    WriteCompactDinoDex(dino_dex, f)
-    print(f'using namespace boss;', file=f)
-    print(f'{GetShort("std::map")}<{GetShort("std::string")},{GetShort("std::vector")}<{GetShort("Dino")}>> BossDex={{', file=f, end='')
-    for raid in sorted(raid_dex, key=lambda raid: raid["boss"]["dino"]):
-        print(f'{GetShort("std::make_pair")}<{GetShort("std::string")},{GetShort("std::vector")}<{GetShort("Dino")}>>("{raid["boss"]["dino"][:-4]}",{{{GetShort("Dino")}(0,0,{Num(raid["boss"]["level"])},{Num(raid["boss"]["health_boost"])},{Num(raid["boss"]["damage_boost"])},{Num(raid["boss"]["speed_boost"])},&{GetCode(raid["boss"]["dino"])})',end='',file=f)
-        for id, minion in enumerate(raid["minion"]):
-            print(f',{GetShort("Dino")}(0,{id+5},{minion["level"]},{minion["health_boost"]},{minion["damage_boost"]},{minion["speed_boost"]},&{GetCode(minion["dino"])})', end='', file=f)
-        print(f'}}),', file=f, end='')
-    print(f'}};', file=f)
-    print(f'{GetShort("std::map")}<{GetShort("std::string")},const {GetShort("DinoKind")} *> DinoDex = {{', file=f, end='')
-    for dino in sorted(dino_dex.values(), key=lambda dino: dino['dev_name']):
-        print(f'{GetShort("std::make_pair")}("{dino["dev_name"]}",&{GetCode(dino["dev_name"])}),', file=f, end='')
-    print(f'}};', file=f)
-
-
-def WriteCompactBossDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid_dex, f):
-    print(f'namespace boss {{', file=f, end='')
-    WriteCompactAbilityDex(boss_ability_dex, f)
-    WriteCompactDinoDex(boss_dex, f)
-    print(f'}}', file=f)
-
-
 def WriteShorts(f):
     print(f'#ifndef __JWA_CALC__COMPACT_H__', file=f)
     print(f'#define __JWA_CALC__COMPACT_H__', file=f)
     print(f'', file=f)
     for (k, v) in Shorts.items():
         print(f'#define {v} {k}', file=f)
-    # for (k, v) in Types.items():
-    #     print(f'using {v} = {k};', file=f)
-    # for (k, v) in Consts.items():
-    #     print(f'static const auto {v} = {k};', file=f)
     print(f'', file=f)
     print(f'#endif // __JWA_CALC__COMPACT_H__', file=f)
 
@@ -843,16 +676,10 @@ def GetAll():
         json.dump(raid_dex, f, indent=4)
     with open("dex.cpp", "w") as f:
         WriteDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid_dex, f)
-    with open("compact_dex.cpp", "w") as f:
-        WriteCompactDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid_dex, f)
-    with open("boss_dex.hpp", "w") as f:
-        WriteCompactBossDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid_dex, f)
     with open("compact_dex.h", "w") as f:
         WriteShorts(f)
 
 def main():
-    #unfold()
-    #search2()
     GetAll()
 
 if __name__ == "__main__":

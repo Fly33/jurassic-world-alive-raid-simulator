@@ -147,22 +147,22 @@ int Check(Dino team[], int team_size, const Strategy &strategy)
             if (!team[i].Alive())
                 continue;
             if (i == 0)
-                boss.Prepare(boss.turn % (int)boss->ability.size());
+                boss.Prepare(boss.turn % (int)boss.ability.size());
             else {
                 int ability_id = i-1 < (int)ability.size() ? ability[i-1] : 0;
                 if (ability_id != 0) {
                     bool minor = ability_id < 0;
                     ability_id = abs(ability[i-1])-1;
                     if (!team[i].Prepare(ability_id, minor)) {
-                        ERROR("%s can't use %s because of cooldown", team[i].Name().c_str(), team[i]->ability[ability_id]->name.c_str());
+                        ERROR("%s can't use %s because of cooldown", team[i].Name().c_str(), team[i].ability[ability_id]->name.c_str());
                         return -1;
                     }
                 } else {
-                    while (!team[i].Prepare(Rand(team[i]->ability.size())))
+                    while (!team[i].Prepare(Rand(team[i].ability.size())))
                         ;
                 }
             }
-            WARNING("%s chose %s (%d)", team[i].Name().c_str(), team[i]->ability[team[i].ability_id]->name.c_str(), team[i].ability_id + 1);
+            WARNING("%s chose %s (%d)", team[i].Name().c_str(), team[i].ability[team[i].ability_id]->name.c_str(), team[i].ability_id + 1);
         }
         int result = Step(team, team_size);
         if (result == 0)
@@ -254,7 +254,7 @@ Strategy Randomize(Dino team0[], int team_size, const Strategy &base_strategy, i
             for (int j = 0; j < (int)base_strategy.instructions[k].abilities.size(); ++j) {
                 if (team0[j+1].team != 1 || base_strategy.instructions[k].abilities[j] != 0)
                     continue;
-                strategy.instructions[k].abilities[j] = Rand(team0[j+1]->ability.size()) + 1;
+                strategy.instructions[k].abilities[j] = Rand(team0[j+1].ability.size()) + 1;
             }
         }
         double res = Chance2(team0, team_size, strategy, n_checks);
@@ -283,7 +283,7 @@ Strategy Full(Dino team0[], int team_size, Strategy base_strategy, int n_checks 
         for (int j = 0; j < (int)base_strategy.instructions[k].abilities.size(); ++j) {
             if (team0[j+1].team != 1 || base_strategy.instructions[k].abilities[j] != 0)
                 continue;
-            imax *= (int)team0[j+1]->ability.size();
+            imax *= (int)team0[j+1].ability.size();
             if (imax >= 1000000000) {
                 LOG("Too many checks");
                 return base_strategy;
@@ -302,8 +302,8 @@ Strategy Full(Dino team0[], int team_size, Strategy base_strategy, int n_checks 
             for (int j = 0; j < (int)base_strategy.instructions[k].abilities.size(); ++j) {
                 if (team0[j+1].team != 1 || base_strategy.instructions[k].abilities[j] != 0)
                     continue;
-                strategy.instructions[k].abilities[j] = a % (int)team0[j+1]->ability.size() + 1;
-                a /= (int)team0[j+1]->ability.size();
+                strategy.instructions[k].abilities[j] = a % (int)team0[j+1].ability.size() + 1;
+                a /= (int)team0[j+1].ability.size();
             }
         }
         double res = Chance2(team0, team_size, strategy, n_checks);
@@ -336,7 +336,7 @@ Strategy TurnByTurn(Dino team0[], int team_size, Strategy base_strategy, int n_c
         for (int j = 0; j < (int)base_strategy.instructions[k].abilities.size(); ++j) {
             if (team0[j+1].team != 1 || base_strategy.instructions[k].abilities[j] != 0)
                 continue;
-            imax *= (int)team0[j+1]->ability.size();
+            imax *= (int)team0[j+1].ability.size();
         }
         LOG("Step %d/%d", k+1, (int)base_strategy.instructions.size());
         LOG("Checks %d", imax);
@@ -348,8 +348,8 @@ Strategy TurnByTurn(Dino team0[], int team_size, Strategy base_strategy, int n_c
             for (int j = 0, a = i; j < (int)base_strategy.instructions[k].abilities.size(); ++j) {
                 if (team0[j+1].team != 1 || base_strategy.instructions[k].abilities[j] != 0)
                     continue;
-                strategy.instructions[k].abilities[j] = a % (int)team0[j+1]->ability.size() + 1;
-                a /= (int)team0[j+1]->ability.size();
+                strategy.instructions[k].abilities[j] = a % (int)team0[j+1].ability.size() + 1;
+                a /= (int)team0[j+1].ability.size();
             }
             double res = Chance2(team0, team_size, strategy, n_checks);
 #pragma omp critical
@@ -530,9 +530,9 @@ Options:
 Checks a strategy from input or <file> if specified. The strategy has the following format:
         <boss_name>
         <n_teammates> <n_turns>
-        <teammate_1_name> <teammate_1_level> <teammate_1_health_boost> <teammate_1_damage_boost> <teammate_1_speed_boost>
+        <teammate_1_name> <level> <health_boost> <damage_boost> <speed_boost> [<omega_health_points> <omega_damage_points> <omega_speed_points> <omega_armor_points> <omega_crit_chance_points> <omega_crit_factor_points>]
         ...
-        <teammate_N_name> <teammate_N_level> <teammate_N_health_boost> <teammate_N_damage_boost> <teammate_N_speed_boost>
+        <teammate_N_name> <level> <health_boost> <damage_boost> <speed_boost> [<omega_health_points> <omega_damage_points> <omega_speed_points> <omega_armor_points> <omega_crit_chance_points> <omega_crit_factor_points>]
         <teammate_1_turn_1_move> ... <teammate_1_turn_M_move>
         ...
         <teammate_N_turn_1_move> ... <teammate_N_turn_M_move>
@@ -545,9 +545,9 @@ top.
 Also there is alternarive format:
         <boss_name>
         <n_teammates> 0
-        <teammate_1_name> <teammate_1_level> <teammate_1_health_boost> <teammate_1_damage_boost> <teammate_1_speed_boost>
+        <teammate_1_name> <level> <health_boost> <damage_boost> <speed_boost> [<omega_health_points> <omega_damage_points> <omega_speed_points> <omega_armor_points> <omega_crit_chance_points> <omega_crit_factor_points>]
         ...
-        <teammate_N_name> <teammate_N_level> <teammate_N_health_boost> <teammate_N_damage_boost> <teammate_N_speed_boost>
+        <teammate_N_name> <level> <health_boost> <damage_boost> <speed_boost> [<omega_health_points> <omega_damage_points> <omega_speed_points> <omega_armor_points> <omega_crit_chance_points> <omega_crit_factor_points>]
         <block>
 
 <block> ::=

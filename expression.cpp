@@ -59,7 +59,7 @@ map<string, function<int(const Dino &)>> Properties = {
     make_pair("dodge_factor", [](const Dino &dino) -> int { return dino.DodgeFactor() * 100; }),
     make_pair("alive", [](const Dino &dino) -> int { return dino.Alive(); }),
     make_pair("cloak_factor", [](const Dino &dino) -> int { return dino.CloakFactor() * 100; }),
-    make_pair("crit_chance", [](const Dino &dino) -> int { return dino.CritChanceFactor() * 100; }),
+    make_pair("crit_chance", [](const Dino &dino) -> int { return dino.CritChance() * 100; }),
     make_pair("taunt", [](const Dino &dino) -> int { return dino.Taunt(); }),
     make_pair("max_health", [](const Dino &dino) -> int { return dino.max_health; }),
     make_pair("total_health", [](const Dino &dino) -> int { return dino.total_health; }),

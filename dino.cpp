@@ -46,7 +46,38 @@ static const double LevelFactor[] = {
 };
 static const double BoostFactor[] = {1.0, 1.025, 1.05, 1.075, 1.1, 1.125, 1.15, 1.175, 1.2, 1.225, 1.25, 1.275, 1.3, 1.325, 1.35, 1.375, 1.4, 1.425, 1.45, 1.475, 1.5};
 
+static int PointsDistribution(int points, int index, const vector<int> &max)
+{
+    int n = (int)max.size();
+    int left = -1, right = points * n;
+    while (right - left > 1) {
+        int middle = (left + right) / 2;
+        int curr_points = 0;
+        for (int i = 0; i < (int)max.size(); ++i) {
+            curr_points += min(max[i], (middle + n - 1 - i) / n);
+        }
+        if (curr_points >= points)
+            right = middle;
+        else
+            left = middle;
+    }
+    return min(max[index], (right + n - 1 - index) / n);
+}
+
 Dino::Dino(int _team, int _index, int _level, int _health_boost, int _damage_boost, int _speed_boost, const DinoKind *_kind)
+    : Dino(_team, _index, _level, _health_boost, _damage_boost, _speed_boost,
+           _kind->is_omega ? PointsDistribution(_kind->level_points[_level], 1, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
+           _kind->is_omega ? PointsDistribution(_kind->level_points[_level], 0, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
+           _kind->is_omega ? PointsDistribution(_kind->level_points[_level], 2, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
+           _kind->is_omega ? PointsDistribution(_kind->level_points[_level], 3, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
+           _kind->is_omega ? PointsDistribution(_kind->level_points[_level], 4, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
+           _kind->is_omega ? PointsDistribution(_kind->level_points[_level], 5, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
+           _kind)
+{}
+
+Dino::Dino(int _team, int _index, int _level, int _health_boost, int _damage_boost, int _speed_boost,
+     int _omega_health_points, int _omega_damage_points, int _omega_speed_points, int _omega_armor_points, int _omega_crit_chance_points, int _omega_crit_factor_points,
+     const DinoKind *_kind)
     : kind(_kind)
     , rounds((int)kind->round.size())
     , team(_team)
@@ -55,22 +86,114 @@ Dino::Dino(int _team, int _index, int _level, int _health_boost, int _damage_boo
     , health_boost(_health_boost)
     , damage_boost(_damage_boost)
     , speed_boost(_speed_boost)
-    , max_health(health_boost <= 20 ? _kind->round[0].health * LevelFactor[level] * BoostFactor[health_boost] : health_boost)
-    , health(max_health)
-    , damage(damage_boost <= 20 ? _kind->round[0].damage * LevelFactor[level] * BoostFactor[damage_boost] : damage_boost)
-    , speed(speed_boost <= 20 ? _kind->round[0].speed + 2 * speed_boost : speed_boost)
     , name(team != 0 ? strprintf("%s#%d", kind->name.c_str(), _index) : kind->name)
+    , omega_health_points(_omega_health_points)
+    , omega_damage_points(_omega_damage_points)
+    , omega_speed_points(_omega_speed_points)
+    , omega_armor_points(_omega_armor_points)
+    , omega_crit_chance_points(_omega_crit_chance_points)
+    , omega_crit_factor_points(_omega_crit_factor_points)
 {
-    for (int i = 0; i < (int)Round(0).ability.size(); ++i) {
-        cooldown[i] = Round(0).ability[i]->delay;
-    }
     for (int i = 0; i < (int)kind->round.size(); ++i) {
-    	max_total_health += health_boost <= 20 ? Round(i).health * LevelFactor[level] * BoostFactor[health_boost] : health_boost;
+        InitRound(i);
+        max_total_health += max_health;
     }
+    InitRound();
     total_health = max_total_health;
     for (int i = 1; i < kind->flock; ++i) {
         flock_segment.push_back(i * max_health / kind->flock);
     }
+}
+
+void Dino::InitRound(int round)
+{
+    if (health_boost > 20)
+        health = max_health = health_boost;
+    else if (kind->is_omega)
+        health = max_health = (Round(round).health + kind->omega_health_step * omega_health_points) * BoostFactor[health_boost];
+    else
+        health = max_health = Round(round).health * LevelFactor[level] * BoostFactor[health_boost];
+
+    if (damage_boost > 20)
+        damage = damage_boost;
+    else if (kind->is_omega)
+        damage = (Round(round).damage + kind->omega_damage_step * omega_damage_points) * BoostFactor[damage_boost];
+    else
+        damage = Round(round).damage * LevelFactor[level] * BoostFactor[damage_boost];
+
+    if (speed_boost > 20)
+        speed = speed_boost;
+    else if (kind->is_omega)
+        speed = Round(round).speed + kind->omega_speed_step * omega_speed_points + 2 * speed_boost;
+    else
+        speed = Round(round).speed + 2 * speed_boost;
+
+    if (kind->is_omega)
+        armor = Round(round).armor + kind->omega_armor_step * omega_armor_points;
+    else
+        armor = Round(round).armor;
+
+    if (kind->is_omega)
+        crit_chance = Round(round).crit_chance + kind->omega_crit_chance_step * omega_crit_chance_points;
+    else
+        crit_chance = Round(round).crit_chance;
+
+    if (kind->is_omega)
+        crit_factor = Round(round).crit_factor + kind->omega_crit_chance_step * omega_crit_factor_points;
+    else
+        crit_factor = Round(round).crit_factor;
+
+    if (kind->is_omega) {
+        crit_reduction_resistance   = GetRestriction(level, RestrictionType::CritReductionResistance, Round(round).crit_reduction_resistance);
+        damage_over_time_resistance = GetRestriction(level, RestrictionType::DamageOverTimeResistance, Round(round).damage_over_time_resistance);
+        damage_reduction_resistance = GetRestriction(level, RestrictionType::DamageReductionResistance, Round(round).damage_reduction_resistance);
+        rend_resistance             = GetRestriction(level, RestrictionType::RendResistance, Round(round).rend_resistance);
+        speed_reduction_resistance  = GetRestriction(level, RestrictionType::SpeedReductionResistance, Round(round).speed_reduction_resistance);
+        stun_resistance             = GetRestriction(level, RestrictionType::StunResistance, Round(round).stun_resistance);
+        swap_prevention_resistance  = GetRestriction(level, RestrictionType::SwapPreventionResistance, Round(round).swap_prevention_resistance);
+        taunt_resistance            = GetRestriction(level, RestrictionType::TauntResistance, Round(round).taunt_resistance);
+        vulnerability_resistance    = GetRestriction(level, RestrictionType::VulnerabilityResistance, Round(round).vulnerability_resistance);
+        armor_reduction_resistance  = GetRestriction(level, RestrictionType::ArmorReductionResistance, Round(round).armor_reduction_resistance);
+        affliction_resistance       = GetRestriction(level, RestrictionType::AfflictionResistance, Round(round).affliction_resistance);
+        ability = Round(round).ability;
+        ability.resize((int)GetRestriction(level, RestrictionType::Ability, 2));
+        counter_attack = (int)GetRestriction(level, RestrictionType::Counter, 0) ? Round(round).counter_attack : nullptr;
+    } else {
+        crit_reduction_resistance = Round(round).crit_reduction_resistance;
+        damage_over_time_resistance = Round(round).damage_over_time_resistance;
+        damage_reduction_resistance = Round(round).damage_reduction_resistance;
+        rend_resistance = Round(round).rend_resistance;
+        speed_reduction_resistance = Round(round).speed_reduction_resistance;
+        stun_resistance = Round(round).stun_resistance;
+        swap_prevention_resistance = Round(round).swap_prevention_resistance;
+        taunt_resistance = Round(round).taunt_resistance;
+        vulnerability_resistance = Round(round).vulnerability_resistance;
+        armor_reduction_resistance = Round(round).armor_reduction_resistance;
+        affliction_resistance = Round(round).affliction_resistance;
+        ability = Round(round).ability;
+        counter_attack = Round(round).counter_attack;
+    }
+
+    for (int i = 0; i < (int)ability.size(); ++i) {
+        cooldown[i] = ability[i]->delay;
+    }
+}
+
+double Dino::GetRestriction(int level, RestrictionType type, double _default)
+{
+    double result = _default;
+    double max_level = 0;
+    for (const auto &restriction: kind->restrictions) {
+        if (restriction.type != type)
+            continue;
+        if (restriction.level > level)
+            continue;
+        if (restriction.level <= max_level)
+            continue;
+        max_level = restriction.level;
+        result = restriction.restriction;
+    }
+    return result;
 }
 
 bool Dino::Prepare(int _ability_id, bool minor)
@@ -85,7 +208,7 @@ bool Dino::Prepare(int _ability_id, bool minor)
             --cooldown[i];
     }
     ability_id = _ability_id;
-    Round().ability[ability_id]->Prepare(*this, &cooldown[ability_id], &priority);
+    ability[ability_id]->Prepare(*this, &cooldown[ability_id], &priority);
     return true;
 }
 
@@ -95,8 +218,8 @@ void Dino::Attack(Dino team[], int size)
         return;
     REMOVE_MODS(*this, mod_it->BeforeAction(), DEBUG("%s has %s expired", Name().c_str(), mod_it->Name().c_str()));
     if (!stun) {
-        INFO("%s uses %s!", Name().c_str(), Round().ability[ability_id]->name.c_str());
-        Round().ability[ability_id]->Do(*this, team, size);
+        INFO("%s uses %s!", Name().c_str(), ability[ability_id]->name.c_str());
+        ability[ability_id]->Do(*this, team, size);
     }
     REMOVE_MODS(*this, mod_it->AfterAction(), DEBUG("%s has %s expired", Name().c_str(), mod_it->Name().c_str()));
     affliction += affliction_factor;
@@ -104,9 +227,9 @@ void Dino::Attack(Dino team[], int size)
 
 void Dino::CounterAttack(Dino team[], int size)
 {
-    if (Alive() && attacker && !stun && Round().counter_attack) {
-        INFO("%s counter-attacks using %s!", Name().c_str(), Round().counter_attack->name.c_str());
-        Round().counter_attack->Do(*this, team, size);
+    if (Alive() && attacker && !stun && counter_attack) {
+        INFO("%s counter-attacks using %s!", Name().c_str(), counter_attack->name.c_str());
+        counter_attack->Do(*this, team, size);
     }
     attacker = nullptr;
 }
@@ -165,14 +288,9 @@ void Dino::Revive(bool total)
 {
     if (total)
         actions::Remove(ALL_EFFECTS).Do(*this, *this);
-    health = max_health = health_boost <= 20 ? Round().health * LevelFactor[level] * BoostFactor[health_boost] : health_boost;
-    damage = damage_boost <= 20 ? Round().damage * LevelFactor[level] * BoostFactor[damage_boost] : damage_boost;
-    speed = speed_boost <= 20 ? Round().speed + 2 * speed_boost : speed_boost;
+    InitRound();
     if (total)
         total_health = max_total_health;
-    for (int i = 0; i < (int)Round().ability.size(); ++i) {
-        cooldown[i] = Round().ability[i]->delay;
-    }
     INFO("%s is revived!", Name().c_str());
 }
 

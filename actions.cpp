@@ -36,7 +36,7 @@ list<unique_ptr<Action>> actions::Rend(double _factor, int _flags)
 
 void PrepareAttack::Do(Dino &self, Dino &target) const
 {
-    self.crit = (flags & ALWAYS_CRITS) || Rand(100) < self.CritChanceFactor() * 100;
+    self.crit = (flags & ALWAYS_CRITS) || Rand(100) < self.CritChance() * 100;
     self.killer = false;
     self.last_damage = 0;
 }
@@ -45,7 +45,7 @@ void AttackAction::Do(Dino &self, Dino &target) const
 {
     double damage;
     if (flags & REND)
-        damage = target.max_total_health * (1 - target.Round().rend_resistance); // affliction doesn't affect rend
+        damage = target.max_total_health * (1 - target.rend_resistance); // affliction doesn't affect rend
     else
         damage = self.damage;
     damage = floor(damage * self.DamageFactor());
@@ -55,7 +55,7 @@ void AttackAction::Do(Dino &self, Dino &target) const
         damage *= 1 + target.vulnerability;
     bool crit = self.crit;
     if (crit)
-        damage *= target.Round().crit_boost;
+        damage *= target.crit_factor;
     bool cloak = self.CloakFactor() != 1;
     if (cloak)
         damage *= self.CloakFactor();
@@ -240,7 +240,7 @@ void DamageOverTime::Do(Dino &self, Dino &target) const
 
 void Stun::Do(Dino &self, Dino &target) const
 {
-    if (Rand(100) < factor * target.ResistanceFactor(&DinoRound::stun_resistance) * 100.)
+    if (Rand(100) < factor * target.ResistanceFactor(&Dino::stun_resistance) * 100.)
         target.Impose(&stun, self);
 }
 

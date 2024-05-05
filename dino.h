@@ -30,8 +30,8 @@ struct DinoRound
 	int damage;
 	int speed;
 	double armor;
-	double crit;
-	double crit_boost;
+	double crit_chance;
+	double crit_factor;
 	double crit_reduction_resistance;
 	double damage_over_time_resistance;
 	double damage_reduction_resistance;
@@ -40,12 +40,12 @@ struct DinoRound
 	double stun_resistance;
 	double swap_prevention_resistance;
 	double taunt_resistance;
-	double vulnerable_resistance;
+	double vulnerability_resistance;
 	double armor_reduction_resistance;
 	double affliction_resistance;
 	std::vector<const Ability *> ability;
 	const CounterAbility *counter_attack;
-    DinoRound(int _health, int _damage, int _speed, int _armor, int _crit, int _crit_boost,
+    DinoRound(int _health, int _damage, int _speed, int _armor, int _crit_chance, int _crit_factor,
             double _crit_reduction_resistance,
             double _damage_over_time_resistance,
             double _damage_reduction_resistance,
@@ -54,7 +54,7 @@ struct DinoRound
             double _stun_resistance,
             double _swap_prevention_resistance,
             double _taunt_resistance,
-            double _vulnerable_resistance,
+            double _vulnerability_resistance,
             double _armor_reduction_resistance,
 			double _affliction_resistance,
             std::initializer_list<Ability *> _ability, CounterAbility *_counter_attack)
@@ -62,8 +62,8 @@ struct DinoRound
         , damage(_damage)
         , speed(_speed)
         , armor(_armor / 100.)
-        , crit(_crit / 100.)
-	    , crit_boost(_crit_boost / 100.)
+        , crit_chance(_crit_chance / 100.)
+	    , crit_factor(_crit_factor / 100.)
         , crit_reduction_resistance(_crit_reduction_resistance / 100.)
         , damage_over_time_resistance(_damage_over_time_resistance / 100.)
         , damage_reduction_resistance(_damage_reduction_resistance / 100.)
@@ -72,11 +72,41 @@ struct DinoRound
         , stun_resistance(_stun_resistance / 100.)
         , swap_prevention_resistance(_swap_prevention_resistance / 100.)
         , taunt_resistance(_taunt_resistance / 100.)
-        , vulnerable_resistance(_vulnerable_resistance / 100.)
+        , vulnerability_resistance(_vulnerability_resistance / 100.)
         , armor_reduction_resistance(_armor_reduction_resistance / 100.)
 		, affliction_resistance(_affliction_resistance / 100.)
 		, ability(_ability.begin(), _ability.end())
 		, counter_attack(_counter_attack)
+    {}
+};
+
+enum class RestrictionType {
+    Ability,
+    Counter,
+    SwapIn,
+    OnEscape,
+    CritReductionResistance,
+    DamageOverTimeResistance,
+    DamageReductionResistance,
+    RendResistance,
+    SpeedReductionResistance,
+    StunResistance,
+    SwapPreventionResistance,
+    TauntResistance,
+    VulnerabilityResistance,
+    ArmorReductionResistance,
+    AfflictionResistance,
+};
+
+struct Restriction
+{
+    int level;
+    RestrictionType type;
+    double restriction;
+    Restriction(int _level, RestrictionType _type, double _restriction)
+        : level(_level)
+        , type(_type)
+        , restriction(_restriction)
     {}
 };
 
@@ -85,12 +115,68 @@ struct DinoKind
     std::string name;
     int rarity;
     int flock;
+    bool is_omega;
+    int omega_health_step;
+    int omega_damage_step;
+    int omega_speed_step;
+    double omega_armor_step;
+    double omega_crit_chance_step;
+    double omega_crit_factor_step;
+    int max_omega_health_points;
+    int max_omega_damage_points;
+    int max_omega_speed_points;
+    int max_omega_armor_points;
+    int max_omega_crit_chance_points;
+    int max_omega_crit_factor_points;
+    std::vector<int> level_points;
+    std::vector<Restriction> restrictions;
     std::vector<DinoRound> round;
 
     DinoKind(const std::string &_name, int _rarity, int _flock, std::initializer_list<DinoRound> _round)
         : name(_name)
         , rarity(_rarity)
         , flock(_flock)
+        , is_omega(false)
+        , omega_health_step()
+        , omega_damage_step()
+        , omega_speed_step()
+        , omega_armor_step()
+        , omega_crit_chance_step()
+        , omega_crit_factor_step()
+        , max_omega_health_points()
+        , max_omega_damage_points()
+        , max_omega_speed_points()
+        , max_omega_armor_points()
+        , max_omega_crit_chance_points()
+        , max_omega_crit_factor_points()
+        , level_points()
+        , restrictions()
+        , round(_round.begin(), _round.end())
+    {}
+    DinoKind(const std::string &_name, int _rarity, int _flock,
+             int _omega_health_step, int _omega_damage_step, int _omega_speed_step, double _omega_armor_step, double _omega_crit_chance_step, double _omega_crit_factor_step,
+             int _max_omega_health_points, int _max_omega_damage_points, int _max_omega_speed_points, int _max_omega_armor_points, int _max_omega_crit_chance_points, int _max_omega_crit_factor_points,
+             std::initializer_list<int> _level_points,
+             std::initializer_list<Restriction> _restrictions,
+             std::initializer_list<DinoRound> _round)
+        : name(_name)
+        , rarity(_rarity)
+        , flock(_flock)
+        , is_omega(true)
+        , omega_health_step(_omega_health_step)
+        , omega_damage_step(_omega_damage_step)
+        , omega_speed_step(_omega_speed_step)
+        , omega_armor_step(_omega_armor_step)
+        , omega_crit_chance_step(_omega_crit_chance_step)
+        , omega_crit_factor_step(_omega_crit_factor_step)
+        , max_omega_health_points(_max_omega_health_points)
+        , max_omega_damage_points(_max_omega_damage_points)
+        , max_omega_speed_points(_max_omega_speed_points)
+        , max_omega_armor_points(_max_omega_armor_points)
+        , max_omega_crit_chance_points(_max_omega_crit_chance_points)
+        , max_omega_crit_factor_points(_max_omega_crit_factor_points)
+        , level_points(_level_points.begin(), _level_points.end())
+        , restrictions(_restrictions.begin(), _restrictions.end())
         , round(_round.begin(), _round.end())
     {}
 };
@@ -121,10 +207,10 @@ struct Dino
     int health_boost;
     int damage_boost;
     int speed_boost;
-    int max_health;
-    int health; // текущее количество жизней
-    double damage; // базовая атака
-    int speed; // текущая скорость
+    int max_health = 0;
+    int health = 0; // текущее количество жизней
+    double damage = 0; // базовая атака
+    int speed = 0; // текущая скорость
     int ability_id = -1; // номер атаки
     int priority = 0; // приоритет в текущем ходу
     bool minor = false;
@@ -133,8 +219,9 @@ struct Dino
     double vulnerability = 0;
     double damage_factor = 1;
     double speed_factor = 1;
-    double crit_chance_factor = 0;
     double armor = 0;
+    double crit_chance = 0;
+    double crit_factor = 0;
     double affliction = 0;
     double affliction_factor = 0;
     bool taunt = false;
@@ -159,9 +246,37 @@ struct Dino
     std::multiset<double, std::greater<double>> cloak_factor;
     std::string name;
     class Stats *stats = nullptr;
+    int omega_health_points;
+    int omega_damage_points;
+    int omega_speed_points;
+    int omega_armor_points;
+    int omega_crit_chance_points;
+    int omega_crit_factor_points;
+    double crit_reduction_resistance;
+    double damage_over_time_resistance;
+    double damage_reduction_resistance;
+    double rend_resistance;
+    double speed_reduction_resistance;
+    double stun_resistance;
+    double swap_prevention_resistance;
+    double taunt_resistance;
+    double vulnerability_resistance;
+    double armor_reduction_resistance;
+    double affliction_resistance;
+    std::vector<const Ability *> ability;
+    const CounterAbility *counter_attack;
 
     Dino(int _team, int _index, int _level, int _health_boost, int _damage_boost, int _speed_boost, const DinoKind *_kind);
+    Dino(int _team, int _index, int _level, int _health_boost, int _damage_boost, int _speed_boost,
+         int _omega_health_points, int _omega_damage_points, int _omega_speed_points, int _omega_armor_points, int _omega_crit_chance_points, int _omega_crit_factor_points,
+         const DinoKind *_kind);
 
+    void InitRound()
+    {
+        return InitRound(this->round);
+    }
+    void InitRound(int round);
+    double GetRestriction(int level, RestrictionType type, double _default = 0);
     int Damage() const
     {
         return floor(damage * DamageFactor());
@@ -187,18 +302,18 @@ struct Dino
             return 0;
         return damage_factor;
     }
-    double CritChanceFactor() const
+    double CritChance() const
     {
-    	double crit_chance_factor = Round().crit + this->crit_chance_factor;
-        if (crit_chance_factor < 0)
+    	double crit_chance = this->crit_chance;
+        if (crit_chance < 0)
             return 0;
-        if (crit_chance_factor > 1)
+        if (crit_chance > 1)
             return 1;
-        return crit_chance_factor;
+        return crit_chance;
     }
     double Armor() const
     {
-    	double armor = Round().armor + this->armor;
+    	double armor = this->armor;
         if (armor < 0)
             return 0;
         if (armor > 1)
@@ -240,14 +355,16 @@ struct Dino
             return 1;
         return *cloak_factor.begin();
     }
-    double ResistanceFactor(double DinoRound::*resistance) const
+    double ResistanceFactor(double Dino::*resistance) const
     {
-    	return 1 - Norm(Round().*resistance - affliction);
+    	return 1 - Norm(this->*resistance - affliction);
     }
     void Hit(const Dino &attacker, int damage, bool premature = false);
     void Heal(const Dino &healer, int heal);
     int Absorb(int damage);
     int HealAbsorb(int heal);
+    void Revenge(Dino &source);
+private:
     const DinoRound &Round() const
     {
     	return Round(this->round);
@@ -256,11 +373,10 @@ struct Dino
     {
     	return kind->round[round];
     }
-    const DinoRound *operator ->() const
-	{
-    	return &Round();
-	}
-    void Revenge(Dino &source);
+//    const DinoRound *operator ->() const
+//	{
+//    	return &Round();
+//	}
 };
 
 #include "unpack.h"
