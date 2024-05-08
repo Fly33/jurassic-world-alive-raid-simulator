@@ -23,40 +23,6 @@
 using namespace std;
 
 
-bool SpeedCmp(const Dino &dino1, const Dino &dino2) {
-    if (dino1.stun < dino2.stun)
-        return true;
-    if (dino1.stun > dino2.stun)
-        return false;
-    if (dino1.priority > dino2.priority)
-        return true;
-    if (dino1.priority < dino2.priority)
-        return false;
-    if (dino1.Speed() > dino2.Speed())
-        return true;
-    if (dino1.Speed() < dino2.Speed())
-        return false;
-    if (dino1.level > dino2.level)
-        return true;
-    if (dino1.level < dino2.level)
-        return false;
-    if (dino1.kind->rarity > dino2.kind->rarity)
-        return true;
-    if (dino1.kind->rarity < dino2.kind->rarity)
-        return false;
-    if (dino1.minor < dino2.minor)
-        return true;
-    if (dino1.minor > dino2.minor)
-        return false;
-    if ((!dino1.minor && dino1.index < dino2.index) ||
-        (dino1.minor && dino1.index > dino2.index))
-        return true;
-//    if ((!dino1.minor && dino1.index > dino2.index) ||
-//        (dino1.minor && dino1.index < dino2.index))
-//        return false;
-    return false;
-}
-
 int Step(Dino team[], int team_size)
 {
     int i;
@@ -68,7 +34,7 @@ int Step(Dino team[], int team_size)
     }
     for (int j = 0; j < team_size; ++j) {
         for (i = team_size - 1; i - 1 >= j; --i) { // Oh, yeah, this is bubble sort :)
-            if (SpeedCmp(*dino[i], *dino[i-1]))
+            if (ActionOrderCmp(*dino[i], *dino[i-1]))
                 swap(dino[i-1], dino[i]);
         }
         if (!dino[j]->Alive())
@@ -76,7 +42,7 @@ int Step(Dino team[], int team_size)
         dino[j]->Attack(team, team_size);
         for (int k = 0; k < team_size; ++k) {
             for (i = team_size - 1; i - 1 >= k; --i) { // Oh, yeah, this is bubble sort again
-                if (SpeedCmp(*counter_team[i], *counter_team[i-1]))
+                if (ActionOrderCmp(*counter_team[i], *counter_team[i-1]))
                     swap(counter_team[i-1], counter_team[i]);
             }
             counter_team[k]->CounterAttack(team, team_size);

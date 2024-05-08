@@ -46,6 +46,37 @@ static const double LevelFactor[] = {
 };
 static const double BoostFactor[] = {1.0, 1.025, 1.05, 1.075, 1.1, 1.125, 1.15, 1.175, 1.2, 1.225, 1.25, 1.275, 1.3, 1.325, 1.35, 1.375, 1.4, 1.425, 1.45, 1.475, 1.5};
 
+bool ActionOrderCmp(const Dino &dino1, const Dino &dino2)
+{
+    if (dino1.priority > dino2.priority)
+        return true;
+    if (dino1.priority < dino2.priority)
+        return false;
+    if (dino1.Speed() > dino2.Speed())
+        return true;
+    if (dino1.Speed() < dino2.Speed())
+        return false;
+    if (dino1.level > dino2.level)
+        return true;
+    if (dino1.level < dino2.level)
+        return false;
+    if (dino1.kind->rarity > dino2.kind->rarity)
+        return true;
+    if (dino1.kind->rarity < dino2.kind->rarity)
+        return false;
+    if (dino1.minor < dino2.minor)
+        return true;
+    if (dino1.minor > dino2.minor)
+        return false;
+    if ((!dino1.minor && dino1.index < dino2.index) ||
+        (dino1.minor && dino1.index > dino2.index))
+        return true;
+//    if ((!dino1.minor && dino1.index > dino2.index) ||
+//        (dino1.minor && dino1.index < dino2.index))
+//        return false;
+    return false;
+}
+
 static int PointsDistribution(int points, int index, const vector<int> &max)
 {
     int n = (int)max.size();

@@ -181,6 +181,8 @@ struct DinoKind
     {}
 };
 
+bool ActionOrderCmp(const Dino &dino1, const Dino &dino2);
+
 struct dodge_cmp
 {
     constexpr bool operator()(const std::pair<double, double> &lhs, const std::pair<double, double> &rhs ) const
