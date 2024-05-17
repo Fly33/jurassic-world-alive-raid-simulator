@@ -120,7 +120,7 @@ int Check(Dino team[], int team_size, const Strategy &strategy)
                     bool minor = ability_id < 0;
                     ability_id = abs(ability[i-1])-1;
                     if (!team[i].Prepare(ability_id, minor)) {
-                        ERROR("%s can't use %s because of cooldown", team[i].Name().c_str(), team[i].ability[ability_id]->name.c_str());
+                        ERROR("%s can't use %s because of cooldown or it doesn't exist", team[i].Name().c_str(), team[i].ability[ability_id]->name.c_str());
                         return -1;
                     }
                 } else {

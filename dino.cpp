@@ -239,6 +239,8 @@ bool Dino::Prepare(int _ability_id, bool minor)
             --cooldown[i];
     }
     ability_id = _ability_id;
+    if (ability_id >= (int)ability.size())
+        return false;
     ability[ability_id]->Prepare(*this, &cooldown[ability_id], &priority);
     return true;
 }
