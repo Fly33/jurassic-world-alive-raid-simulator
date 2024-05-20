@@ -160,14 +160,14 @@ void Dino::InitRound(int round)
         speed = Round(round).speed + 2 * speed_boost;
 
     if (kind->is_omega)
-        armor = Round(round).armor + kind->omega_armor_step * omega_armor_points;
+        armor_base = Round(round).armor + kind->omega_armor_step * omega_armor_points;
     else
-        armor = Round(round).armor;
+        armor_base = Round(round).armor;
 
     if (kind->is_omega)
-        crit_chance = Round(round).crit_chance + kind->omega_crit_chance_step * omega_crit_chance_points;
+        crit_chance_base = Round(round).crit_chance + kind->omega_crit_chance_step * omega_crit_chance_points;
     else
-        crit_chance = Round(round).crit_chance;
+        crit_chance_base = Round(round).crit_chance;
 
     if (kind->is_omega)
         crit_factor = Round(round).crit_factor + kind->omega_crit_chance_step * omega_crit_factor_points;

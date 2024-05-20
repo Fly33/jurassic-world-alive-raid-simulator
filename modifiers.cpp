@@ -31,13 +31,13 @@ void Taunt::Dispose(Dino &target, Mod *) const
 
 void IncreasedCritChance::Impose(Dino &target, Mod *) const
 {
-    target.crit_chance += factor;
+    target.crit_chance_change += factor;
     ++target.n_positive_effects;
 }
 
 void IncreasedCritChance::Dispose(Dino &target, Mod *) const
 {
-    target.crit_chance -= factor;
+    target.crit_chance_change -= factor;
     --target.n_positive_effects;
 }
 
@@ -102,12 +102,12 @@ void IncreasedSpeed::Dispose(Dino &target, Mod *) const
 void ReducedCritChance::Impose(Dino &target, Mod *mod) const
 {
 	mod->value = factor * target.ResistanceFactor(&Dino::crit_reduction_resistance);
-    target.crit_chance -= mod->value;
+    target.crit_chance_change -= mod->value;
 }
 
 void ReducedCritChance::Dispose(Dino &target, Mod *mod) const
 {
-    target.crit_chance += mod->value;
+    target.crit_chance_change += mod->value;
 }
 
 void Shield::Impose(Dino &target, Mod *) const
@@ -183,25 +183,25 @@ void Cloak::Dispose(Dino &target, Mod *mod) const
 
 void IncreasedArmor::Impose(Dino &target, Mod *) const
 {
-    target.armor += factor;
+    target.armor_change += factor;
     ++target.n_positive_effects;
 }
 
 void IncreasedArmor::Dispose(Dino &target, Mod *) const
 {
-    target.armor -= factor;
+    target.armor_change -= factor;
     --target.n_positive_effects;
 }
 
 void ReducedArmor::Impose(Dino &target, Mod *mod) const
 {
 	mod->value = factor * target.ResistanceFactor(&Dino::armor_reduction_resistance);
-    target.armor -= mod->value;
+    target.armor_change -= mod->value;
 }
 
 void ReducedArmor::Dispose(Dino &target, Mod *mod) const
 {
-    target.armor += mod->value;
+    target.armor_change += mod->value;
 }
 
 void Affliction::Impose(Dino &target, Mod *mod) const

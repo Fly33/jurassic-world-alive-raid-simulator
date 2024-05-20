@@ -221,8 +221,10 @@ struct Dino
     double vulnerability = 0;
     double damage_factor = 1;
     double speed_factor = 1;
-    double armor = 0;
-    double crit_chance = 0;
+    double armor_base = 0;
+    double armor_change = 0;
+    double crit_chance_base = 0;
+    double crit_chance_change = 0;
     double crit_factor = 0;
     double affliction = 0;
     double affliction_factor = 0;
@@ -306,7 +308,7 @@ struct Dino
     }
     double CritChance() const
     {
-    	double crit_chance = this->crit_chance;
+    	double crit_chance = crit_chance_base + crit_chance_change;
         if (crit_chance < 0)
             return 0;
         if (crit_chance > 1)
@@ -315,7 +317,7 @@ struct Dino
     }
     double Armor() const
     {
-    	double armor = this->armor;
+    	double armor = armor_base + armor_change;
         if (armor < 0)
             return 0;
         if (armor > 1)
