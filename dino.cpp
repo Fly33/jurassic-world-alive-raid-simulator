@@ -314,7 +314,7 @@ void Dino::DamageOverTime(Dino team[], int team_size)
 
 string Dino::Name() const
 {
-    return strprintf("%s (+%d,*%d,>%d)", name.c_str(), health, Damage(), Speed());
+    return strprintf("%s (+%d,/%d,>%d,w%d,*%d)", name.c_str(), health, Damage(), Speed(), ::Round(Armor() * 100), ::Round(CritChance() * 100));
 }
 
 void Dino::Revive(bool total)
