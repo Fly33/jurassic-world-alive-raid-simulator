@@ -55,7 +55,7 @@ void AttackAction::Do(Dino &self, Dino &target) const
         damage *= 1 + target.vulnerability;
     bool crit = self.crit;
     if (crit)
-        damage *= target.crit_factor;
+        damage *= self.crit_factor;
     bool cloak = self.CloakFactor() != 1;
     if (cloak)
         damage *= self.CloakFactor();
