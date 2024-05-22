@@ -10130,7 +10130,7 @@ DinoKind Atrocodistis("Atrocodistis", UNIQUE, 1, {
     }, &PreciseCounterDFAC)
 });
 
-DinoKind Australotitan("Australotitan", OMEGA, 1, 50, 15, 1, 99999, 99999, 99999, 119, 74, 27, 20, 10, 25,
+DinoKind Australotitan("Australotitan", OMEGA, 1, 50, 15, 1, 0.99999, 0.99999, 0.99999, 119, 74, 27, 20, 10, 25,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {6, RestrictionType::Ability, 3},
     {11, RestrictionType::Counter, 1},
@@ -10201,7 +10201,7 @@ DinoKind Blue("Blue", EPIC, 1, {
     }, nullptr)
 });
 
-DinoKind Borealopelta("Borealopelta", OMEGA, 1, 55, 15, 1, 99999, 199999, 199999, 124, 87, 12, 30, 10, 25,
+DinoKind Borealopelta("Borealopelta", OMEGA, 1, 55, 15, 1, 0.99999, 1.99999, 1.99999, 124, 87, 12, 30, 10, 25,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {6, RestrictionType::Counter, 1},
     {11, RestrictionType::Ability, 3},
@@ -10268,7 +10268,7 @@ DinoKind Carbotoceratops("Carbotoceratops", LEGENDARY, 1, {
     }, nullptr)
 });
 
-DinoKind Carcharodontosaurus("Carcharodontosaurus", OMEGA, 1, 40, 25, 1, 99999, 99999, 99999, 132, 54, 20, 0, 10, 50,
+DinoKind Carcharodontosaurus("Carcharodontosaurus", OMEGA, 1, 40, 25, 1, 0.99999, 0.99999, 0.99999, 132, 54, 20, 0, 10, 50,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {11, RestrictionType::Ability, 3},
     {11, RestrictionType::CritReductionResistance, 50.0},
@@ -10319,7 +10319,7 @@ DinoKind Ceratosaurus("Ceratosaurus", UNIQUE, 1, {
     }, &PiercingHeadbuttF80E)
 });
 
-DinoKind CeratosaurusGen2("Ceratosaurus Gen 2", OMEGA, 1, 45, 20, 1, 0, 99999, 99999, 110, 87, 11, 0, 36, 10,
+DinoKind CeratosaurusGen2("Ceratosaurus Gen 2", OMEGA, 1, 45, 20, 1, 0.0, 0.99999, 0.99999, 110, 87, 11, 0, 36, 10,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {6, RestrictionType::Ability, 3},
     {16, RestrictionType::Ability, 4},
@@ -10351,7 +10351,7 @@ DinoKind Charlie("Charlie", RARE, 1, {
     }, nullptr)
 });
 
-DinoKind CleverGirl("Clever Girl", OMEGA, 1, 50, 20, 1, 99999, 99999, 99999, 84, 85, 18, 0, 70, 25,
+DinoKind CleverGirl("Clever Girl", OMEGA, 1, 50, 20, 1, 0.99999, 0.99999, 0.99999, 84, 85, 18, 0, 70, 25,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {6, RestrictionType::Counter, 1},
     {11, RestrictionType::Ability, 3},
@@ -10476,7 +10476,7 @@ DinoKind Crichtonsaurus("Crichtonsaurus", RARE, 1, {
     }, nullptr)
 });
 
-DinoKind Cryolophosaurus("Cryolophosaurus", OMEGA, 1, 40, 20, 1, 99999, 99999, 99999, 128, 86, 8, 15, 20, 0,
+DinoKind Cryolophosaurus("Cryolophosaurus", OMEGA, 1, 40, 20, 1, 0.99999, 0.99999, 0.99999, 128, 86, 8, 15, 20, 0,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {11, RestrictionType::Ability, 3},
     {11, RestrictionType::DamageOverTimeResistance, 75.0},
@@ -10556,7 +10556,7 @@ DinoKind Delta("Delta", RARE, 1, {
     }, nullptr)
 });
 
-DinoKind Diabloceratops("Diabloceratops", OMEGA, 1, 50, 10, 1, 199999, 99999, 99999, 140, 140, 5, 17, 20, 5,
+DinoKind Diabloceratops("Diabloceratops", OMEGA, 1, 50, 10, 1, 1.99999, 0.99999, 0.99999, 140, 140, 5, 17, 20, 5,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {11, RestrictionType::Ability, 3},
     {16, RestrictionType::Counter, 1},
@@ -11013,7 +11013,7 @@ DinoKind Fukuimimus("Fukuimimus", LEGENDARY, 1, {
     }, &PersistentCounter25A1)
 });
 
-DinoKind Fukuiraptor("Fukuiraptor", OMEGA, 1, 40, 20, 1, 99999, 99999, 99999, 89, 79, 15, 10, 80, 25,
+DinoKind Fukuiraptor("Fukuiraptor", OMEGA, 1, 40, 20, 1, 0.99999, 0.99999, 0.99999, 89, 79, 15, 10, 80, 25,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {6, RestrictionType::Ability, 3},
     {11, RestrictionType::Counter, 1},
@@ -11060,7 +11060,7 @@ DinoKind Geminititan("Geminititan", UNIQUE, 1, {
     }, &DistractingCounterA897)
 });
 
-DinoKind Geosternbergia("Geosternbergia", OMEGA, 1, 40, 25, 1, 99999, 99999, 99999, 109, 63, 23, 10, 15, 25,
+DinoKind Geosternbergia("Geosternbergia", OMEGA, 1, 40, 25, 1, 0.99999, 0.99999, 0.99999, 109, 63, 23, 10, 15, 25,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {11, RestrictionType::Ability, 3},
     {16, RestrictionType::Ability, 4}
@@ -11258,7 +11258,7 @@ DinoKind Hatzegopteryx("Hatzegopteryx", COMMON, 1, {
     }, nullptr)
 });
 
-DinoKind Homalocephale("Homalocephale", OMEGA, 1, 40, 15, 1, 99999, 99999, 99999, 134, 102, 16, 15, 20, 15,
+DinoKind Homalocephale("Homalocephale", OMEGA, 1, 40, 15, 1, 0.99999, 0.99999, 0.99999, 134, 102, 16, 15, 20, 15,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {11, RestrictionType::Ability, 3},
     {16, RestrictionType::Ability, 4}
@@ -11280,7 +11280,7 @@ DinoKind HydraBoa("Hydra Boa", APEX, 1, {
     }, &AlertDeception0644)
 });
 
-DinoKind Ichthyovenator("Ichthyovenator", OMEGA, 1, 30, 35, 1, 0, 99999, 99999, 122, 35, 13, 0, 65, 50,
+DinoKind Ichthyovenator("Ichthyovenator", OMEGA, 1, 30, 35, 1, 0.0, 0.99999, 0.99999, 122, 35, 13, 0, 65, 50,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {11, RestrictionType::Ability, 3},
     {16, RestrictionType::Counter, 1},
@@ -11462,7 +11462,7 @@ DinoKind KoolasuchusGen2("Koolasuchus Gen 2", RARE, 1, {
     }, nullptr)
 });
 
-DinoKind Koreanosaurus("Koreanosaurus", OMEGA, 1, 60, 10, 1, 199999, 99999, 99999, 76, 150, 16, 8, 45, 10,
+DinoKind Koreanosaurus("Koreanosaurus", OMEGA, 1, 60, 10, 1, 1.99999, 0.99999, 0.99999, 76, 150, 16, 8, 45, 10,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {11, RestrictionType::Ability, 3},
     {16, RestrictionType::Counter, 1},
@@ -11586,7 +11586,7 @@ DinoKind MarsupialLion("Marsupial Lion", RARE, 1, {
     }, &MediumCounter_attackE4A7)
 });
 
-DinoKind Masiakasaurus("Masiakasaurus", OMEGA, 1, 30, 25, 1, 99999, 99999, 99999, 129, 64, 12, 5, 20, 65,
+DinoKind Masiakasaurus("Masiakasaurus", OMEGA, 1, 30, 25, 1, 0.99999, 0.99999, 0.99999, 129, 64, 12, 5, 20, 65,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {11, RestrictionType::Ability, 3},
     {21, RestrictionType::Ability, 4}
@@ -11599,7 +11599,7 @@ DinoKind Masiakasaurus("Masiakasaurus", OMEGA, 1, 30, 25, 1, 99999, 99999, 99999
     }, nullptr)
 });
 
-DinoKind Megalania("Megalania", OMEGA, 1, 30, 20, 1, 99999, 99999, 99999, 130, 76, 25, 10, 10, 75,
+DinoKind Megalania("Megalania", OMEGA, 1, 30, 20, 1, 0.99999, 0.99999, 0.99999, 130, 76, 25, 10, 10, 75,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {6, RestrictionType::Ability, 3},
     {21, RestrictionType::Ability, 4}
@@ -11838,7 +11838,7 @@ DinoKind Nundasuchus("Nundasuchus", COMMON, 1, {
     }, nullptr)
 });
 
-DinoKind Olorotitan("Olorotitan", OMEGA, 1, 45, 15, 1, 99999, 99999, 99999, 121, 81, 15, 20, 10, 0,
+DinoKind Olorotitan("Olorotitan", OMEGA, 1, 45, 15, 1, 0.99999, 0.99999, 0.99999, 121, 81, 15, 20, 10, 0,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {6, RestrictionType::Ability, 3},
     {11, RestrictionType::Counter, 1},
@@ -12257,7 +12257,7 @@ DinoKind Rajasaurus("Rajasaurus", EPIC, 1, {
     }, &ArmorPiercingCounterAEB5)
 });
 
-DinoKind Rativates("Rativates", OMEGA, 1, 30, 15, 1, 99999, 99999, 99999, 104, 96, 17, 5, 30, 25,
+DinoKind Rativates("Rativates", OMEGA, 1, 30, 15, 1, 0.99999, 0.99999, 0.99999, 104, 96, 17, 5, 30, 25,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {6, RestrictionType::Counter, 1},
     {11, RestrictionType::Ability, 3},
@@ -12441,7 +12441,7 @@ DinoKind Segnoraptor("Segnoraptor", LEGENDARY, 1, {
     }, nullptr)
 });
 
-DinoKind Segnosaurus("Segnosaurus", OMEGA, 1, 40, 20, 1, 99999, 99999, 99999, 93, 61, 20, 20, 25, 75,
+DinoKind Segnosaurus("Segnosaurus", OMEGA, 1, 40, 20, 1, 0.99999, 0.99999, 0.99999, 93, 61, 20, 20, 25, 75,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {6, RestrictionType::Counter, 1},
     {11, RestrictionType::Ability, 3},
@@ -12488,7 +12488,7 @@ DinoKind Sinosauropteryx("Sinosauropteryx", COMMON, 3, {
     }, nullptr)
 });
 
-DinoKind Sinraptor("Sinraptor", OMEGA, 1, 34, 35, 1, 0, 199999, 99999, 134, 55, 24, 0, 35, 50,
+DinoKind Sinraptor("Sinraptor", OMEGA, 1, 34, 35, 1, 0.0, 1.99999, 0.99999, 134, 55, 24, 0, 35, 50,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {6, RestrictionType::Ability, 3},
     {11, RestrictionType::Counter, 1},
@@ -12601,7 +12601,7 @@ DinoKind Spinosaurus("Spinosaurus", RARE, 1, {
     }, nullptr)
 });
 
-DinoKind SpinosaurusAegyptiacus("Spinosaurus Aegyptiacus", OMEGA, 1, 40, 25, 1, 99999, 99999, 99999, 134, 84, 12, 0, 45, 25,
+DinoKind SpinosaurusAegyptiacus("Spinosaurus Aegyptiacus", OMEGA, 1, 40, 25, 1, 0.99999, 0.99999, 0.99999, 134, 84, 12, 0, 45, 25,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {6, RestrictionType::Counter, 1},
     {11, RestrictionType::Ability, 3},
@@ -12678,7 +12678,7 @@ DinoKind Stegosaurus("Stegosaurus", COMMON, 1, {
     }, nullptr)
 });
 
-DinoKind StegosaurusUngulatus("Stegosaurus Ungulatus", OMEGA, 1, 60, 15, 1, 99999, 99999, 99999, 97, 85, 10, 30, 15, 0,
+DinoKind StegosaurusUngulatus("Stegosaurus Ungulatus", OMEGA, 1, 60, 15, 1, 0.99999, 0.99999, 0.99999, 97, 85, 10, 30, 15, 0,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {11, RestrictionType::Ability, 3},
     {11, RestrictionType::StunResistance, 100.0},
@@ -12695,7 +12695,7 @@ DinoKind StegosaurusUngulatus("Stegosaurus Ungulatus", OMEGA, 1, 60, 15, 1, 9999
     }, &PowerfulCounterHeal16F3)
 });
 
-DinoKind Stegouros("Stegouros", OMEGA, 1, 50, 10, 1, 199999, 199999, 199999, 94, 157, 12, 18, 22, 8,
+DinoKind Stegouros("Stegouros", OMEGA, 1, 50, 10, 1, 1.99999, 1.99999, 1.99999, 94, 157, 12, 18, 22, 8,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {6, RestrictionType::Counter, 1},
     {16, RestrictionType::Ability, 3},
@@ -12891,7 +12891,7 @@ DinoKind TitanoboaGen2("Titanoboa Gen 2", RARE, 1, {
     }, nullptr)
 });
 
-DinoKind Toro("Toro", OMEGA, 1, 40, 15, 1, 99999, 99999, 99999, 112, 97, 9, 30, 35, 15,
+DinoKind Toro("Toro", OMEGA, 1, 40, 15, 1, 0.99999, 0.99999, 0.99999, 112, 97, 9, 30, 35, 15,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {6, RestrictionType::Ability, 3},
     {16, RestrictionType::Ability, 4},
@@ -13084,7 +13084,7 @@ DinoKind Utasinoraptor("Utasinoraptor", LEGENDARY, 1, {
     }, nullptr)
 });
 
-DinoKind Vectispinus("Vectispinus", OMEGA, 1, 35, 20, 1, 99999, 99999, 99999, 159, 51, 17, 20, 10, 25,
+DinoKind Vectispinus("Vectispinus", OMEGA, 1, 35, 20, 1, 0.99999, 0.99999, 0.99999, 159, 51, 17, 20, 10, 25,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {11, RestrictionType::Ability, 3},
     {21, RestrictionType::Ability, 4}
@@ -13137,7 +13137,7 @@ DinoKind Wuerhosaurus("Wuerhosaurus", RARE, 1, {
     }, nullptr)
 });
 
-DinoKind Yutyrannus("Yutyrannus", OMEGA, 1, 30, 30, 1, 99999, 199999, 199999, 136, 63, 10, 0, 47, 40,
+DinoKind Yutyrannus("Yutyrannus", OMEGA, 1, 30, 30, 1, 0.99999, 1.99999, 1.99999, 136, 63, 10, 0, 47, 40,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {11, RestrictionType::Ability, 3},
     {21, RestrictionType::Ability, 4}
@@ -13150,7 +13150,7 @@ DinoKind Yutyrannus("Yutyrannus", OMEGA, 1, 30, 30, 1, 99999, 199999, 199999, 13
     }, nullptr)
 });
 
-DinoKind Yuxisaurus("Yuxisaurus", OMEGA, 1, 50, 15, 1, 99999, 99999, 99999, 90, 86, 12, 23, 40, 50,
+DinoKind Yuxisaurus("Yuxisaurus", OMEGA, 1, 50, 15, 1, 0.99999, 0.99999, 0.99999, 90, 86, 12, 23, 40, 50,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {6, RestrictionType::Ability, 3},
     {11, RestrictionType::Counter, 1},
@@ -13164,7 +13164,7 @@ DinoKind Yuxisaurus("Yuxisaurus", OMEGA, 1, 50, 15, 1, 99999, 99999, 99999, 90, 
     }, &LesserWoundingCounter7BC3)
 });
 
-DinoKind _93ClassicT_Rex("'93 Classic T. Rex", OMEGA, 1, 35, 25, 1, 0, 99999, 199999, 122, 73, 10, 0, 90, 35,
+DinoKind _93ClassicT_Rex("'93 Classic T. Rex", OMEGA, 1, 35, 25, 1, 0.0, 0.99999, 1.99999, 122, 73, 10, 0, 90, 35,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {6, RestrictionType::Counter, 1},
     {11, RestrictionType::Ability, 3},

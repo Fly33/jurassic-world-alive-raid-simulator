@@ -387,9 +387,9 @@ def GetDino(l10n, data, dino_data, ability_dex):
                 'health': app['hp'],
                 'damage': app['ap'],
                 'speed': app['sp'],
-                'armor': app['def'],
-                'crit_chance': app['chc'],
-                'crit_factor': app['chm'],
+                'armor': app['def'] / 100000.,
+                'crit_chance': app['chc'] / 100000.,
+                'crit_factor': app['chm'] / 100000.,
             }
             points = [0]
             for i in range(len(psd['psi'])):
