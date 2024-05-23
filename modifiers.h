@@ -609,7 +609,7 @@ struct Affliction : public Modifier
     virtual void Dispose(Dino &target, Mod *mod) const override;
     virtual std::string Name(const Mod *mod) const
     {
-    	return strprintf("%s by %.1lf%%", name.c_str(), factor * 100);
+    	return strprintf("%s by %.1lf%%", name.c_str(), mod->value * 100);
     }
     virtual int Type() const override
     {
