@@ -115,7 +115,6 @@ struct DinoKind
     std::string name;
     int rarity;
     int flock;
-    bool is_omega;
     int omega_health_step;
     int omega_damage_step;
     int omega_speed_step;
@@ -136,21 +135,23 @@ struct DinoKind
         : name(_name)
         , rarity(_rarity)
         , flock(_flock)
-        , is_omega(false)
-        , omega_health_step()
-        , omega_damage_step()
-        , omega_speed_step()
-        , omega_armor_step()
-        , omega_crit_chance_step()
-        , omega_crit_factor_step()
-        , max_omega_health_points()
-        , max_omega_damage_points()
-        , max_omega_speed_points()
-        , max_omega_armor_points()
-        , max_omega_crit_chance_points()
-        , max_omega_crit_factor_points()
-        , level_points()
-        , restrictions()
+        , omega_health_step(0)
+        , omega_damage_step(0)
+        , omega_speed_step(0)
+        , omega_armor_step(0)
+        , omega_crit_chance_step(0)
+        , omega_crit_factor_step(0)
+        , max_omega_health_points(0)
+        , max_omega_damage_points(0)
+        , max_omega_speed_points(0)
+        , max_omega_armor_points(0)
+        , max_omega_crit_chance_points(0)
+        , max_omega_crit_factor_points(0)
+        , level_points{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+        , restrictions{
+            {1, RestrictionType::Counter, 1},
+            {1, RestrictionType::Ability, 4}
+        }
         , round(_round.begin(), _round.end())
     {}
     DinoKind(const std::string &_name, int _rarity, int _flock,
@@ -162,7 +163,6 @@ struct DinoKind
         : name(_name)
         , rarity(_rarity)
         , flock(_flock)
-        , is_omega(true)
         , omega_health_step(_omega_health_step)
         , omega_damage_step(_omega_damage_step)
         , omega_speed_step(_omega_speed_step)

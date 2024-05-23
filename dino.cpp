@@ -97,12 +97,12 @@ static int PointsDistribution(int points, int index, const vector<int> &max)
 
 Dino::Dino(int _team, int _index, int _level, int _health_boost, int _damage_boost, int _speed_boost, const DinoKind *_kind)
     : Dino(_team, _index, _level, _health_boost, _damage_boost, _speed_boost,
-           _kind->is_omega ? PointsDistribution(_kind->level_points[_level], 1, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
-           _kind->is_omega ? PointsDistribution(_kind->level_points[_level], 0, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
-           _kind->is_omega ? PointsDistribution(_kind->level_points[_level], 2, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
-           _kind->is_omega ? PointsDistribution(_kind->level_points[_level], 3, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
-           _kind->is_omega ? PointsDistribution(_kind->level_points[_level], 4, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
-           _kind->is_omega ? PointsDistribution(_kind->level_points[_level], 5, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
+           _kind->rarity == OMEGA ? PointsDistribution(_kind->level_points[_level], 1, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
+           _kind->rarity == OMEGA ? PointsDistribution(_kind->level_points[_level], 0, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
+           _kind->rarity == OMEGA ? PointsDistribution(_kind->level_points[_level], 2, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
+           _kind->rarity == OMEGA ? PointsDistribution(_kind->level_points[_level], 3, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
+           _kind->rarity == OMEGA ? PointsDistribution(_kind->level_points[_level], 4, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
+           _kind->rarity == OMEGA ? PointsDistribution(_kind->level_points[_level], 5, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
            _kind)
 {}
 
@@ -140,41 +140,41 @@ void Dino::InitRound(int round)
 {
     if (health_boost > 20)
         health = max_health = health_boost;
-    else if (kind->is_omega)
+    else if (kind->rarity == OMEGA)
         health = max_health = (Round(round).health + kind->omega_health_step * omega_health_points) * BoostFactor[health_boost];
     else
         health = max_health = Round(round).health * LevelFactor[level] * BoostFactor[health_boost];
 
     if (damage_boost > 20)
         damage = damage_boost;
-    else if (kind->is_omega)
+    else if (kind->rarity == OMEGA)
         damage = (Round(round).damage + kind->omega_damage_step * omega_damage_points) * BoostFactor[damage_boost];
     else
         damage = Round(round).damage * LevelFactor[level] * BoostFactor[damage_boost];
 
     if (speed_boost > 20)
         speed = speed_boost;
-    else if (kind->is_omega)
+    else if (kind->rarity == OMEGA)
         speed = Round(round).speed + kind->omega_speed_step * omega_speed_points + 2 * speed_boost;
     else
         speed = Round(round).speed + 2 * speed_boost;
 
-    if (kind->is_omega)
+    if (kind->rarity == OMEGA)
         armor_base = Round(round).armor + kind->omega_armor_step * omega_armor_points;
     else
         armor_base = Round(round).armor;
 
-    if (kind->is_omega)
+    if (kind->rarity == OMEGA)
         crit_chance_base = Round(round).crit_chance + kind->omega_crit_chance_step * omega_crit_chance_points;
     else
         crit_chance_base = Round(round).crit_chance;
 
-    if (kind->is_omega)
+    if (kind->rarity == OMEGA)
         crit_factor = Round(round).crit_factor + kind->omega_crit_chance_step * omega_crit_factor_points;
     else
         crit_factor = Round(round).crit_factor;
 
-    if (kind->is_omega) {
+    if (kind->rarity == OMEGA) {
         crit_reduction_resistance   = GetRestriction(level, RestrictionType::CritReductionResistance, Round(round).crit_reduction_resistance * 100) / 100.;
         damage_over_time_resistance = GetRestriction(level, RestrictionType::DamageOverTimeResistance, Round(round).damage_over_time_resistance * 100) / 100.;
         damage_reduction_resistance = GetRestriction(level, RestrictionType::DamageReductionResistance, Round(round).damage_reduction_resistance * 100) / 100.;
