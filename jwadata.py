@@ -284,14 +284,6 @@ def ParseAbility(data, guid, l10n):
         raise
 
 
-Factors = {
-    25: "1./4",
-    33: "1./3",
-    50: "1./2",
-    66: "2./3"
-}
-
-
 def GetAbility(data, ability_data, kind, ability_dex, l10n):
     try:
         if ability_data['ai']['guid'] not in ability_dex:
@@ -300,13 +292,8 @@ def GetAbility(data, ability_data, kind, ability_dex, l10n):
             if ability_data['$type'].startswith('ThAbIt'):
                 ability_threatened = ParseAbility(data, ability_data['otai']['guid'], l10n=l10n)
                 ability['type'] = 'Threatened' + ability['type']
-                if ability_data['hltc'] == "lower":
-                    ability['threatened_compare'] = '<='
-                elif ability_data['hltc'] == "higher":
-                    ability['threatened_compare'] = '>'
-                else:
-                    raise Exception(f'Unknown threatened condition "{ability_data["hltc"]}')
-                ability['threatened_factor'] = Factors[ability_data['hltv']]
+                ability['threat_comparison'] = ability_data['hltc'].capitalize()
+                ability['threat_factor'] = ability_data['hltv']
                 ability['threatened'] = ability_threatened
             elif ability_data['$type'].startswith('ReAbIt'):
                 ability_revenge = ParseAbility(data, ability_data['rai']['guid'], l10n=l10n)
@@ -593,10 +580,10 @@ def WriteAbilityDex(ability_dex, f):
             print(f'}}, {ability["revenge"]["delay"]}, {ability["revenge"]["cooldown"]}, {ability["revenge"]["priority"]}, {{', file=f)
             WriteAbilityActions(ability["revenge"]["actions"], f) 
         elif ability["type"] == "ThreatenedAbility":
-            print(f'}}, [](Dino &self) {{ return self.total_health {ability["threatened_compare"]} self.max_total_health * {ability["threatened_factor"]}; }}, {ability["threatened"]["delay"]}, {ability["threatened"]["cooldown"]}, {ability["threatened"]["priority"]}, {{', file=f)
+            print(f'}}, {ability["threat_factor"]}, ThreatComparison::{ability["threat_comparison"]}, {ability["threatened"]["delay"]}, {ability["threatened"]["cooldown"]}, {ability["threatened"]["priority"]}, {{', file=f)
             WriteAbilityActions(ability["threatened"]["actions"], f) 
         elif ability["type"] == "ThreatenedCounterAbility":
-            print(f'}}, [](Dino &self) {{ return self.total_health {ability["threatened_compare"]} self.max_total_health * {ability["threatened_factor"]}; }}, {{', file=f)
+            print(f'}}, {ability["threat_factor"]}, ThreatComparison::{ability["threat_comparison"]}, {{', file=f)
             WriteAbilityActions(ability["threatened"]["actions"], f) 
         print(f'}});', file=f)
         print(f'', file=f)

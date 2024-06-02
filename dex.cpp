@@ -49,7 +49,7 @@ ThreatenedAbility AlertAdvance2251("Alert Advance", 0, 0, 0, {
     TargetAllOpponents(
         Attack(2.0)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./4; }, 0, 0, 0, {
+}, 25, ThreatComparison::Lower, 0, 0, 0, {
     TargetAllOpponents(
         Attack(1.5)
     ),
@@ -67,7 +67,7 @@ ThreatenedAbility AlertAssistBA90("Alert Assist", 0, 0, 1, {
         IncreaseDamage(50.0, 2, 2),
         Shield(50.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 0, 1, {
+}, 50, ThreatComparison::Lower, 0, 0, 1, {
     TargetSelf(
         Shield(100.0, 1, 4)
     ),
@@ -83,7 +83,7 @@ ThreatenedCounterAbility AlertCoil5A3C("Alert Coil", {
     TargetSelf(
         IncreaseDamage(5.0, 3, 3)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, {
+}, 50, ThreatComparison::Lower, {
     TargetSelf(
         IncreaseDamage(10.0, 3, 3)
     )
@@ -93,7 +93,7 @@ ThreatenedCounterAbility AlertCounterDistraction2BF3("Alert Counter Distraction"
     TargetAttacker(
         ReduceDamage(10.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, {
+}, 50, ThreatComparison::Lower, {
     TargetAttacker(
         ReduceDamage(15.0, 2, 4)
     )
@@ -111,7 +111,7 @@ ThreatenedAbility AlertMimic58E4("Alert Mimic", 0, 0, 1, {
         IncreaseSpeed(10.0, 2, 0),
         Taunt(2)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 0, 1, {
+}, 50, ThreatComparison::Lower, 0, 0, 1, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -132,7 +132,7 @@ ThreatenedAbility AlertNullification3D09("Alert Nullification", 0, 2, 1, {
         Remove(POSITIVE_EFFECTS),
         ReduceDamage(50.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 2, 1, {
+}, 50, ThreatComparison::Lower, 0, 2, 1, {
     TargetAllOpponents(
         Remove(POSITIVE_EFFECTS),
         ReduceDamage(75.0, 2, 4)
@@ -155,7 +155,7 @@ ThreatenedAbility AlertSlither23E3("Alert Slither", 0, 0, 0, {
     TargetHighestDamage(
         ReduceDamage(50.0, 3, 6)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 0, 1, {
+}, 50, ThreatComparison::Lower, 0, 0, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(75.0, 67.0, 0, 4),
@@ -2151,7 +2151,7 @@ ThreatenedCounterAbility RocketAlert60C3("Rocket Alert", {
         IncreaseSpeed(10.0, 2, 0),
         IncreaseCritChance(20.0, 2, 2)
     )
-}, [](Dino &self) { return self.total_health > self.max_total_health * 1./2; }, {
+}, 50, ThreatComparison::Higher, {
     TargetSelf(
         Cleanse(REDUCED_SPEED),
         IncreaseSpeed(10.0, 2, 0),
@@ -2197,7 +2197,7 @@ ThreatenedAbility ShieldedAlertImpact7250("Shielded Alert Impact", 0, 0, 0, {
     TargetSelf(
         Shield(100.0, 2, 8)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 0, 0, {
+}, 50, ThreatComparison::Lower, 0, 0, 0, {
     TargetHighestDamage(
         Remove(SHIELD),
         Attack(2.0, BYPASS_ARMOR),
@@ -3286,7 +3286,7 @@ ThreatenedAbility AfflictingAlertStun7106("Afflicting Alert Stun", 0, 1, 1, {
         Remove(POSITIVE_EFFECTS),
         Attack(1.0)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 1, 1, {
+}, 50, ThreatComparison::Lower, 0, 1, 1, {
     TargetHighestHP(
         Affliction(25.0, 2, 4),
         Stun(100.0, 1),
@@ -3371,7 +3371,7 @@ ThreatenedAbility AlertArcticBlast801B("Alert Arctic Blast", 0, 1, 0, {
         ReduceSpeed(50.0, 1, 0),
         ImposeVulnerability(50.0, 2, 1)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 1, 0, {
+}, 50, ThreatComparison::Lower, 0, 1, 0, {
     TargetAllOpponents(
         Attack(1.5),
         Stun(66.71, 1),
@@ -3389,7 +3389,7 @@ ThreatenedAbility AlertBuffAndStrike79FE("Alert Buff And Strike", 0, 0, 0, {
     TargetLowestHP(
         Attack(1.0)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 0, 0, 0, {
+}, 33, ThreatComparison::Lower, 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_SPEED|REDUCED_CRIT_CHANCE),
         IncreaseCritChance(50.0, 3, 2)
@@ -3403,7 +3403,7 @@ ThreatenedCounterAbility AlertCleanseFBF7("Alert Cleanse", {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE|REDUCED_SPEED)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, {
+}, 50, ThreatComparison::Lower, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     ),
@@ -3416,7 +3416,7 @@ ThreatenedCounterAbility AlertCounterDistractionBE9B("Alert Counter Distraction"
     TargetAttacker(
         ReduceDamage(10.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, {
+}, 50, ThreatComparison::Lower, {
     TargetAttacker(
         ReduceDamage(15.0, 2, 4)
     )
@@ -3426,7 +3426,7 @@ ThreatenedCounterAbility AlertCounterEF7D("Alert Counter", {
     TargetAttacker(
         Attack(0.5, PRECISE)
     )
-}, [](Dino &self) { return self.total_health > self.max_total_health * 1./2; }, {
+}, 50, ThreatComparison::Higher, {
     TargetAttacker(
         Remove(SHIELD),
         Attack(0.5)
@@ -3439,7 +3439,7 @@ ThreatenedAbility AlertDeceleratingImpact5396("Alert Decelerating Impact", 0, 1,
         ReduceSpeed(50.0, 1, 0),
         ImposeVulnerability(50.0, 2, 1)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 1, 0, {
+}, 50, ThreatComparison::Lower, 0, 1, 0, {
     TargetHighestDamage(
         Attack(1.5),
         Stun(75.0, 1),
@@ -3451,7 +3451,7 @@ ThreatenedCounterAbility AlertDeception0644("Alert Deception", {
     TargetSelf(
         IncreaseDamage(15.0, 2, 2)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, {
+}, 50, ThreatComparison::Lower, {
     TargetSelf(
         IncreaseDamage(25.0, 2, 4)
     )
@@ -3461,7 +3461,7 @@ ThreatenedAbility AlertDefenseF5F7("Alert Defense", 0, 2, 1, {
     TargetHighestHP(
         DevouringAttack(2.0, 80.0, 4, BYPASS_ARMOR)
     )
-}, [](Dino &self) { return self.total_health > self.max_total_health * 1./2; }, 0, 2, 1, {
+}, 50, ThreatComparison::Higher, 0, 2, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Shield(50.0, 2, 4),
@@ -3477,7 +3477,7 @@ ThreatenedAbility AlertDistractingImpact85F8("Alert Distracting Impact", 0, 2, 0
         Attack(1.5, ALWAYS_CRITS),
         ReduceDamage(50.0, 1, 2)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 0, 2, 0, {
+}, 33, ThreatComparison::Lower, 0, 2, 0, {
     TargetHighestDamage(
         Attack(1.5, ALWAYS_CRITS),
         ReduceDamage(100.0, 1, 2)
@@ -3492,7 +3492,7 @@ ThreatenedAbility AlertFatalStrikeE0D9("Alert Fatal Strike", 0, 0, 0, {
         Remove(SHIELD),
         Attack(1.0, BYPASS_ARMOR)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 0, 0, {
+}, 50, ThreatComparison::Lower, 0, 0, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -3515,7 +3515,7 @@ ThreatenedAbility AlertFierceRampage151A("Alert Fierce Rampage", 0, 2, 0, {
     TargetHighestHP(
         Attack(2.0, BYPASS_ARMOR)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 0, 2, 0, {
+}, 33, ThreatComparison::Lower, 0, 2, 0, {
     TargetSelf(
         Heal(1.0)
     ),
@@ -3543,7 +3543,7 @@ ThreatenedAbility AlertFierceRampage5308("Alert Fierce Rampage", 0, 2, 0, {
     TargetSelf(
         Swap()
     )
-}, [](Dino &self) { return self.total_health > self.max_total_health * 1./2; }, 0, 2, 0, {
+}, 50, ThreatComparison::Higher, 0, 2, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     ),
@@ -3567,7 +3567,7 @@ ThreatenedAbility AlertFierceStrikeF86F("Alert Fierce Strike", 0, 0, 0, {
     TargetSelf(
         Cleanse(VULNERABILITY)
     )
-}, [](Dino &self) { return self.total_health > self.max_total_health * 1./2; }, 0, 0, 0, {
+}, 50, ThreatComparison::Higher, 0, 0, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
         Attack(1.0, BYPASS_ARMOR),
@@ -3586,7 +3586,7 @@ ThreatenedAbility AlertFrenzy3343("Alert Frenzy", 1, 2, 0, {
     TargetSelf(
         IncreaseSpeed(10.0, 2, 0)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 2./3; }, 1, 2, 0, {
+}, 66, ThreatComparison::Lower, 1, 2, 0, {
     TargetSelf(
         RallyHeal(33.33333)
     ),
@@ -3609,7 +3609,7 @@ ThreatenedAbility AlertHarpyD23C("Alert Harpy", 0, 2, 0, {
     TargetHighestHP(
         DamageOverTime(20.0, 2)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 2, 1, {
+}, 50, ThreatComparison::Lower, 0, 2, 1, {
     TargetSelf(
         FixedHeal(50.0),
         IncreaseArmor(25.0, 2, 4),
@@ -3622,7 +3622,7 @@ ThreatenedAbility AlertImpactDA02("Alert Impact", 0, 1, 0, {
         Remove(SHIELD),
         DevouringAttack(1.75, 50.0, 2, BYPASS_ARMOR)
     )
-}, [](Dino &self) { return self.total_health > self.max_total_health * 1./2; }, 0, 1, 0, {
+}, 50, ThreatComparison::Higher, 0, 1, 0, {
     TargetAllOpponents(
         ReduceSpeed(50.0, 2, 4),
         Attack(1.75, PRECISE)
@@ -3634,7 +3634,7 @@ ThreatenedAbility AlertInstantHeal6BB9("Alert Instant Heal", 1, 2, 1, {
         Cleanse(NEGATIVE_EFFECTS),
         Heal(1.5)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 1, 2, 1, {
+}, 33, ThreatComparison::Lower, 1, 2, 1, {
     TargetTeam(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(2.0)
@@ -3650,7 +3650,7 @@ ThreatenedAbility AlertInstantShieldedStrikeF2E8("Alert Instant Shielded Strike"
         Taunt(2),
         Shield(50.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 1, 3, 1, {
+}, 50, ThreatComparison::Lower, 1, 3, 1, {
     TargetHighestDamage(
         Attack(1.0),
         Stun(66.71, 1)
@@ -3666,7 +3666,7 @@ ThreatenedAbility AlertNullification3D09("Alert Nullification", 0, 2, 1, {
         Remove(POSITIVE_EFFECTS),
         ReduceDamage(50.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 2, 1, {
+}, 50, ThreatComparison::Lower, 0, 2, 1, {
     TargetAllOpponents(
         Remove(POSITIVE_EFFECTS),
         ReduceDamage(75.0, 2, 4)
@@ -3679,7 +3679,7 @@ ThreatenedAbility AlertPeck3B22("Alert Peck", 0, 2, 0, {
         Rend(60.0, BYPASS_ARMOR),
         Remove(INCREASED_DAMAGE|INCREASED_CRIT_CHANCE)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 1, 2, 0, {
+}, 33, ThreatComparison::Lower, 1, 2, 0, {
     TargetLowestHP(
         Remove(SHIELD),
         Rend(40.0, BYPASS_ARMOR),
@@ -3695,7 +3695,7 @@ ThreatenedAbility AlertPersistentGroupShields2A85("Alert Persistent Group Shield
         IncreaseDamage(50.0, 2, 2),
         Shield(50.0, 2, 2)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 2, 1, {
+}, 50, ThreatComparison::Lower, 0, 2, 1, {
     TargetAllOpponents(
         Remove(SHIELD)
     ),
@@ -3711,7 +3711,7 @@ ThreatenedAbility AlertRampageOverthrow7EE6("Alert Rampage Overthrow", 1, 2, 0, 
     TargetFastest(
         Attack(2.0, BYPASS_ARMOR|PRECISE)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 1, 2, 0, {
+}, 33, ThreatComparison::Lower, 1, 2, 0, {
     TargetFastest(
         DevouringAttack(2.0, 50.0, 3, BYPASS_ARMOR|PRECISE)
     )
@@ -3724,7 +3724,7 @@ ThreatenedAbility AlertSafetyRampage24DB("Alert Safety Rampage", 1, 2, 0, {
     TargetSelf(
         Swap()
     )
-}, [](Dino &self) { return self.total_health > self.max_total_health * 1./2; }, 1, 2, 0, {
+}, 50, ThreatComparison::Higher, 1, 2, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -3738,7 +3738,7 @@ ThreatenedAbility AlertScurry6808("Alert Scurry", 0, 3, 0, {
         Attack(2.0),
         ReduceDamage(50.0, 1, 2)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 2./3; }, 0, 3, 0, {
+}, 66, ThreatComparison::Lower, 0, 3, 0, {
     TargetHighestDamage(
         Attack(1.5),
         ReduceDamage(25.0, 1, 2)
@@ -3754,7 +3754,7 @@ ThreatenedAbility AlertShatteringImpact9D9B("Alert Shattering Impact", 0, 2, 0, 
         ReduceDamage(50.0, 1, 2),
         Attack(1.5, BYPASS_ARMOR)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 0, 2, 0, {
+}, 33, ThreatComparison::Lower, 0, 2, 0, {
     TargetLowestHP(
         Remove(SHIELD|TAUNT)
     ),
@@ -3775,7 +3775,7 @@ ThreatenedAbility AlertSquall6E68("Alert Squall", 0, 3, 0, {
     TargetLowestHP(
         Swap()
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 0, 3, 0, {
+}, 33, ThreatComparison::Lower, 0, 3, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseSpeed(50.0, 2, 4),
@@ -3794,7 +3794,7 @@ ThreatenedAbility AlertStrike9EBE("Alert Strike", 0, 0, 0, {
         Remove(SHIELD|TAUNT),
         DevouringAttack(1.0, 40.0, 2, BYPASS_ARMOR)
     )
-}, [](Dino &self) { return self.total_health > self.max_total_health * 1./2; }, 0, 0, 0, {
+}, 50, ThreatComparison::Higher, 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE),
         IncreaseArmor(15.0, 1, 2)
@@ -3810,7 +3810,7 @@ ThreatenedAbility AlertSurge82DA("Alert Surge", 0, 0, 1, {
     TargetLowestHP(
         Attack(1.0, ALWAYS_CRITS)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 0, 0, 1, {
+}, 33, ThreatComparison::Lower, 0, 0, 1, {
     TargetLowestHP(
         Attack(1.0)
     ),
@@ -3903,7 +3903,7 @@ ThreatenedAbility BattleReadyE24E("Battle Ready", 0, 1, 1, {
         Remove(POSITIVE_EFFECTS),
         Shield(100.0, 1, 1)
     )
-}, [](Dino &self) { return self.total_health > self.max_total_health * 1./2; }, 0, 0, 1, {
+}, 50, ThreatComparison::Higher, 0, 0, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
     ),
@@ -3951,7 +3951,7 @@ ThreatenedAbility BerserkAlertDecoy8557("Berserk Alert Decoy", 1, 3, 0, {
         Sacrifice(33.33333),
         Swap()
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 0, 0, false, {
+}, 33, ThreatComparison::Lower, 0, 0, false, {
 });
 
 RevengeAbility BerserkBitingRevenge5D5E("Berserk Biting Revenge", 0, 2, 0, {
@@ -4221,7 +4221,7 @@ ThreatenedAbility ChallengingAlertImpact0839("Challenging Alert Impact", 0, 1, 0
         Remove(SHIELD),
         Attack(1.5, BYPASS_ARMOR)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 0, 1, 0, {
+}, 33, ThreatComparison::Lower, 0, 1, 0, {
     TargetHighestHP(
         Attack(2.0, BYPASS_ARMOR)
     )
@@ -4231,7 +4231,7 @@ ThreatenedAbility ChallengingAlertImpact703E("Challenging Alert Impact", 0, 1, 0
     TargetHighestHP(
         Attack(2.0, BYPASS_ARMOR)
     )
-}, [](Dino &self) { return self.total_health > self.max_total_health * 1./2; }, 0, 1, 0, {
+}, 50, ThreatComparison::Higher, 0, 1, 0, {
     TargetHighestHP(
         Remove(SHIELD),
         Attack(1.5, BYPASS_ARMOR)
@@ -4394,7 +4394,7 @@ ThreatenedAbility CloakedRampageAlert9A3E("Cloaked Rampage Alert", 1, 2, 0, {
     TargetSelf(
         Cloak(2.0, 75.0, 66.66659, 2, 0)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 1, 2, 0, {
+}, 33, ThreatComparison::Lower, 1, 2, 0, {
     TargetLowestHP(
         ReduceDamage(50.0, 2, 4)
     ),
@@ -4768,7 +4768,7 @@ ThreatenedAbility DefenseShatteringAlert459B("Defense Shattering Alert", 0, 0, 0
         Remove(SHIELD),
         Attack(1.0, BYPASS_ARMOR)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 0, 0, {
+}, 50, ThreatComparison::Lower, 0, 0, 0, {
     TargetMostPositiveEffects(
         Remove(TAUNT)
     ),
@@ -4892,7 +4892,7 @@ ThreatenedAbility DefiniteAlertFrenzy84C4("Definite Alert Frenzy", 1, 2, 0, {
     TargetSelf(
         IncreaseSpeed(10.0, 2, 0)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 2./3; }, 1, 2, 0, {
+}, 66, ThreatComparison::Lower, 1, 2, 0, {
     TargetSelf(
         RallyHeal(33.33333)
     ),
@@ -4963,7 +4963,7 @@ ThreatenedAbility DelayedPreciseRampage5DFE("Delayed Precise Rampage", 1, 1, 0, 
     TargetHighestDamage(
         Attack(2.0, PRECISE)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 1, 1, 1, {
+}, 33, ThreatComparison::Lower, 1, 1, 1, {
     TargetHighestDamage(
         Attack(2.0, PRECISE)
     )
@@ -5457,7 +5457,7 @@ ThreatenedAbility EmboldeningAlertBAC9("Emboldening Alert", 0, 0, 0, {
         IncreaseSpeed(25.0, 2, 4),
         IncreaseCritChance(25.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 0, 0, {
+}, 50, ThreatComparison::Lower, 0, 0, 0, {
     TargetSelf(
         IncreaseDamage(25.0, 2, 4),
         IncreaseSpeed(25.0, 2, 4),
@@ -5515,7 +5515,7 @@ ThreatenedAbility EvasiveAlertRampageF230("Evasive Alert Rampage", 1, 2, 0, {
     TargetSelf(
         Dodge(100.0, 67.0, 1, 2)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 1, 2, 0, {
+}, 33, ThreatComparison::Lower, 1, 2, 0, {
     TargetHighestDamage(
         Attack(2.0)
     ),
@@ -5698,7 +5698,7 @@ ThreatenedAbility FearlessAlertCC50("Fearless Alert", 0, 2, 0, {
     TargetAllOpponents(
         Attack(1.0, PRECISE)
     )
-}, [](Dino &self) { return self.total_health > self.max_total_health * 1./3; }, 0, 2, 0, {
+}, 33, ThreatComparison::Higher, 0, 2, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(75.0, 66.69999, 2, 2),
@@ -6031,7 +6031,7 @@ ThreatenedAbility FlockOfOneBDDA("Flock Of One", 1, 1, 1, {
         Rend(60.0, BYPASS_ARMOR),
         ImposeVulnerability(50.0, 2, 1)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 2, 1, {
+}, 50, ThreatComparison::Lower, 0, 2, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Heal(1.0)
@@ -6225,7 +6225,7 @@ ThreatenedAbility GroupCriticalAlertF371("Group Critical Alert", 0, 2, 1, {
     TargetAllOpponents(
         ReduceDamage(50.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 2, 1, {
+}, 50, ThreatComparison::Lower, 0, 2, 1, {
     TargetTeam(
         IncreaseCritChance(50.0, 2, 4)
     ),
@@ -7148,7 +7148,7 @@ ThreatenedAbility InvincibleAlert449E("Invincible Alert", 0, 2, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 3, 0, {
+}, 50, ThreatComparison::Lower, 0, 3, 0, {
     TargetSelf(
         Shield(100.0, 2, 8)
     ),
@@ -7510,7 +7510,7 @@ ThreatenedAbility MercilessAlert571C("Merciless Alert", 0, 1, 0, {
         Attack(1.5, BYPASS_ARMOR),
         DamageOverTime(15.0, 3)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 1, 0, {
+}, 50, ThreatComparison::Lower, 0, 1, 0, {
     TargetLowestHP(
         Attack(1.0, BYPASS_ARMOR),
         DamageOverTime(30.0, 3)
@@ -7574,7 +7574,7 @@ ThreatenedCounterAbility MinorHealingCounter5330("Minor Healing Counter", {
     TargetSelf(
         FixedHeal(5.0)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, {
+}, 33, ThreatComparison::Lower, {
     TargetAttacker(
         Attack(0.5)
     ),
@@ -8009,7 +8009,7 @@ ThreatenedAbility ProtectiveAlert2FA4("Protective Alert", 0, 3, 0, {
         ImposeVulnerability(50.0, 2, 4),
         ReduceDamage(50.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 2./3; }, 0, 3, 0, {
+}, 66, ThreatComparison::Lower, 0, 3, 0, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         RallyHeal(33.33333)
@@ -8146,7 +8146,7 @@ ThreatenedAbility RegeneratingAlertDominance73EA("Regenerating Alert Dominance",
     TargetTeam(
         Heal(0.5)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./3; }, 1, 2, 0, {
+}, 33, ThreatComparison::Lower, 1, 2, 0, {
     TargetSelf(
         IncreaseDamage(50.0, 2, 4),
         IncreaseArmor(50.0, 2, 4),
@@ -8780,7 +8780,7 @@ ThreatenedAbility ShieldingAlertRampage3625("Shielding Alert Rampage", 0, 2, 0, 
     TargetAllOpponents(
         Attack(2.0, BYPASS_ARMOR)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 2, 1, {
+}, 50, ThreatComparison::Lower, 0, 2, 1, {
     TargetAllOpponents(
         Remove(CLOAK|DODGE|SHIELD)
     ),
@@ -8864,7 +8864,7 @@ ThreatenedAbility SlipperyAlertB2DD("Slippery Alert", 0, 2, 0, {
     TargetMostPositiveEffects(
         Affliction(33.0, 2, 4)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 2, 1, {
+}, 50, ThreatComparison::Lower, 0, 2, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Dodge(75.0, 66.69999, 2, 2),
@@ -9070,7 +9070,7 @@ ThreatenedCounterAbility SurvivalInstinct12CC("Survival Instinct", {
     TargetSelf(
         IncreaseArmor(15.0, 2, 2)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, {
+}, 50, ThreatComparison::Lower, {
     TargetSelf(
         IncreaseArmor(34.99999, 2, 4)
     )
@@ -9080,7 +9080,7 @@ ThreatenedCounterAbility SurvivalInstinctB690("Survival Instinct", {
     TargetSelf(
         IncreaseArmor(34.99999, 2, 4)
     )
-}, [](Dino &self) { return self.total_health > self.max_total_health * 1./2; }, {
+}, 50, ThreatComparison::Higher, {
     TargetSelf(
         IncreaseArmor(15.0, 2, 2)
     )
@@ -9293,7 +9293,7 @@ ThreatenedAbility Tyrant_sRoarD436("Tyrant'S Roar", 0, 2, 0, {
         IncreaseDamage(50.0, 2, 2),
         IncreaseSpeed(25.0, 1, 2)
     )
-}, [](Dino &self) { return self.total_health <= self.max_total_health * 1./2; }, 0, 2, 1, {
+}, 50, ThreatComparison::Lower, 0, 2, 1, {
     TargetAllOpponents(
         Attack(1.5, BYPASS_ARMOR)
     ),

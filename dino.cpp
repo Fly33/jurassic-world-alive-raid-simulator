@@ -241,6 +241,8 @@ bool Dino::Prepare(int _ability_id, bool minor)
     ability_id = _ability_id;
     if (ability_id >= (int)ability.size())
         return false;
+    revenge_ready = revenge;
+    initial_total_health = total_health;
     ability[ability_id]->Prepare(*this, &cooldown[ability_id], &priority);
     return true;
 }

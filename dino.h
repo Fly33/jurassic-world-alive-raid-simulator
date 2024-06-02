@@ -231,6 +231,7 @@ struct Dino
     bool taunt = false;
     int total_health = 0;
     int max_total_health = 0;
+    int initial_total_health = 0;
     int round = 0;
     int turn = 0;
     Dino *attacker = nullptr; // это норм

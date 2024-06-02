@@ -9,7 +9,7 @@
 using namespace actions;
 using namespace std;
 
-void Ability::Prepare(Dino &self, int *cooldown, int *priority) const
+void Ability::Prepare(Dino &dino, int *cooldown, int *priority) const
 {
     if (priority != nullptr)
         *priority = this->priority;
@@ -43,7 +43,7 @@ function<bool(const Dino &, const Dino &)> CheckTarget[] = {
     [](const Dino &dino1, const Dino &dino2) -> bool { return dino1.team == dino2.team; }, // lowest hp teammate
 };
 
-void Ability::Do(Dino &self, Dino team[], int team_size) const
+void Ability::Do(Dino &dino, Dino team[], int team_size) const
 {
     Dino *last = nullptr;
     for (const auto &action: actions) {
@@ -52,54 +52,54 @@ void Ability::Do(Dino &self, Dino team[], int team_size) const
             for (int i = 0; i < team_size; ++i) {
                 if (!team[i].Alive())
                     continue;
-                action->Do(self, team[i]);
+                action->Do(dino, team[i]);
             }
             break;
         case TARGET_ALL_OPPONENTS:
             for (int i = 0; i < team_size; ++i) {
-                if (team[i].team == self.team)
+                if (team[i].team == dino.team)
                     continue;
                 if (!team[i].Alive())
                     continue;
-                action->Do(self, team[i]);
+                action->Do(dino, team[i]);
             }
             break;
         case TARGET_TEAM:
             for (int i = 0; i < team_size; ++i) {
-                if (team[i].team != self.team)
+                if (team[i].team != dino.team)
                     continue;
                 if (!team[i].Alive())
                     continue;
-                action->Do(self, team[i]);
+                action->Do(dino, team[i]);
             }
             break;
         case TARGET_SELF:
-            action->Do(self, self);
+            action->Do(dino, dino);
             break;
         case TARGET_ATTACKER:
-            if (!self.attacker->Alive())
+            if (!dino.attacker->Alive())
                 continue;
-            action->Do(self, *self.attacker);
+            action->Do(dino, *dino.attacker);
             break;
         case TARGET_LAST:
             assert(last != nullptr);
             if (!last->Alive())
                 continue;
-            action->Do(self, *last);
+            action->Do(dino, *last);
             break;
         default:
             int count = 0;
             for (int i = 0; i < team_size; ++i) {
                 if (!team[i].Alive())
                     continue;
-                if (!CheckTarget[action->target](self, team[i]))
+                if (!CheckTarget[action->target](dino, team[i]))
                     continue;
                 if (action->target == TARGET_RANDOM) {
                     if (Rand(++count) == 0)
                         last = &team[i];
                     continue;
                 }
-                if (team[i].team != self.team && team[i].Taunt() && Rand(100) < self.ResistanceFactor(&Dino::taunt_resistance) * 100) {
+                if (team[i].team != dino.team && team[i].Taunt() && Rand(100) < dino.ResistanceFactor(&Dino::taunt_resistance) * 100) {
                     last = &team[i];
                     break;
                 }
@@ -114,56 +114,83 @@ void Ability::Do(Dino &self, Dino team[], int team_size) const
                 else
                     last = &team[i];
             }
-            action->Do(self, *last);
+            action->Do(dino, *last);
             break;
         }
     }
 }
 
-void RevengeAbility::Prepare(Dino &self, int *cooldown, int *priority) const
+void RevengeAbility::Prepare(Dino &dino, int *cooldown, int *priority) const
 {
-    self.revenge_ready = self.revenge;
-    if (self.revenge_ready)
-        revenge_ability.Prepare(self, cooldown, priority);
+    if (dino.revenge_ready)
+        revenge_ability.Prepare(dino, cooldown, priority);
     else
-        Ability::Prepare(self, cooldown, priority);
+        Ability::Prepare(dino, cooldown, priority);
 
 }
 
-void RevengeAbility::Do(Dino &self, Dino team[], int size) const
+void RevengeAbility::Do(Dino &dino, Dino team[], int size) const
 {
-    if (self.revenge_ready)
-        revenge_ability.Do(self, team, size);
+    if (dino.revenge_ready)
+        revenge_ability.Do(dino, team, size);
     else
-        Ability::Do(self, team, size);
+        Ability::Do(dino, team, size);
 }
 
-void ThreatenedAbility::Prepare(Dino &self, int *cooldown, int *priority) const
+static inline bool Threatened(const Dino &dino, int threat_factor, ThreatComparison threat_comparison)
 {
-    self.threatened = threat_checker(self);
-    if (self.threatened)
-        threatened_ability.Prepare(self, cooldown, priority);
-    else
-        Ability::Prepare(self, cooldown, priority);
+    int num = 0, den = 0;
+    switch (threat_factor) {
+    case 25:
+        num = 1;
+        den = 4;
+        break;
+    case 33:
+        num = 1;
+        den = 3;
+        break;
+    case 50:
+        num = 1;
+        den = 2;
+        break;
+    case 66:
+        num = 2;
+        den = 3;
+        break;
+    default:
+        return false;
+    }
+    if (threat_comparison == ThreatComparison::Lower)
+        return dino.initial_total_health * den <= dino.max_total_health * num;
+    else // if (threat_comparison == ThreatComparison::Higher)
+        return dino.initial_total_health * den > dino.max_total_health * num;
 }
 
-void ThreatenedAbility::Do(Dino &self, Dino team[], int size) const
+void ThreatenedAbility::Prepare(Dino &dino, int *cooldown, int *priority) const
 {
-    if (self.threatened)
-        threatened_ability.Do(self, team, size);
+    if (Threatened(dino, threat_factor, threat_comparison))
+        threatened_ability.Prepare(dino, cooldown, priority);
     else
-        Ability::Do(self, team, size);
+        Ability::Prepare(dino, cooldown, priority);
 }
 
-void CounterAbility::Do(Dino &self, Dino team[], int size) const
+void ThreatenedAbility::Do(Dino &dino, Dino team[], int size) const
 {
-    Ability::Do(self, team, size);
+    if (Threatened(dino, threat_factor, threat_comparison))
+        threatened_ability.Do(dino, team, size);
+    else
+        Ability::Do(dino, team, size);
 }
 
-void ThreatenedCounterAbility::Do(Dino &self, Dino team[], int size) const
+void CounterAbility::Do(Dino &dino, Dino team[], int size) const
 {
-    if (threat_checker(self))
-        threatened_ability.Do(self, team, size);
+    Ability::Do(dino, team, size);
+}
+
+void ThreatenedCounterAbility::Do(Dino &dino, Dino team[], int size) const
+{
+    if (Threatened(dino, threat_factor, threat_comparison))
+        threatened_ability.Do(dino, team, size);
     else
-        Ability::Do(self, team, size);
+        Ability::Do(dino, team, size);
 }
