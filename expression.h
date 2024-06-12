@@ -12,9 +12,25 @@ public:
     Expression()
     {}
     virtual ~Expression() {}
+    virtual bool IsMalformed() const { return false; }
     virtual int Calc(const Dino team[], int team_size) const = 0;
     virtual std::unique_ptr<Expression> Copy() const = 0;
     virtual std::string ToString() const = 0;
+};
+
+class MalformedExpression : public Expression
+{
+    std::string message;
+public:
+    MalformedExpression(const std::string &_message)
+        : message(_message)
+    {}
+    virtual ~MalformedExpression()
+    {}
+    virtual bool IsMalformed() const override { return true; }
+    virtual int Calc(const Dino team[], int team_size) const override;
+    virtual std::unique_ptr<Expression> Copy() const override;
+    virtual std::string ToString() const override;
 };
 
 class Binary : public Expression
@@ -54,7 +70,7 @@ public:
         : value(_value)
     {}
     virtual int Calc(const Dino team[], int team_size) const override;
-    virtual std::unique_ptr<Expression>Copy() const override;
+    virtual std::unique_ptr<Expression> Copy() const override;
     virtual std::string ToString() const override;
 };
 

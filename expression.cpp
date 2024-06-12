@@ -70,6 +70,21 @@ map<string, function<int(const Dino &)>> Properties = {
     make_pair("stun", [](const Dino &dino) -> int { return dino.stun != 0; }),
 };
 
+int MalformedExpression::Calc(const Dino team[], int team_size) const
+{
+    return 0;
+}
+
+unique_ptr<Expression> MalformedExpression::Copy() const
+{
+    return unique_ptr<Expression>(new MalformedExpression(message));
+}
+
+std::string MalformedExpression::ToString() const
+{
+    return message;
+}
+
 int Binary::Calc(const Dino team[], int team_size) const
 {
     switch (operation) {
@@ -185,37 +200,39 @@ unique_ptr<Expression> ParseConst(const char *&line)
         int value, n;
         sscanf(line, "%d%n", &value, &n);
         line += n;
-        return move(unique_ptr<Expression>(new Const(value)));
+        return unique_ptr<Expression>(new Const(value));
     } else if (isvar(*line)) {
         string name;
         while (isvar(*line))
             name.push_back(*line++);
         SkipWhite(line);
         if (*line != '[')
-            throw invalid_argument(strprintf("Malformed expression near \"%.10s...\"", line));
+            return unique_ptr<Expression>(new MalformedExpression(strprintf("Malformed expression near \"%.10s...\"", line)));
         ++line; // [
         SkipWhite(line);
         int index, n;
         if (sscanf(line, "%d%n", &index, &n) != 1)
-            throw invalid_argument(strprintf("Malformed expression near \"%.10s...\"", line));
+            return unique_ptr<Expression>(new MalformedExpression(strprintf("Malformed expression near \"%.10s...\"", line)));
         line += n;
         SkipWhite(line);
         if (*line != ']')
-            throw invalid_argument(strprintf("Malformed expression near \"%.10s...\"", line));
+            return unique_ptr<Expression>(new MalformedExpression(strprintf("Malformed expression near \"%.10s...\"", line)));
         ++line; // ]
         if (Properties.find(name) == Properties.end())
-            throw invalid_argument(strprintf("Unknown property \"%s\"", name.c_str()));
-        return move(unique_ptr<Expression>(new Property(name, index)));
+            return unique_ptr<Expression>(new MalformedExpression(strprintf("Unknown property \"%s\"", name.c_str())));
+        return unique_ptr<Expression>(new Property(name, index));
     } else if (*line == '(') {
         ++line; // (
-        unique_ptr<Expression> exp = move(ParseOr(line));
+        auto exp = ParseOr(line);
+        if (exp->IsMalformed())
+            return exp;
         SkipWhite(line);
         if (*line != ')')
-            throw invalid_argument(strprintf("Malformed expression near \"%.10s...\"", line));
+            return unique_ptr<Expression>(new MalformedExpression(strprintf("Malformed expression near \"%.10s...\"", line)));
         ++line; // )
         return exp;
     } else
-        throw invalid_argument(strprintf("Malformed expression near \"%.10s...\"", line));
+        return unique_ptr<Expression>(new MalformedExpression(strprintf("Malformed expression near \"%.10s...\"", line)));
 }
 
 unique_ptr<Expression> ParseUnary(const char *&line)
@@ -223,110 +240,155 @@ unique_ptr<Expression> ParseUnary(const char *&line)
     SkipWhite(line);
     if (strncmp(line, Operator[NOT].c_str(), Operator[NOT].length()) == 0) {
         line += Operator[NOT].length();
-        return move(unique_ptr<Expression>(new Unary(move(ParseUnary(line)), NOT)));
+        auto exp = ParseUnary(line);
+        if (exp->IsMalformed())
+            return exp;
+        return unique_ptr<Expression>(new Unary(std::move(exp), NOT));
     } else if (strncmp(line, Operator[POS].c_str(), Operator[POS].length()) == 0) {
         line += Operator[POS].length();
-        return move(unique_ptr<Expression>(new Unary(move(ParseUnary(line)), POS)));
+        auto exp = ParseUnary(line);
+        if (exp->IsMalformed())
+            return exp;
+        return unique_ptr<Expression>(new Unary(std::move(exp), POS));
     } else if (strncmp(line, Operator[NEG].c_str(), Operator[NEG].length()) == 0) {
         line += Operator[NEG].length();
-        return move(unique_ptr<Expression>(new Unary(move(ParseUnary(line)), NEG)));
+        auto exp = ParseUnary(line);
+        if (exp->IsMalformed())
+            return exp;
+        return unique_ptr<Expression>(new Unary(std::move(exp), NEG));
     } else
-        return move(ParseConst(line));
+        return ParseConst(line);
 }
 
 unique_ptr<Expression> ParseMultiplication(const char *&line)
 {
-    unique_ptr<Expression> op = move(ParseUnary(line));
+    auto left = ParseUnary(line);
     while (true) {
         SkipWhite(line);
         if (strncmp(line, Operator[MLT].c_str(), Operator[MLT].length()) == 0) {
             line += Operator[MLT].length();
-            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseMultiplication(line)), MLT)));
+            auto right = ParseUnary(line);
+            if (right->IsMalformed())
+                return right;
+            left = std::move(unique_ptr<Expression>(new Binary(std::move(left), std::move(right), MLT)));
         } else if (strncmp(line, Operator[DIV].c_str(), Operator[DIV].length()) == 0) {
             line += Operator[DIV].length();
-            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseMultiplication(line)), DIV)));
+            auto right = ParseUnary(line);
+            if (right->IsMalformed())
+                return right;
+            left = std::move(unique_ptr<Expression>(new Binary(std::move(left), std::move(right), DIV)));
         } else
-            return op;
+            return left;
     }
 }
 
 unique_ptr<Expression> ParseAddition(const char *&line)
 {
-    unique_ptr<Expression> op = move(ParseMultiplication(line));
+    auto left = ParseMultiplication(line);
     while (true) {
         SkipWhite(line);
         if (strncmp(line, Operator[ADD].c_str(), Operator[ADD].length()) == 0) {
             line += Operator[ADD].length();
-            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseAddition(line)), ADD)));
+            auto right = ParseMultiplication(line);
+            if (right->IsMalformed())
+                return right;
+            left = std::move(unique_ptr<Expression>(new Binary(std::move(left), std::move(right), ADD)));
         } else if (strncmp(line, Operator[SUB].c_str(), Operator[SUB].length()) == 0) {
             line += Operator[SUB].length();
-            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseAddition(line)), SUB)));
+            auto right = ParseMultiplication(line);
+            if (right->IsMalformed())
+                return right;
+            left = std::move(unique_ptr<Expression>(new Binary(std::move(left), std::move(right), SUB)));
         } else
-            return op;
+            return left;
     }
 }
 
 unique_ptr<Expression> ParseComparision(const char *&line)
 {
-    unique_ptr<Expression> op = move(ParseAddition(line));
+    auto left = ParseAddition(line);
     while (true) {
         SkipWhite(line);
         if (strncmp(line, Operator[LE].c_str(), Operator[LE].length()) == 0) {
             line += Operator[LE].length();
-            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseComparision(line)), LE)));
+            auto right = ParseAddition(line);
+            if (right->IsMalformed())
+                return right;
+            left = std::move(unique_ptr<Expression>(new Binary(std::move(left), std::move(right), LE)));
         } else if (strncmp(line, Operator[LT].c_str(), Operator[LT].length()) == 0) {
             line += Operator[LT].length();
-            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseComparision(line)), LT)));
+            auto right = ParseAddition(line);
+            if (right->IsMalformed())
+                return right;
+            left = std::move(unique_ptr<Expression>(new Binary(std::move(left), std::move(right), LT)));
         } else if (strncmp(line, Operator[GE].c_str(), Operator[GE].length()) == 0) {
             line += Operator[GE].length();
-            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseComparision(line)), GE)));
+            auto right = ParseAddition(line);
+            if (right->IsMalformed())
+                return right;
+            left = std::move(unique_ptr<Expression>(new Binary(std::move(left), std::move(right), GE)));
         } else if (strncmp(line, Operator[GT].c_str(), Operator[GT].length()) == 0) {
             line += Operator[GT].length();
-            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseComparision(line)), GT)));
+            auto right = ParseAddition(line);
+            if (right->IsMalformed())
+                return right;
+            left = std::move(unique_ptr<Expression>(new Binary(std::move(left), std::move(right), GT)));
         } else
-            return op;
+            return left;
     }
 }
 
 unique_ptr<Expression> ParseEquation(const char *&line)
 {
-    unique_ptr<Expression> op = move(ParseComparision(line));
+    auto left = ParseComparision(line);
     while (true) {
         SkipWhite(line);
         if (strncmp(line, Operator[EQ].c_str(), Operator[EQ].length()) == 0) {
             line += Operator[EQ].length();
-            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseEquation(line)), EQ)));
+            auto right = ParseComparision(line);
+            if (right->IsMalformed())
+                return right;
+            left = std::move(unique_ptr<Expression>(new Binary(std::move(left), std::move(right), EQ)));
         } else if (strncmp(line, Operator[NE].c_str(), Operator[NE].length()) == 0) {
             line += Operator[NE].length();
-            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseEquation(line)), NE)));
+            auto right = ParseComparision(line);
+            if (right->IsMalformed())
+                return right;
+            left = std::move(unique_ptr<Expression>(new Binary(std::move(left), std::move(right), NE)));
         } else
-            return op;
+            return left;
     }
 }
 
 unique_ptr<Expression> ParseAnd(const char *&line)
 {
-    unique_ptr<Expression> op = move(ParseEquation(line));
+    auto left = ParseEquation(line);
     while (true) {
         SkipWhite(line);
         if (strncmp(line, Operator[AND].c_str(), Operator[AND].length()) == 0) {
             line += Operator[AND].length();
-            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseAnd(line)), AND)));
+            auto right = ParseEquation(line);
+            if (right->IsMalformed())
+                return right;
+            left = std::move(unique_ptr<Expression>(new Binary(std::move(left), std::move(right), AND)));
         } else
-            return op;
+            return left;
     }
 }
 
 unique_ptr<Expression> ParseOr(const char *&line)
 {
-    unique_ptr<Expression> op = move(ParseAnd(line));
+    auto left = ParseAnd(line);
     while (true) {
         SkipWhite(line);
         if (strncmp(line, Operator[OR].c_str(), Operator[OR].length()) == 0) {
             line += Operator[OR].length();
-            op = move(unique_ptr<Expression>(new Binary(move(op), move(ParseOr(line)), OR)));
+            auto right = ParseAnd(line);
+            if (right->IsMalformed())
+                return right;
+            left = std::move(unique_ptr<Expression>(new Binary(std::move(left), std::move(right), OR)));
         } else
-            return op;
+            return left;
     }
 }
 
@@ -334,11 +396,11 @@ unique_ptr<Expression> ParseExpression(const char *line)
 {
     SkipWhite(line);
     if (*line != '?')
-        throw invalid_argument(strprintf("'?' expected near \"%.10s...\"", line));
+        return std::move(unique_ptr<Expression>(new MalformedExpression(strprintf("'?' expected near \"%.10s...\"", line))));
     ++line; // ?
-    unique_ptr exp = move(ParseOr(line));
+    auto exp = ParseOr(line);
     SkipWhite(line);
     if (*line != '\0')
-        throw invalid_argument(strprintf("Malformed expression near \"%.10s...\"", line));
+        return std::move(unique_ptr<Expression>(new MalformedExpression(strprintf("Malformed expression near \"%.10s...\"", line))));
     return exp;
 }
