@@ -7,7 +7,6 @@
 #include <cmath>
 #include <algorithm>
 #include "utils.h"
-#include "pack.h"
 
 using namespace std;
 using namespace actions;

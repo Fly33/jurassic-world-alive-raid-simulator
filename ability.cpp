@@ -4,7 +4,6 @@
 #include "actions.h"
 #include <cassert>
 #include "utils.h"
-#include "pack.h"
 
 using namespace actions;
 using namespace std;

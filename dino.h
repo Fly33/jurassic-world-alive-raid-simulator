@@ -14,7 +14,6 @@
 #include "modifiers.h"
 #include "actions.h"
 #include "utils.h"
-#include "pack.h"
 
 static const int COMMON = 0;
 static const int RARE = 1;
@@ -383,7 +382,5 @@ private:
 //    	return &Round();
 //	}
 };
-
-#include "unpack.h"
 
 #endif // __JWA_CALC__DINO__H__

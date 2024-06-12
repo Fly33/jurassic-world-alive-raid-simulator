@@ -58,15 +58,6 @@ class Action:
         args = ', '.join(str(arg) for arg in args)
         return f'{name}({args})'
 
-    def ToCompact(self):
-        name = GetShort('actions::' + self.name)
-        args = self.args
-        if self.flags:
-            flags = '|'.join(GetShort(flag) for flag in self.flags)
-            args = (*args, flags)
-        args = ','.join(Num(arg) for arg in args)
-        return f'{name}({args})'
-
     def __json__(self):
         return self.ToString()
 
@@ -473,52 +464,6 @@ def GetRaid(l10n, data, raid_dex, boss_dex, boss_ability_dex, minion_dex, abilit
         raid_dex.append(raid)
 
 
-def CodeNum(x):
-    a = '_qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890'
-    r = ''
-    r += a[x % 53]
-    x //= 53
-    while True:
-        r += a[x % 63]
-        x //= 63
-        if x == 0:
-            break
-    return r
-
-
-Codes = {}
-
-
-def GetCode(x):
-    if x not in Codes:
-        while True:
-            code = CodeNum(len(Codes))
-            if code not in ('or', 'if', 'do'):
-                break
-            Codes[hash(code)] = code
-        Codes[x] = code
-    return Codes[x]
-
-
-Shorts = {}
-
-
-def GetShort(x):
-    a = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'
-    if x not in Shorts:
-        if len(Shorts) < len(a): 
-            Shorts[x] = a[len(Shorts)]
-        else:
-            Shorts[x] = GetCode(x)
-    return Shorts[x]
-
-
-def GetEntity(x, entity):
-    if x not in entity:
-        entity[x] = GetShort(x)
-    return entity[x]
-
-
 def WriteDinoDex(dino_dex, f):
     for dino in sorted(dino_dex.values(), key=lambda dino: dino['dev_name']):
         print(f'DinoKind {dino["dev_name"]}("{dino["name"]}", {dino["rarity"]}, {dino["flock"]}, ', end='', file=f)
@@ -627,16 +572,6 @@ def WriteDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid
     print(f'}};', file=f)
 
 
-def WriteShorts(f):
-    print(f'#ifndef __JWA_CALC__COMPACT_H__', file=f)
-    print(f'#define __JWA_CALC__COMPACT_H__', file=f)
-    print(f'', file=f)
-    for (k, v) in Shorts.items():
-        print(f'#define {v} {k}', file=f)
-    print(f'', file=f)
-    print(f'#endif // __JWA_CALC__COMPACT_H__', file=f)
-
-
 def GetAll():
     l10n = GetPath("Localization_JW_2_Global_ENGLISH.json")
     data = GetPath(PATH + DATA)
@@ -663,8 +598,6 @@ def GetAll():
         json.dump(raid_dex, f, indent=4)
     with open("dex.cpp", "w") as f:
         WriteDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid_dex, f)
-    with open("compact_dex.h", "w") as f:
-        WriteShorts(f)
 
 def main():
     GetAll()

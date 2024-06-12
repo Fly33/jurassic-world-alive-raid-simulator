@@ -5,7 +5,6 @@
 #include <memory>
 #include <memory.h>
 #include "stats.h"
-#include "pack.h"
 
 using namespace std;
 using namespace modifiers;

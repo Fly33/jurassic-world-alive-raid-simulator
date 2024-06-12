@@ -6,7 +6,6 @@
 #include <memory>
 #include <functional>
 #include "actions.h"
-#include "pack.h"
 
 struct Dino;
 
@@ -92,7 +91,5 @@ struct ThreatenedCounterAbility : public CounterAbility
     {}
     virtual void Do(Dino &dino, Dino team[], int size) const override;
 };
-
-#include "unpack.h"
 
 #endif //__ABILITY__H__

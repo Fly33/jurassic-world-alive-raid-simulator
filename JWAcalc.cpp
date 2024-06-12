@@ -18,7 +18,6 @@
 #include "arguments.h"
 #include <omp.h>
 #include "utils.h"
-#include "pack.h"
 
 using namespace std;
 

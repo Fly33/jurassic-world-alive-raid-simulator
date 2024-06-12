@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 #include <getopt.h>
-#include "pack.h"
 
 struct Argument {
     char letter;
@@ -23,7 +22,5 @@ typedef struct {
 
 void SplitArgs(const char *str, arguments_t *args);
 void FreeArgs(arguments_t *args);
-
-#include "unpack.h"
 
 #endif // __ARGUMENTS__H__

@@ -2,7 +2,6 @@
 #include <getopt.h>
 #include <vector>
 #include <memory.h>
-#include "pack.h"
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>

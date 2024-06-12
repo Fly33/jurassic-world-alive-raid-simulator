@@ -1,7 +1,6 @@
 #include "modifiers.h"
 #include "dino.h"
 #include "utils.h"
-#include "pack.h"
 
 using namespace std;
 using namespace modifiers;

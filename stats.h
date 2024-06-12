@@ -3,7 +3,6 @@
 
 #include <vector>
 #include "dino.h"
-#include "pack.h"
 
 typedef enum {
 	RESULT_DEFEAT = 0,
@@ -32,8 +31,5 @@ public:
 	void RegisterResult(bool win);
 	void Print(Dino team[], int team_size);
 };
-
-
-#include "unpack.h"
 
 #endif /* JWA_SIMULATOR_STATS_H_ */

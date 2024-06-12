@@ -7,7 +7,6 @@
 #include <list>
 #include <utility>
 #include "modifiers.h"
-#include "pack.h"
 
 struct Dino;
 
@@ -409,7 +408,5 @@ struct UnableToSwap : public Action
 std::list<std::unique_ptr<Action>> Swap();
 
 } // namespace actions
-
-#include "unpack.h"
 
 #endif // __JWA_CALC__ACTIONS__H__
