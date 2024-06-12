@@ -16,6 +16,14 @@ struct Argument {
 
 bool ParseArguments(int argc, char *argv[], const std::vector<Argument> &argument);
 
+typedef struct {
+    int argc;
+    char **argv;
+} arguments_t;
+
+void SplitArgs(const char *str, arguments_t *args);
+void FreeArgs(arguments_t *args);
+
 #include "unpack.h"
 
 #endif // __ARGUMENTS__H__
