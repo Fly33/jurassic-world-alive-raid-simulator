@@ -119,7 +119,7 @@ void HealAction::Do(Dino &self, Dino &target) const
     if (flags & FIXED)
         heal = self.max_health;
     else
-        heal = self.damage * self.DamageFactor();
+        heal = self.damage * self.DamageFactor() * self.HealingFactor();
     heal = floor(heal);
     heal *= factor;
     heal = floor(heal);
@@ -272,3 +272,14 @@ list<unique_ptr<Action>> actions::Swap()
 {
     return move(list<unique_ptr<Action>>());
 }
+
+void IncreaseHealing::Do(Dino &self, Dino &target) const
+{
+    target.Impose(&increased_healing, self);
+}
+
+void ReduceHealing::Do(Dino &self, Dino &target) const
+{
+    target.Impose(&reduced_healing, self);
+}
+

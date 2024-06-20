@@ -16,7 +16,9 @@
 #include "input.h"
 #include "stats.h"
 #include "arguments.h"
+#ifdef _OPENMP
 #include <omp.h>
+#endif
 #include "utils.h"
 
 using namespace std;
@@ -440,7 +442,10 @@ bool SearchInput(int argc, char *argv[], const char *filename, void *)
         }
     }
     int n_checks = 1000;
-    int n_threads = omp_get_max_threads();
+    int n_threads = 1;
+#ifdef _OPENMP
+    n_threads = omp_get_max_threads();
+#endif
     string method = "random";
     vector<Argument> arguments = {
         {'l', "loglevel", required_argument, SetLogLevel, nullptr},
@@ -458,7 +463,9 @@ bool SearchInput(int argc, char *argv[], const char *filename, void *)
     }
     if (n_threads < 1)
         n_threads = 1;
+#ifdef _OPENMP
     omp_set_num_threads(n_threads);
+#endif
     auto start = std::chrono::system_clock::now();
     if (strncmp(method.c_str(), "random", method.length()) == 0)
         Randomize(team.data(), (int)team.size(), strategy, n_checks);

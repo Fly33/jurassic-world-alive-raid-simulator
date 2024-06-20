@@ -407,6 +407,25 @@ struct UnableToSwap : public Action
 
 std::list<std::unique_ptr<Action>> Swap();
 
+struct IncreaseHealing : public Action
+{
+    modifiers::IncreasedHealing increased_healing;
+    IncreaseHealing(double _factor, int _duration, int _number)
+        : increased_healing(_factor / 100., _duration, _number)
+    {}
+    virtual void Do(Dino &self, Dino &target) const override;
+};
+
+struct ReduceHealing : public Action
+{
+    modifiers::ReducedHealing reduced_healing;
+    ReduceHealing(double _factor, int _duration, int _number)
+        : reduced_healing(_factor / 100., _duration, _number)
+    {}
+    virtual void Do(Dino &self, Dino &target) const override;
+};
+
+
 } // namespace actions
 
 #endif // __JWA_CALC__ACTIONS__H__

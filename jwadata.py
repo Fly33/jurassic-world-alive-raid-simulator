@@ -25,7 +25,11 @@ def Name(s):
 
 def GetPath(path):
     with open(path, encoding="utf8") as f:
-        return json.load(f)
+        try:
+            return json.load(f)
+        except:
+            print(f'Error in "{path}"')
+            raise
 
 
 def Num(x):
@@ -200,6 +204,11 @@ def ParseAction(data, guid):
                             action["Action"] = Action("IncreaseArmor", action_data["p"] / 100000., action_data["d"], action_data["eac"])
                         else:
                             action["Action"] = Action("ReduceArmor", -action_data["p"] / 100000., action_data["d"], action_data["eac"])
+                    elif action_data["aa"] == "Heal":
+                        if action_data["p"] > 0:
+                            action["Action"] = Action("IncreaseHealing", action_data["p"] / 100000., action_data["d"], action_data["eac"])
+                        else:
+                            action["Action"] = Action("ReduceHealing", -action_data["p"] / 100000., action_data["d"], action_data["eac"])
                     else:
                         raise Exception(f'Unknown buff kind "{action_data["aa"]}"')
                 else:
@@ -318,6 +327,7 @@ def GetRound(l10n, data, round_data, ability_dex):
             'vulnerable_resistance': attr['rv'] / 100000,
             'armor_reduction_resistance': attr.get('rarm', 0) / 100000,
             'affliction_resistance': attr.get('raff', 0) / 100000,
+            'healing_reduction_resistance': attr.get('rhd', 0) / 100000,
             'ability': [GetAbility(data, ability_data, '', ability_dex, l10n=l10n)['dev_name'] for ability_data in round_data['al']],
             'counter': GetAbility(data, round_data['ac'], 'Counter', ability_dex, l10n=l10n)['dev_name'] if round_data['ac'] else None,
         }
@@ -331,18 +341,18 @@ def GetDino(l10n, data, dino_data, ability_dex):
         rarity = l10n[rarity['localizedName']]
         if dino_data["dn"] == "BTroodoboa": # исправляем косяки макак
             dino_data['lkn'] = 'IDS_BTROODOBOA'
-        elif dino_data['lkn'] == "IDS_MKOOLASUCHUS2":
-            dino_data['lkn'] = "IDS_MKOOLASUCH2"
-        if dino_data['lkn'].startswith('IDS_M') and dino_data['lkn'][:4] + dino_data['lkn'][5:] in l10n:
-            name = l10n.get(dino_data['lkn'][:4] + dino_data['lkn'][5:]) + ' MINION'
-        elif dino_data['lkn'] in l10n:
+        if dino_data['lkn'] in l10n:
             name = l10n.get(dino_data['lkn'])
-        elif dino_data['lkn'] == 'IDS_BARCTODUS':
-            name = "ARCTODUS BOSS"
         else:
             name = dino_data['lkn'][4:]
+        if dino_data['lkn'] == "IDS_MKOOLASUCHUS2":
+            dino_data['lkn'] = "IDS_MKOOLASUCH2"
+        if dino_data['lkn'].startswith('IDS_M') and dino_data['lkn'][:4] + dino_data['lkn'][5:] in l10n:
+            dev_name = l10n.get(dino_data['lkn'][:4] + dino_data['lkn'][5:]) + ' MINION'
+        else:
+            dev_name = name;
         dino = {
-            'dev_name': DevName(name),
+            'dev_name': DevName(dev_name),
             'name': Name(name),
             'rarity': rarity,
             'flock': 3 if dino_data.get('it', False) else 1,
@@ -408,6 +418,8 @@ def GetDino(l10n, data, dino_data, ability_dex):
                             restrictions.append({'level': mln['cl'], 'type': 'ArmorReductionResistance', 'value': msn['fs'] / 100000})
                         elif msn['fst'] == 'ResistanceAffliction':
                             restrictions.append({'level': mln['cl'], 'type': 'AfflictionResistance', 'value': msn['fs'] / 100000})
+                        elif msn['fst'] == 'ResistanceHealing':
+                            restrictions.append({'level': mln['cl'], 'type': 'HealingReductionResistance', 'value': msn['fs'] / 100000})
                         else:
                             raise Exception('Unknown fst: {}'.format(msn['fst']))
             dino['omega'] = {
@@ -487,7 +499,8 @@ def WriteDinoDex(dino_dex, f):
                   f'{dino["round"][round]["taunt_resistance"]}, '\
                   f'{dino["round"][round]["vulnerable_resistance"]}, '\
                   f'{dino["round"][round]["armor_reduction_resistance"]}, '\
-                  f'{dino["round"][round]["affliction_resistance"]}, {{', file=f)
+                  f'{dino["round"][round]["affliction_resistance"]}, '\
+                  f'{dino["round"][round]["healing_reduction_resistance"]}, {{', file=f)
             for ability in range(len(dino['round'][round]['ability'])):
                 print(f'        &{dino["round"][round]["ability"][ability]}{"," if ability != len(dino["round"][round]["ability"]) - 1 else ""}', file=f)
             print(f'    }}, {"&" + dino["round"][round]["counter"] if dino["round"][round]["counter"] else "nullptr"}){"," if round != len(dino["round"]) - 1 else ""}', file=f)

@@ -223,3 +223,27 @@ void UnableToSwap::Impose(Dino &target, Mod *mod) const
 void UnableToSwap::Dispose(Dino &target, Mod *mod) const
 {
 }
+
+void IncreasedHealing::Impose(Dino &target, Mod *) const
+{
+    target.healing_factor += factor;
+    ++target.n_positive_effects;
+}
+
+void IncreasedHealing::Dispose(Dino &target, Mod *) const
+{
+    target.healing_factor -= factor;
+    --target.n_positive_effects;
+}
+
+void ReducedHealing::Impose(Dino &target, Mod *mod) const
+{
+    mod->value = factor * target.ResistanceFactor(&Dino::healing_reduction_resistance);
+    target.healing_factor -= mod->value;
+}
+
+void ReducedHealing::Dispose(Dino &target, Mod *mod) const
+{
+    target.healing_factor += mod->value;
+}
+

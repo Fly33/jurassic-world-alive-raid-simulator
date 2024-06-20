@@ -174,17 +174,18 @@ void Dino::InitRound(int round)
         crit_factor = Round(round).crit_factor;
 
     if (kind->rarity == OMEGA) {
-        crit_reduction_resistance   = GetRestriction(level, RestrictionType::CritReductionResistance, Round(round).crit_reduction_resistance * 100) / 100.;
-        damage_over_time_resistance = GetRestriction(level, RestrictionType::DamageOverTimeResistance, Round(round).damage_over_time_resistance * 100) / 100.;
-        damage_reduction_resistance = GetRestriction(level, RestrictionType::DamageReductionResistance, Round(round).damage_reduction_resistance * 100) / 100.;
-        rend_resistance             = GetRestriction(level, RestrictionType::RendResistance, Round(round).rend_resistance * 100) / 100.;
-        speed_reduction_resistance  = GetRestriction(level, RestrictionType::SpeedReductionResistance, Round(round).speed_reduction_resistance * 100) / 100.;
-        stun_resistance             = GetRestriction(level, RestrictionType::StunResistance, Round(round).stun_resistance * 100) / 100.;
-        swap_prevention_resistance  = GetRestriction(level, RestrictionType::SwapPreventionResistance, Round(round).swap_prevention_resistance * 100) / 100.;
-        taunt_resistance            = GetRestriction(level, RestrictionType::TauntResistance, Round(round).taunt_resistance * 100) / 100.;
-        vulnerability_resistance    = GetRestriction(level, RestrictionType::VulnerabilityResistance, Round(round).vulnerability_resistance * 100) / 100.;
-        armor_reduction_resistance  = GetRestriction(level, RestrictionType::ArmorReductionResistance, Round(round).armor_reduction_resistance * 100) / 100.;
-        affliction_resistance       = GetRestriction(level, RestrictionType::AfflictionResistance, Round(round).affliction_resistance * 100) / 100.;
+        crit_reduction_resistance    = GetRestriction(level, RestrictionType::CritReductionResistance, Round(round).crit_reduction_resistance * 100) / 100.;
+        damage_over_time_resistance  = GetRestriction(level, RestrictionType::DamageOverTimeResistance, Round(round).damage_over_time_resistance * 100) / 100.;
+        damage_reduction_resistance  = GetRestriction(level, RestrictionType::DamageReductionResistance, Round(round).damage_reduction_resistance * 100) / 100.;
+        rend_resistance              = GetRestriction(level, RestrictionType::RendResistance, Round(round).rend_resistance * 100) / 100.;
+        speed_reduction_resistance   = GetRestriction(level, RestrictionType::SpeedReductionResistance, Round(round).speed_reduction_resistance * 100) / 100.;
+        stun_resistance              = GetRestriction(level, RestrictionType::StunResistance, Round(round).stun_resistance * 100) / 100.;
+        swap_prevention_resistance   = GetRestriction(level, RestrictionType::SwapPreventionResistance, Round(round).swap_prevention_resistance * 100) / 100.;
+        taunt_resistance             = GetRestriction(level, RestrictionType::TauntResistance, Round(round).taunt_resistance * 100) / 100.;
+        vulnerability_resistance     = GetRestriction(level, RestrictionType::VulnerabilityResistance, Round(round).vulnerability_resistance * 100) / 100.;
+        armor_reduction_resistance   = GetRestriction(level, RestrictionType::ArmorReductionResistance, Round(round).armor_reduction_resistance * 100) / 100.;
+        affliction_resistance        = GetRestriction(level, RestrictionType::AfflictionResistance, Round(round).affliction_resistance * 100) / 100.;
+        healing_reduction_resistance = GetRestriction(level, RestrictionType::HealingReductionResistance, Round(round).healing_reduction_resistance * 100) / 100.;
         ability = Round(round).ability;
         ability.resize((int)GetRestriction(level, RestrictionType::Ability, 2));
         counter_attack = (int)GetRestriction(level, RestrictionType::Counter, 0) ? Round(round).counter_attack : nullptr;
@@ -200,6 +201,7 @@ void Dino::InitRound(int round)
         vulnerability_resistance = Round(round).vulnerability_resistance;
         armor_reduction_resistance = Round(round).armor_reduction_resistance;
         affliction_resistance = Round(round).affliction_resistance;
+        healing_reduction_resistance = Round(round).healing_reduction_resistance;
         ability = Round(round).ability;
         counter_attack = Round(round).counter_attack;
     }

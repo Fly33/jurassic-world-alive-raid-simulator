@@ -42,6 +42,7 @@ struct DinoRound
 	double vulnerability_resistance;
 	double armor_reduction_resistance;
 	double affliction_resistance;
+	double healing_reduction_resistance;
 	std::vector<const Ability *> ability;
 	const CounterAbility *counter_attack;
     DinoRound(int _health, int _damage, int _speed, int _armor, int _crit_chance, int _crit_factor,
@@ -56,6 +57,7 @@ struct DinoRound
             double _vulnerability_resistance,
             double _armor_reduction_resistance,
 			double _affliction_resistance,
+			double _healing_reduction_resistance,
             std::initializer_list<Ability *> _ability, CounterAbility *_counter_attack)
         : health(_health)
         , damage(_damage)
@@ -74,6 +76,7 @@ struct DinoRound
         , vulnerability_resistance(_vulnerability_resistance / 100.)
         , armor_reduction_resistance(_armor_reduction_resistance / 100.)
 		, affliction_resistance(_affliction_resistance / 100.)
+	    , healing_reduction_resistance(_healing_reduction_resistance / 100.)
 		, ability(_ability.begin(), _ability.end())
 		, counter_attack(_counter_attack)
     {}
@@ -95,6 +98,7 @@ enum class RestrictionType {
     VulnerabilityResistance,
     ArmorReductionResistance,
     AfflictionResistance,
+    HealingReductionResistance,
 };
 
 struct Restriction
@@ -227,6 +231,7 @@ struct Dino
     double crit_factor = 0;
     double affliction = 0;
     double affliction_factor = 0;
+    double healing_factor = 1;
     bool taunt = false;
     int total_health = 0;
     int max_total_health = 0;
@@ -267,6 +272,7 @@ struct Dino
     double vulnerability_resistance;
     double armor_reduction_resistance;
     double affliction_resistance;
+    double healing_reduction_resistance;
     std::vector<const Ability *> ability;
     const CounterAbility *counter_attack;
 
@@ -305,6 +311,12 @@ struct Dino
         if (damage_factor < 0)
             return 0;
         return damage_factor;
+    }
+    double HealingFactor() const
+    {
+        if (healing_factor < 0)
+            return 0;
+        return healing_factor;
     }
     double CritChance() const
     {

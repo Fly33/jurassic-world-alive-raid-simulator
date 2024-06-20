@@ -25,9 +25,11 @@ static const int INCREASED_ARMOR = 1 << 15;
 static const int REDUCED_ARMOR = 1 << 16;
 static const int AFFLICTION = 1 << 17;
 static const int SWAP_PREVENTION = 1 << 18;
+static const int INCREASED_HEALING = 1 << 19;
+static const int REDUCED_HEALING = 1 << 20;
 
-static const int NEGATIVE_EFFECTS = REDUCED_DAMAGE|VULNERABILITY|REDUCED_SPEED|DAMAGE_OVER_TIME|REDUCED_CRIT_CHANCE|REDUCED_ARMOR|AFFLICTION|SWAP_PREVENTION;
-static const int POSITIVE_EFFECTS = DODGE|CLOAK|INCREASED_SPEED|SHIELD|TAUNT|INCREASED_CRIT_CHANCE|INCREASED_DAMAGE|DEVOUR_HEAL|INCREASED_ARMOR;
+static const int NEGATIVE_EFFECTS = REDUCED_DAMAGE|VULNERABILITY|REDUCED_SPEED|DAMAGE_OVER_TIME|REDUCED_CRIT_CHANCE|REDUCED_ARMOR|AFFLICTION|SWAP_PREVENTION|REDUCED_HEALING;
+static const int POSITIVE_EFFECTS = DODGE|CLOAK|INCREASED_SPEED|SHIELD|TAUNT|INCREASED_CRIT_CHANCE|INCREASED_DAMAGE|DEVOUR_HEAL|INCREASED_ARMOR|INCREASED_HEALING;
 static const int ALL_EFFECTS = NEGATIVE_EFFECTS|POSITIVE_EFFECTS|REVENGE|STUN;
 
 namespace modifiers
@@ -641,6 +643,59 @@ struct UnableToSwap : public Modifier
     }
 };
 
+struct IncreasedHealing: public Modifier
+{
+    double factor;
+    IncreasedHealing(double _factor, int _duration, int _number)
+        : Modifier("increased healing", _duration, _number)
+        , factor(_factor)
+    {}
+    virtual void Impose(Dino &target, Mod *mod) const override;
+    virtual void Dispose(Dino &target, Mod *mod) const override;
+    virtual std::string Name(const Mod *mod) const
+    {
+        return strprintf("%s by %.1lf%%", name.c_str(), factor * 100);
+    }
+    virtual int Type() const override
+    {
+        return INCREASED_HEALING;
+    }
+    virtual bool OutgoingHeal(Mod *mod) const override
+    {
+        return !--mod->number;
+    }
+    virtual bool AfterAction(Mod *mod) const override
+    {
+        return --mod->duration == 0;
+    }
+};
+
+struct ReducedHealing: public Modifier
+{
+    double factor;
+    ReducedHealing(double _factor, int _duration, int _number)
+        : Modifier("reduced healing", _duration, _number)
+        , factor(_factor)
+    {}
+    virtual void Impose(Dino &target, Mod *mod) const override;
+    virtual void Dispose(Dino &target, Mod *mod) const override;
+    virtual std::string Name(const Mod *mod) const
+    {
+        return strprintf("%s by %.1lf%%", name.c_str(), mod->value * 100);
+    }
+    virtual int Type() const override
+    {
+        return REDUCED_HEALING;
+    }
+    virtual bool OutgoingHeal(Mod *mod) const override
+    {
+        return !--mod->number;
+    }
+    virtual bool AfterAction(Mod *mod) const override
+    {
+        return --mod->duration == 0;
+    }
+};
 
 } // namespace modifiers
 

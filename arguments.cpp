@@ -88,8 +88,6 @@ void SplitArgs(const char *str, arguments_t *args)
         args->argv[i] = current;
         current += strlen(current) + 1;
     }
-
-    --args->argc;
 }
 
 void FreeArgs(arguments_t *args)
