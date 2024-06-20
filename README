@@ -1,5 +1,8 @@
-How to build:
+# How to build the project:
 1. Install the latest version of GNU C++ Compiler from https://gcc.gnu.org/
-2.1 Windows: run build.bat
-2.2 *nix: run build.sh
-3. Run JWAcalc --help
+2. Install CMake.
+3. Run the following commands:
+   mkdir build
+   cd build
+   cmake ..
+   make
