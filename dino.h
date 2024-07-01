@@ -188,15 +188,15 @@ bool ActionOrderCmp(const Dino &dino1, const Dino &dino2);
 
 struct dodge_cmp
 {
-    constexpr bool operator()(const std::pair<double, double> &lhs, const std::pair<double, double> &rhs ) const
+    constexpr bool operator()(const std::pair<double, double> &lhs, const std::pair<double, double> &rhs) const
     {
-        if (lhs.first * lhs.second > rhs.first * rhs.second)
+        if (lhs.first > rhs.first) // chance
             return true;
-        if (lhs.first * lhs.second < rhs.first * rhs.second)
+        if (lhs.first < rhs.first)
             return false;
-        if (lhs.first > rhs.first)
+        if (lhs.second > rhs.second) // factor
             return true;
-//        if (lhs.first < rhs.first)
+//        if (lhs.second < rhs.second)
 //            return false;
         return false;
     }
@@ -362,7 +362,7 @@ struct Dino
     double DodgeFactor() const
     {
         if (dodge.size() == 0)
-            return 1;
+            return 0;
         return dodge.begin()->second;
     }
     double CloakFactor() const
