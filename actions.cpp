@@ -69,7 +69,7 @@ void AttackAction::Do(Dino &self, Dino &target) const
         damage *= 1 - target.Armor();
     damage = floor(damage);
     int absorbed = 0;
-    if ((~flags & GROUP) && this->target != TARGET_ALL_OPPONENTS) {
+    if (~flags & BYPASS_ALERT) {
         absorbed = (int)damage - target.Absorb((int)damage);
         damage -= absorbed;
     }

@@ -119,9 +119,9 @@ def ParseAction(data, guid):
         type = action_data['$type']
         if type.startswith("BeDa"):
             if type.startswith("BeDaBaDa"):
-                action["Action"] = Action("Attack", action_data["dm"] / 10000000., BYPASS_ARMOR=action_data["sb"], PRECISE=action_data["db"], ALWAYS_CRITS=action_data["ach"])
+                action["Action"] = Action("Attack", action_data["dm"] / 10000000., BYPASS_ARMOR=action_data["sb"], PRECISE=action_data["db"], ALWAYS_CRITS=action_data["ach"], BYPASS_ALERT=action_data["ttb"])
             elif type.startswith("BeDaMeDa"):
-                action["Action"] = Action("DevouringAttack", action_data["dm"] / 10000000., action_data["mp"] / 100000., action_data["md"], BYPASS_ARMOR=action_data["sb"], PRECISE=action_data["db"])
+                action["Action"] = Action("DevouringAttack", action_data["dm"] / 10000000., action_data["mp"] / 100000., action_data["md"], BYPASS_ARMOR=action_data["sb"], PRECISE=action_data["db"], ALWAYS_CRITS=action_data["ach"], BYPASS_ALERT=action_data["ttb"])
             elif type.startswith("BeDaHpBaDa"):
                 if action_data['tg'] == "Self":
                     action["Action"] = Action("Sacrifice", action_data["dp"] / 100000.)

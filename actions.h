@@ -131,7 +131,7 @@ std::list<std::unique_ptr<Action>> ActionGroupFunction(int target, Args &&...arg
     return ActionGroupClass<Args...>::Make(target, std::forward<Args>(args)...);
 }
 
-static const int GROUP = 1 << 0;
+static const int BYPASS_ALERT = 1 << 0;
 static const int PRECISE = 1 << 1;
 static const int BYPASS_ARMOR = 1 << 2;
 static const int REND = 1 << 3;

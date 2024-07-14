@@ -29,7 +29,7 @@ Ability AcceleratingGroupImpactAA7C("Accelerating Group Impact", 0, 0, 0, {
         IncreaseSpeed(10.0, 2, 4)
     ),
     TargetAllOpponents(
-        Attack(1.5)
+        Attack(1.5, BYPASS_ALERT)
     )
 });
 
@@ -38,7 +38,7 @@ Ability AcceleratingGroupStrike581B("Accelerating Group Strike", 0, 0, 0, {
         IncreaseSpeed(10.0, 2, 4)
     ),
     TargetAllOpponents(
-        Attack(1.0)
+        Attack(1.0, BYPASS_ALERT)
     )
 });
 
@@ -47,11 +47,11 @@ ThreatenedAbility AlertAdvance2251("Alert Advance", 0, 0, 0, {
         Cleanse(NEGATIVE_EFFECTS)
     ),
     TargetAllOpponents(
-        Attack(2.0)
+        Attack(2.0, BYPASS_ALERT)
     )
 }, 25, ThreatComparison::Lower, 0, 0, 0, {
     TargetAllOpponents(
-        Attack(1.5)
+        Attack(1.5, BYPASS_ALERT)
     ),
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
@@ -181,13 +181,13 @@ Ability AvianGale57A6("Avian Gale", 0, 0, 0, {
         IncreaseDamage(30.0, 2, 4)
     ),
     TargetAllOpponents(
-        Attack(1.5)
+        Attack(1.5, BYPASS_ALERT)
     )
 });
 
 Ability AvianGrazeC01A("Avian Graze", 0, 0, 0, {
     TargetAllOpponents(
-        Attack(1.0)
+        Attack(1.0, BYPASS_ALERT)
     )
 });
 
@@ -199,7 +199,7 @@ Ability AvianGust163C("Avian Gust", 0, 0, 0, {
         IncreaseDamage(30.0, 2, 4)
     ),
     TargetAllOpponents(
-        Attack(1.0)
+        Attack(1.0, BYPASS_ALERT)
     )
 });
 
@@ -337,7 +337,7 @@ Ability CleansingPrimalTailWhip0DFD("Cleansing Primal Tail Whip", 0, 0, 0, {
     ),
     TargetAllOpponents(
         Remove(SHIELD),
-        Attack(1.0, BYPASS_ARMOR)
+        Attack(1.0, BYPASS_ARMOR|BYPASS_ALERT)
     )
 });
 
@@ -438,7 +438,7 @@ CounterAbility CounterVulnerabilityC8BA("Counter Vulnerability", {
 
 Ability CriticalGroupImpactAC56("Critical Group Impact", 0, 0, 0, {
     TargetAllOpponents(
-        Attack(1.5, ALWAYS_CRITS)
+        Attack(1.5, ALWAYS_CRITS|BYPASS_ALERT)
     )
 });
 
@@ -531,7 +531,7 @@ Ability DaringGroupStrike7E0C("Daring Group Strike", 0, 0, 0, {
         Cleanse(VULNERABILITY|DAMAGE_OVER_TIME)
     ),
     TargetAllOpponents(
-        Attack(1.0, BYPASS_ARMOR),
+        Attack(1.0, BYPASS_ARMOR|BYPASS_ALERT),
         ReduceDamage(50.0, 1, 2)
     )
 });
@@ -574,7 +574,7 @@ Ability DefensiveGroupTaunt64E9("Defensive Group Taunt", 0, 2, 0, {
         Cleanse(NEGATIVE_EFFECTS)
     ),
     TargetAllOpponents(
-        Attack(1.0)
+        Attack(1.0, BYPASS_ALERT)
     ),
     TargetSelf(
         Shield(50.0, 2, 4),
@@ -657,7 +657,7 @@ Ability DeviousGroupStrike5A92("Devious Group Strike", 0, 0, 0, {
         IncreaseCritChance(30.0, 2, 2)
     ),
     TargetAllOpponents(
-        Attack(1.0),
+        Attack(1.0, BYPASS_ALERT),
         ReduceDamage(25.0, 2, 4)
     )
 });
@@ -677,7 +677,7 @@ Ability DispersedCunningStrike7D4C("Dispersed Cunning Strike", 0, 0, 0, {
 Ability DispersedDeceleratingImpactF2D9("Dispersed Decelerating Impact", 0, 0, 0, {
     TargetAllOpponents(
         ReduceSpeed(50.0, 2, 0),
-        Attack(1.5)
+        Attack(1.5, BYPASS_ALERT)
     )
 });
 
@@ -687,7 +687,7 @@ Ability DispersedSuperiorVulnerability8D77("Dispersed Superior Vulnerability", 0
     ),
     TargetAllOpponents(
         ReduceSpeed(50.0, 2, 0),
-        Attack(1.0, PRECISE),
+        Attack(1.0, PRECISE|BYPASS_ALERT),
         ImposeVulnerability(50.0, 2, 1)
     )
 });
@@ -709,7 +709,7 @@ Ability DistractingRampage5363("Distracting Rampage", 0, 0, 0, {
 Ability Dragon_sBite8539("Dragon'S Bite", 0, 0, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
-        Attack(1.0, BYPASS_ARMOR),
+        Attack(1.0, BYPASS_ARMOR|BYPASS_ALERT),
         DamageOverTime(20.0, 2)
     )
 });
@@ -793,7 +793,7 @@ Ability FearlessFlap6CE3("Fearless Flap", 0, 2, 0, {
     TargetAllOpponents(
         Remove(DODGE|INCREASED_DAMAGE|INCREASED_SPEED),
         ReduceDamage(50.0, 2, 2),
-        Attack(1.25)
+        Attack(1.25, BYPASS_ALERT)
     )
 });
 
@@ -825,7 +825,7 @@ Ability FierceCleansingImpact026E("Fierce Cleansing Impact", 0, 0, 0, {
     ),
     TargetLowestHP(
         Remove(SHIELD|TAUNT),
-        Attack(1.5, BYPASS_ARMOR)
+        Attack(1.5, BYPASS_ARMOR|BYPASS_ALERT)
     )
 });
 
@@ -925,7 +925,7 @@ Ability GroupCleansingImpactE480("Group Cleansing Impact", 0, 0, 0, {
         Cleanse(NEGATIVE_EFFECTS)
     ),
     TargetAllOpponents(
-        Attack(1.5)
+        Attack(1.5, BYPASS_ALERT)
     )
 });
 
@@ -934,7 +934,7 @@ Ability GroupCleansingLethalWound6F87("Group Cleansing Lethal Wound", 0, 0, 0, {
         Cleanse(NEGATIVE_EFFECTS)
     ),
     TargetAllOpponents(
-        Attack(1.0),
+        Attack(1.0, BYPASS_ALERT),
         DamageOverTime(33.41, 3)
     )
 });
@@ -970,14 +970,14 @@ Ability GroupDebilitatingDistractionImpact47B8("Group Debilitating Distraction I
 Ability GroupDeceleratingRampageE77E("Group Decelerating Rampage", 0, 2, 0, {
     TargetAllOpponents(
         ReduceSpeed(50.0, 2, 0),
-        Attack(2.0)
+        Attack(2.0, BYPASS_ALERT)
     )
 });
 
 Ability GroupDecelerationStrike3B22("Group Deceleration Strike", 0, 0, 0, {
     TargetAllOpponents(
         ReduceSpeed(50.0, 2, 0),
-        Attack(1.0)
+        Attack(1.0, BYPASS_ALERT)
     )
 });
 
@@ -998,26 +998,26 @@ Ability GroupDefenseShatteringWound7024("Group Defense Shattering Wound", 0, 0, 
 Ability GroupDefiniteImpact4517("Group Definite Impact", 0, 0, 0, {
     TargetAllOpponents(
         Remove(CLOAK|DODGE|SHIELD|TAUNT),
-        Attack(1.5, BYPASS_ARMOR)
+        Attack(1.5, BYPASS_ARMOR|BYPASS_ALERT)
     )
 });
 
 Ability GroupDefiniteStrike8D8F("Group Definite Strike", 0, 0, 0, {
     TargetAllOpponents(
         Remove(CLOAK|DODGE|SHIELD|TAUNT),
-        Attack(1.0, BYPASS_ARMOR)
+        Attack(1.0, BYPASS_ARMOR|BYPASS_ALERT)
     )
 });
 
 Ability GroupDevastationC704("Group Devastation", 0, 0, 0, {
     TargetAllOpponents(
-        Attack(3.0, PRECISE)
+        Attack(3.0, PRECISE|BYPASS_ALERT)
     )
 });
 
 Ability GroupDistractingImpact194D("Group Distracting Impact", 0, 0, 0, {
     TargetAllOpponents(
-        Attack(1.5),
+        Attack(1.5, BYPASS_ALERT),
         ReduceDamage(50.0, 1, 2)
     )
 });
@@ -1089,7 +1089,7 @@ Ability GroupFierceImpactDF8C("Group Fierce Impact", 0, 0, 0, {
     ),
     TargetAllOpponents(
         Remove(SHIELD|TAUNT),
-        Attack(1.5, BYPASS_ARMOR)
+        Attack(1.5, BYPASS_ARMOR|BYPASS_ALERT)
     )
 });
 
@@ -1109,7 +1109,7 @@ Ability GroupFierceStrike3398("Group Fierce Strike", 0, 0, 0, {
     ),
     TargetAllOpponents(
         Remove(SHIELD|TAUNT),
-        Attack(1.0, BYPASS_ARMOR)
+        Attack(1.0, BYPASS_ARMOR|BYPASS_ALERT)
     )
 });
 
@@ -1125,7 +1125,7 @@ Ability GroupInvincibility36D9("Group Invincibility", 0, 0, 1, {
 Ability GroupNecroticStrike3464("Group Necrotic Strike", 0, 0, 0, {
     TargetAllOpponents(
         Remove(POSITIVE_EFFECTS),
-        DevouringAttack(1.0, 50.0, 2, BYPASS_ARMOR)
+        DevouringAttack(1.0, 50.0, 2, BYPASS_ARMOR|BYPASS_ALERT)
     )
 });
 
@@ -1149,7 +1149,7 @@ Ability GroupPowerStrikeD95F("Group Power Strike", 0, 0, 0, {
         IncreaseDamage(50.0, 4, 4)
     ),
     TargetAllOpponents(
-        Attack(1.0)
+        Attack(1.0, BYPASS_ALERT)
     )
 });
 
@@ -1170,7 +1170,7 @@ Ability GroupResilientScratchingImpactCD17("Group Resilient Scratching Impact", 
     ),
     TargetAllOpponents(
         Remove(DODGE|CLOAK|INCREASED_SPEED),
-        Attack(1.5),
+        Attack(1.5, BYPASS_ALERT),
         ImposeVulnerability(50.0, 2, 2),
         DamageOverTime(17.0, 6)
     )
@@ -1182,7 +1182,7 @@ Ability GroupResilientScratchingStrikeB447("Group Resilient Scratching Strike", 
     ),
     TargetAllOpponents(
         Remove(DODGE|CLOAK|INCREASED_SPEED),
-        Attack(1.0),
+        Attack(1.0, BYPASS_ALERT),
         ImposeVulnerability(50.0, 2, 2),
         DamageOverTime(17.0, 6)
     )
@@ -1216,7 +1216,7 @@ Ability GroupShieldingRampage6FD2("Group Shielding Rampage", 0, 0, 0, {
         Taunt(1)
     ),
     TargetAllOpponents(
-        Attack(2.0)
+        Attack(2.0, BYPASS_ALERT)
     )
 });
 
@@ -1226,7 +1226,7 @@ Ability GroupSlowingImpact7712("Group Slowing Impact", 0, 0, 0, {
     ),
     TargetAllOpponents(
         ReduceSpeed(75.0, 2, 0),
-        Attack(1.5, PRECISE),
+        Attack(1.5, PRECISE|BYPASS_ALERT),
         ImposeVulnerability(50.0, 2, 1)
     )
 });
@@ -1250,7 +1250,7 @@ Ability GroupTauntingShieldStrikeEC50("Group Taunting Shield Strike", 0, 1, 0, {
         Taunt(1)
     ),
     TargetAllOpponents(
-        Attack(1.0)
+        Attack(1.0, BYPASS_ALERT)
     )
 });
 
@@ -1478,7 +1478,7 @@ Ability PersistentGroupImpact99C1("Persistent Group Impact", 0, 0, 0, {
         IncreaseDamage(50.0, 4, 4)
     ),
     TargetAllOpponents(
-        Attack(1.5)
+        Attack(1.5, BYPASS_ALERT)
     )
 });
 
@@ -1604,7 +1604,7 @@ Ability PrimalProwlC087("Primal Prowl", 0, 0, 0, {
 Ability PrimalTailWhip7185("Primal Tail Whip", 0, 0, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
-        Attack(1.0, BYPASS_ARMOR)
+        Attack(1.0, BYPASS_ARMOR|BYPASS_ALERT)
     )
 });
 
@@ -1853,7 +1853,7 @@ Ability ResilientGroupImpactBD7D("Resilient Group Impact", 0, 0, 0, {
     ),
     TargetAllOpponents(
         Remove(DODGE|CLOAK|INCREASED_SPEED),
-        Attack(1.5),
+        Attack(1.5, BYPASS_ALERT),
         ImposeVulnerability(50.0, 2, 2)
     )
 });
@@ -1864,7 +1864,7 @@ Ability ResilientGroupStrikeAEE3("Resilient Group Strike", 0, 0, 0, {
     ),
     TargetAllOpponents(
         Remove(DODGE|CLOAK|INCREASED_SPEED),
-        Attack(1.0),
+        Attack(1.0, BYPASS_ALERT),
         ImposeVulnerability(50.0, 2, 2)
     )
 });
@@ -2016,7 +2016,7 @@ RevengeAbility RevengeCunningRampageAEC1("Revenge Cunning Rampage", 0, 0, 0, {
     TargetAllOpponents(
         Remove(INCREASED_DAMAGE|INCREASED_CRIT_CHANCE),
         ReduceDamage(50.0, 2, 3),
-        Attack(2.0),
+        Attack(2.0, BYPASS_ALERT),
         ReduceCritChance(100.0, 2, 0)
     ),
     TargetSelf(
@@ -2041,7 +2041,7 @@ RevengeAbility RevengeDistractingRampage0014("Revenge Distracting Rampage", 0, 0
     )
 }, 0, 0, 0, {
     TargetAllOpponents(
-        Attack(2.0),
+        Attack(2.0, BYPASS_ALERT),
         ReduceDamage(50.0, 2, 4)
     )
 });
@@ -2050,7 +2050,7 @@ RevengeAbility RevengeGroupCunningStrikeA081("Revenge Group Cunning Strike", 0, 
     TargetAllOpponents(
         Remove(INCREASED_DAMAGE|INCREASED_CRIT_CHANCE),
         ReduceDamage(50.0, 2, 3),
-        Attack(1.0),
+        Attack(1.0, BYPASS_ALERT),
         ReduceCritChance(100.0, 2, 0)
     ),
     TargetSelf(
@@ -2060,7 +2060,7 @@ RevengeAbility RevengeGroupCunningStrikeA081("Revenge Group Cunning Strike", 0, 
     TargetAllOpponents(
         Remove(INCREASED_DAMAGE|INCREASED_CRIT_CHANCE),
         ReduceDamage(50.0, 2, 3),
-        Attack(1.5),
+        Attack(1.5, BYPASS_ALERT),
         ReduceCritChance(100.0, 2, 0)
     ),
     TargetSelf(
@@ -2072,7 +2072,7 @@ RevengeAbility RevengeGroupCunningStrikeAD1D("Revenge Group Cunning Strike", 0, 
     TargetAllOpponents(
         Remove(INCREASED_DAMAGE|INCREASED_CRIT_CHANCE),
         ReduceDamage(50.0, 2, 3),
-        Attack(1.5),
+        Attack(1.5, BYPASS_ALERT),
         ReduceCritChance(100.0, 2, 0)
     ),
     TargetSelf(
@@ -2082,7 +2082,7 @@ RevengeAbility RevengeGroupCunningStrikeAD1D("Revenge Group Cunning Strike", 0, 
     TargetAllOpponents(
         Remove(INCREASED_DAMAGE|INCREASED_CRIT_CHANCE),
         ReduceDamage(50.0, 2, 3),
-        Attack(1.0),
+        Attack(1.0, BYPASS_ALERT),
         ReduceCritChance(100.0, 2, 0)
     ),
     TargetSelf(
@@ -2094,7 +2094,7 @@ RevengeAbility RevengeGroupThwartingImpact3F91("Revenge Group Thwarting Impact",
     TargetAllOpponents(
         Remove(INCREASED_DAMAGE|INCREASED_CRIT_CHANCE),
         ReduceDamage(50.0, 2, 3),
-        Attack(1.5),
+        Attack(1.5, BYPASS_ALERT),
         ReduceCritChance(100.0, 2, 0)
     ),
     TargetSelf(
@@ -2104,7 +2104,7 @@ RevengeAbility RevengeGroupThwartingImpact3F91("Revenge Group Thwarting Impact",
     TargetAllOpponents(
         Remove(INCREASED_DAMAGE|INCREASED_CRIT_CHANCE),
         ReduceDamage(50.0, 2, 3),
-        Attack(2.0),
+        Attack(2.0, BYPASS_ALERT),
         ReduceCritChance(100.0, 2, 0)
     ),
     TargetSelf(
@@ -2120,7 +2120,7 @@ RevengeAbility RevengeNullifyingImpact07EE("Revenge Nullifying Impact", 0, 0, 0,
 }, 0, 0, 0, {
     TargetAllOpponents(
         Remove(POSITIVE_EFFECTS),
-        Attack(1.5)
+        Attack(1.5, BYPASS_ALERT)
     )
 });
 
@@ -2132,7 +2132,7 @@ RevengeAbility RevengeNullifyingRampage44D0("Revenge Nullifying Rampage", 0, 0, 
 }, 0, 0, 0, {
     TargetAllOpponents(
         Remove(POSITIVE_EFFECTS),
-        Attack(2.0)
+        Attack(2.0, BYPASS_ALERT)
     )
 });
 
@@ -2151,7 +2151,7 @@ RevengeAbility RevengeRandomCautiousStrike0238("Revenge Random Cautious Strike",
         Dodge(75.0, 67.0, 1, 4)
     ),
     TargetAllOpponents(
-        Attack(1.5, PRECISE),
+        Attack(1.5, PRECISE|BYPASS_ALERT),
         ReduceDamage(50.0, 1, 2)
     )
 });
@@ -2237,13 +2237,13 @@ Ability ShieldedGroupStrike424D("Shielded Group Strike", 0, 0, 0, {
         Shield(50.0, 4, 4)
     ),
     TargetAllOpponents(
-        Attack(1.0)
+        Attack(1.0, BYPASS_ALERT)
     )
 });
 
 Ability ShieldedGroupStrike9401("Shielded Group Strike", 0, 0, 1, {
     TargetAllOpponents(
-        Attack(1.0)
+        Attack(1.0, BYPASS_ALERT)
     ),
     TargetTeam(
         Shield(50.0, 2, 4)
@@ -2287,7 +2287,7 @@ RevengeAbility SlowPiercingRevenge0252("Slow Piercing Revenge", 0, 0, 0, {
 
 Ability SprayOfQuillsF93D("Spray Of Quills", 0, 0, 0, {
     TargetAllOpponents(
-        Attack(1.5),
+        Attack(1.5, BYPASS_ALERT),
         ReduceDamage(50.0, 2, 4),
         DamageOverTime(25.0, 2)
     )
@@ -2302,7 +2302,7 @@ Ability SqueezeAndStrike84FE("Squeeze And Strike", 0, 0, 0, {
 
 Ability SteadyGroupVulnerabilityStrike28DF("Steady Group Vulnerability Strike", 0, 0, 0, {
     TargetAllOpponents(
-        Attack(1.0),
+        Attack(1.0, BYPASS_ALERT),
         ImposeVulnerability(50.0, 1, 2)
     )
 });
@@ -2319,7 +2319,7 @@ Ability StunningRoar0488("Stunning Roar", 0, 0, 1, {
         Stun(100.0, 1),
         ReduceDamage(50.0, 2, 4),
         Remove(SHIELD),
-        Attack(1.0)
+        Attack(1.0, BYPASS_ALERT)
     )
 });
 
@@ -2337,7 +2337,7 @@ Ability SuperDistractionEC4A("Super Distraction", 0, 0, 1, {
         Remove(DODGE)
     ),
     TargetAllOpponents(
-        Attack(1.0)
+        Attack(1.0, BYPASS_ALERT)
     ),
     TargetLast(
         Stun(25.0, 1),
@@ -2408,7 +2408,7 @@ Ability TotalCleanseAndStrikeD7F0("Total Cleanse And Strike", 0, 0, 0, {
         Cleanse(NEGATIVE_EFFECTS)
     ),
     TargetAllOpponents(
-        Attack(1.0)
+        Attack(1.0, BYPASS_ALERT)
     )
 });
 
@@ -2450,7 +2450,7 @@ RevengeAbility WaningRevenge0554("Waning Revenge", 0, 0, 0, {
         Remove(SHIELD|TAUNT)
     ),
     TargetAllOpponents(
-        Attack(2.0, BYPASS_ARMOR),
+        Attack(2.0, BYPASS_ARMOR|BYPASS_ALERT),
         ReduceSpeed(50.0, 2, 0)
     )
 });
@@ -3415,7 +3415,7 @@ ThreatenedAbility AlertArcticBlast801B("Alert Arctic Blast", 0, 1, 0, {
     )
 }, 50, ThreatComparison::Lower, 0, 1, 0, {
     TargetAllOpponents(
-        Attack(1.5),
+        Attack(1.5, BYPASS_ALERT),
         Stun(66.0, 1),
         ReduceSpeed(50.0, 1, 0),
         ImposeVulnerability(50.0, 2, 1),
@@ -3655,7 +3655,7 @@ ThreatenedAbility AlertFierceStrikeF86F("Alert Fierce Strike", 0, 0, 0, {
 }, 50, ThreatComparison::Higher, 0, 0, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
-        Attack(1.0, BYPASS_ARMOR),
+        Attack(1.0, BYPASS_ARMOR|BYPASS_ALERT),
         Remove(TAUNT)
     ),
     TargetSelf(
@@ -3705,12 +3705,12 @@ ThreatenedAbility AlertHarpyD23C("Alert Harpy", 0, 2, 0, {
 ThreatenedAbility AlertImpactDA02("Alert Impact", 0, 1, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
-        DevouringAttack(1.75, 50.0, 2, BYPASS_ARMOR)
+        DevouringAttack(1.75, 50.0, 2, BYPASS_ARMOR|BYPASS_ALERT)
     )
 }, 50, ThreatComparison::Higher, 0, 1, 0, {
     TargetAllOpponents(
         ReduceSpeed(50.0, 2, 4),
-        Attack(1.75, PRECISE)
+        Attack(1.75, PRECISE|BYPASS_ALERT)
     )
 });
 
@@ -4102,7 +4102,7 @@ RevengeAbility BerserkBitingRevenge5D5E("Berserk Biting Revenge", 0, 2, 0, {
 
 RevengeAbility BerserkClawedRevenge111B("Berserk Clawed Revenge", 0, 2, 0, {
     TargetAllOpponents(
-        Attack(2.5, PRECISE)
+        Attack(2.5, PRECISE|BYPASS_ALERT)
     ),
     TargetSelf(
         UnableToSwap(1),
@@ -4110,7 +4110,7 @@ RevengeAbility BerserkClawedRevenge111B("Berserk Clawed Revenge", 0, 2, 0, {
     )
 }, 0, 2, 1, {
     TargetAllOpponents(
-        Attack(2.5, PRECISE)
+        Attack(2.5, PRECISE|BYPASS_ALERT)
     )
 });
 
@@ -4179,7 +4179,7 @@ Ability BerserkResilientRampageD249("Berserk Resilient Rampage", 0, 2, 0, {
     ),
     TargetAllOpponents(
         Remove(INCREASED_DAMAGE),
-        Attack(2.0),
+        Attack(2.0, BYPASS_ALERT),
         ImposeVulnerability(50.0, 1, 1)
     ),
     TargetSelf(
@@ -4484,7 +4484,7 @@ Ability CleansingGroupShieldD4D3("Cleansing Group Shield", 0, 2, 0, {
         Taunt(1)
     ),
     TargetAllOpponents(
-        Attack(1.0)
+        Attack(1.0, BYPASS_ALERT)
     )
 });
 
@@ -4512,7 +4512,7 @@ Ability CleansingRoar4A67("Cleansing Roar", 0, 0, 0, {
     ),
     TargetAllOpponents(
         Remove(POSITIVE_EFFECTS),
-        Attack(1.0)
+        Attack(1.0, BYPASS_ALERT)
     )
 });
 
@@ -5022,7 +5022,7 @@ RevengeAbility DefenseShatteringRevengeFFF1("Defense Shattering Revenge", 0, 1, 
 }, 0, 1, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
-        Attack(1.5, BYPASS_ARMOR),
+        Attack(1.5, BYPASS_ARMOR|BYPASS_ALERT),
         Remove(TAUNT)
     ),
     TargetSelf(
@@ -5397,7 +5397,7 @@ Ability DispersedCautiousStrikeDD1C("Dispersed Cautious Strike", 0, 0, 0, {
     ),
     TargetAllOpponents(
         ReduceDamage(50.0, 1, 2),
-        Attack(1.0, PRECISE)
+        Attack(1.0, PRECISE|BYPASS_ALERT)
     )
 });
 
@@ -5415,7 +5415,7 @@ Ability DispersedCunningStrike30D1("Dispersed Cunning Strike", 0, 0, 0, {
 
 Ability DispersedFerociousImpact78DD("Dispersed Ferocious Impact", 0, 3, 0, {
     TargetAllOpponents(
-        Attack(1.5)
+        Attack(1.5, BYPASS_ALERT)
     ),
     TargetTeam(
         IncreaseDamage(50.0, 3, 6)
@@ -5428,7 +5428,7 @@ Ability DispersedFierceImpact938B("Dispersed Fierce Impact", 0, 1, 0, {
     ),
     TargetAllOpponents(
         Remove(SHIELD|TAUNT),
-        Attack(1.5, BYPASS_ARMOR)
+        Attack(1.5, BYPASS_ARMOR|BYPASS_ALERT)
     )
 });
 
@@ -5438,7 +5438,7 @@ Ability DispersedRakingImpact1D47("Dispersed Raking Impact", 0, 2, 0, {
     ),
     TargetAllOpponents(
         Remove(CLOAK|DODGE),
-        Attack(1.5)
+        Attack(1.5, BYPASS_ALERT)
     )
 });
 
@@ -5448,7 +5448,7 @@ Ability DispersedSuperiorVulnerability5AC2("Dispersed Superior Vulnerability", 0
     ),
     TargetAllOpponents(
         ReduceSpeed(50.0, 2, 0),
-        Attack(1.0, PRECISE),
+        Attack(1.0, PRECISE|BYPASS_ALERT),
         ImposeVulnerability(50.0, 2, 1)
     )
 });
@@ -5617,7 +5617,7 @@ Ability DominantRoar01DF("Dominant Roar", 0, 2, 1, {
         IncreaseDamage(50.0, 2, 2)
     ),
     TargetAllOpponents(
-        Attack(1.0)
+        Attack(1.0, BYPASS_ALERT)
     ),
     TargetTeam(
         IncreaseSpeed(25.0, 2, 2)
@@ -5646,7 +5646,7 @@ Ability Dragon_sFlightB1E0("Dragon'S Flight", 0, 2, 0, {
         Shield(75.0, 2, 4)
     ),
     TargetAllOpponents(
-        Attack(1.0),
+        Attack(1.0, BYPASS_ALERT),
         DamageOverTime(25.0, 2)
     )
 });
@@ -5804,7 +5804,7 @@ Ability EvasiveImpact7999("Evasive Impact", 0, 2, 0, {
 
 Ability EvasiveImpactBA40("Evasive Impact", 0, 2, 0, {
     TargetAllOpponents(
-        Attack(1.5)
+        Attack(1.5, BYPASS_ALERT)
     ),
     TargetSelf(
         Dodge(75.0, 67.0, 2, 4)
@@ -5960,7 +5960,7 @@ ThreatenedAbility FearlessAlertCC50("Fearless Alert", 0, 2, 0, {
         IncreaseSpeed(10.0, 2, 0)
     ),
     TargetAllOpponents(
-        Attack(1.0, PRECISE)
+        Attack(1.0, PRECISE|BYPASS_ALERT)
     )
 }, 33, ThreatComparison::Higher, 0, 2, 0, {
     TargetSelf(
@@ -5969,7 +5969,7 @@ ThreatenedAbility FearlessAlertCC50("Fearless Alert", 0, 2, 0, {
         IncreaseSpeed(10.0, 2, 0)
     ),
     TargetAllOpponents(
-        Attack(1.0, PRECISE),
+        Attack(1.0, PRECISE|BYPASS_ALERT),
         ReduceDamage(50.0, 2, 2)
     )
 });
@@ -5983,13 +5983,13 @@ Ability FearlessFlap6CE3("Fearless Flap", 0, 2, 0, {
     TargetAllOpponents(
         Remove(DODGE|INCREASED_DAMAGE|INCREASED_SPEED),
         ReduceDamage(50.0, 2, 2),
-        Attack(1.25)
+        Attack(1.25, BYPASS_ALERT)
     )
 });
 
 Ability FeastDEF6("Feast", 1, 2, 0, {
     TargetAllOpponents(
-        Attack(1.75)
+        Attack(1.75, BYPASS_ALERT)
     ),
     TargetSelf(
         RallyHeal(33.0)
@@ -6002,7 +6002,7 @@ Ability FerociousAssistedRampage8974("Ferocious Assisted Rampage", 0, 2, 0, {
     ),
     TargetAllOpponents(
         Remove(SHIELD),
-        Attack(2.0)
+        Attack(2.0, BYPASS_ALERT)
     )
 });
 
@@ -6449,14 +6449,14 @@ Ability GroupAcceleration6211("Group Acceleration", 0, 1, 1, {
 
 Ability GroupAfflictingImpact189F("Group Afflicting Impact", 0, 2, 0, {
     TargetAllOpponents(
-        Attack(1.5),
+        Attack(1.5, BYPASS_ALERT),
         Affliction(33.0, 2, 4)
     )
 });
 
 Ability GroupAfflictingStrike1956("Group Afflicting Strike", 0, 0, 0, {
     TargetAllOpponents(
-        Attack(1.0),
+        Attack(1.0, BYPASS_ALERT),
         Affliction(25.0, 2, 4)
     )
 });
@@ -6476,7 +6476,7 @@ Ability GroupCleansingImpactC857("Group Cleansing Impact", 0, 2, 0, {
         Cleanse(NEGATIVE_EFFECTS)
     ),
     TargetAllOpponents(
-        Attack(1.5)
+        Attack(1.5, BYPASS_ALERT)
     )
 });
 
@@ -6494,7 +6494,7 @@ Ability GroupCleansingStrike8B0C("Group Cleansing Strike", 0, 0, 0, {
         Cleanse(NEGATIVE_EFFECTS)
     ),
     TargetAllOpponents(
-        Attack(1.0)
+        Attack(1.0, BYPASS_ALERT)
     )
 });
 
@@ -6541,28 +6541,28 @@ Ability GroupCunningRampageA204("Group Cunning Rampage", 2, 1, 0, {
 Ability GroupDeceleratingImpact9451("Group Decelerating Impact", 0, 1, 0, {
     TargetAllOpponents(
         ReduceSpeed(50.0, 2, 0),
-        Attack(1.5)
+        Attack(1.5, BYPASS_ALERT)
     )
 });
 
 Ability GroupDeceleratingRampageE77E("Group Decelerating Rampage", 0, 2, 0, {
     TargetAllOpponents(
         ReduceSpeed(50.0, 2, 0),
-        Attack(2.0)
+        Attack(2.0, BYPASS_ALERT)
     )
 });
 
 Ability GroupDeceleratingStrikeBAC6("Group Decelerating Strike", 0, 0, 0, {
     TargetAllOpponents(
         ReduceSpeed(50.0, 2, 0),
-        Attack(1.0)
+        Attack(1.0, BYPASS_ALERT)
     )
 });
 
 Ability GroupDefenseShatteringImpact0C66("Group Defense Shattering Impact", 0, 2, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
-        Attack(1.5, BYPASS_ARMOR)
+        Attack(1.5, BYPASS_ARMOR|BYPASS_ALERT)
     )
 });
 
@@ -6595,7 +6595,7 @@ Ability GroupDefensiveEdge19D2("Group Defensive Edge", 0, 2, 0, {
 Ability GroupDefiniteStrike14BB("Group Definite Strike", 0, 0, 0, {
     TargetAllOpponents(
         Remove(CLOAK|DODGE|SHIELD),
-        Attack(1.0, BYPASS_ARMOR)
+        Attack(1.0, BYPASS_ARMOR|BYPASS_ALERT)
     )
 });
 
@@ -6612,7 +6612,7 @@ Ability GroupDevouringImpactC9D9("Group Devouring Impact", 0, 2, 0, {
 
 Ability GroupDisarmingRampage7FC1("Group Disarming Rampage", 0, 2, 0, {
     TargetAllOpponents(
-        Attack(2.0),
+        Attack(2.0, BYPASS_ALERT),
         ReduceArmor(15.0, 1, 2),
         ReduceDamage(33.0, 2, 4),
         ReduceSpeed(33.0, 2, 4)
@@ -6622,7 +6622,7 @@ Ability GroupDisarmingRampage7FC1("Group Disarming Rampage", 0, 2, 0, {
 Ability GroupDistractingRampageA326("Group Distracting Rampage", 1, 2, 0, {
     TargetAllOpponents(
         ReduceDamage(50.0, 2, 4),
-        Attack(2.0)
+        Attack(2.0, BYPASS_ALERT)
     )
 });
 
@@ -6671,7 +6671,7 @@ Ability GroupFierceStrikeA254("Group Fierce Strike", 0, 0, 0, {
     ),
     TargetAllOpponents(
         Remove(SHIELD|TAUNT),
-        Attack(1.0, BYPASS_ARMOR)
+        Attack(1.0, BYPASS_ARMOR|BYPASS_ALERT)
     )
 });
 
@@ -6694,7 +6694,7 @@ Ability GroupHasteningPreciseImpact3620("Group Hastening Precise Impact", 0, 2, 
     ),
     TargetAllOpponents(
         ReduceSpeed(25.0, 2, 4),
-        Attack(1.5, PRECISE)
+        Attack(1.5, PRECISE|BYPASS_ALERT)
     )
 });
 
@@ -6713,7 +6713,7 @@ Ability GroupHeavyStrike4F13("Group Heavy Strike", 0, 0, 0, {
         Cleanse(VULNERABILITY|REDUCED_DAMAGE)
     ),
     TargetAllOpponents(
-        Attack(1.0, BYPASS_ARMOR|PRECISE),
+        Attack(1.0, BYPASS_ARMOR|PRECISE|BYPASS_ALERT),
         Remove(INCREASED_SPEED)
     )
 });
@@ -6754,7 +6754,7 @@ Ability GroupPersistenceStrike0246("Group Persistence Strike", 0, 0, 0, {
 
 Ability GroupRampage4077("Group Rampage", 1, 2, 0, {
     TargetAllOpponents(
-        Attack(2.0)
+        Attack(2.0, BYPASS_ALERT)
     )
 });
 
@@ -6785,7 +6785,7 @@ Ability GroupResilientStrike74A6("Group Resilient Strike", 0, 0, 0, {
     ),
     TargetAllOpponents(
         Remove(DODGE|CLOAK|INCREASED_SPEED),
-        Attack(1.0),
+        Attack(1.0, BYPASS_ALERT),
         ImposeVulnerability(50.0, 2, 1)
     )
 });
@@ -6821,7 +6821,7 @@ Ability GroupShatteringRampageA42F("Group Shattering Rampage", 1, 2, 0, {
 Ability GroupShatteringRegeneratingImpact1CE9("Group Shattering Regenerating Impact", 0, 1, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
-        Attack(1.5, BYPASS_ARMOR)
+        Attack(1.5, BYPASS_ARMOR|BYPASS_ALERT)
     ),
     TargetSelf(
         Cleanse(REDUCED_DAMAGE),
@@ -6832,7 +6832,7 @@ Ability GroupShatteringRegeneratingImpact1CE9("Group Shattering Regenerating Imp
 Ability GroupShatteringStrikeF634("Group Shattering Strike", 0, 0, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
-        Attack(1.0),
+        Attack(1.0, BYPASS_ALERT),
         ImposeVulnerability(50.0, 2, 2)
     )
 });
@@ -6845,13 +6845,13 @@ Ability GroupShield54BA("Group Shield", 0, 1, 1, {
 
 Ability GroupStrikeC21E("Group Strike", 0, 0, 0, {
     TargetAllOpponents(
-        Attack(1.0)
+        Attack(1.0, BYPASS_ALERT)
     )
 });
 
 Ability GroupStunningSlowingImpactBC3F("Group Stunning Slowing Impact", 0, 1, 0, {
     TargetAllOpponents(
-        Attack(1.75),
+        Attack(1.75, BYPASS_ALERT),
         ReduceSpeed(50.0, 2, 4),
         Stun(100.0, 1)
     )
@@ -7190,7 +7190,7 @@ Ability InstantCriticalImpact7F22("Instant Critical Impact", 0, 2, 1, {
 Ability InstantCrush1C8F("Instant Crush", 1, 3, 1, {
     TargetAllOpponents(
         ImposeVulnerability(50.0, 2, 4),
-        Attack(2.5, PRECISE),
+        Attack(2.5, PRECISE|BYPASS_ALERT),
         ReduceSpeed(50.0, 2, 4)
     )
 });
@@ -7315,7 +7315,7 @@ Ability InstantFierceRampage6114("Instant Fierce Rampage", 1, 1, 1, {
 
 Ability InstantGroupDistractionImpactC757("Instant Group Distraction Impact", 1, 2, 1, {
     TargetAllOpponents(
-        Attack(1.5),
+        Attack(1.5, BYPASS_ALERT),
         ReduceDamage(50.0, 1, 2)
     )
 });
@@ -7435,7 +7435,7 @@ RevengeAbility InstantStunningRevengeImpactCFDA("Instant Stunning Revenge Impact
     )
 }, 0, 1, 1, {
     TargetAllOpponents(
-        Attack(1.75, PRECISE),
+        Attack(1.75, PRECISE|BYPASS_ALERT),
         Stun(100.0, 1)
     ),
     TargetSelf(
@@ -7587,7 +7587,7 @@ Ability LesserFierceDeceleratingStrike2F7B("Lesser Fierce Decelerating Strike", 
 Ability LesserGroupDeceleratingRampage52DB("Lesser Group Decelerating Rampage", 0, 2, 0, {
     TargetAllOpponents(
         ReduceSpeed(50.0, 2, 2),
-        Attack(2.0)
+        Attack(2.0, BYPASS_ALERT)
     )
 });
 
@@ -7817,7 +7817,7 @@ Ability MaternalRoar86DC("Maternal Roar", 0, 2, 0, {
     ),
     TargetAllOpponents(
         Remove(SHIELD),
-        Attack(2.0)
+        Attack(2.0, BYPASS_ALERT)
     )
 });
 
@@ -8022,7 +8022,7 @@ Ability NullifyingGroupImpactBA4B("Nullifying Group Impact", 0, 2, 0, {
     ),
     TargetAllOpponents(
         Remove(POSITIVE_EFFECTS),
-        Attack(1.5)
+        Attack(1.5, BYPASS_ALERT)
     )
 });
 
@@ -8275,7 +8275,7 @@ Ability PreciseDoubleStrike2357("Precise Double Strike", 0, 1, 0, {
 
 CounterAbility PreciseGroupCounter7420("Precise Group Counter", {
     TargetAllOpponents(
-        Attack(1.0, PRECISE)
+        Attack(1.0, PRECISE|BYPASS_ALERT)
     ),
     TargetSelf(
         IncreaseArmor(10.0, 2, 4)
@@ -8285,13 +8285,13 @@ CounterAbility PreciseGroupCounter7420("Precise Group Counter", {
 Ability PreciseGroupDistractingImpact6DF1("Precise Group Distracting Impact", 0, 2, 0, {
     TargetAllOpponents(
         ReduceDamage(50.0, 2, 4),
-        Attack(1.5, PRECISE)
+        Attack(1.5, PRECISE|BYPASS_ALERT)
     )
 });
 
 Ability PreciseGroupSlowingImpact7F84("Precise Group Slowing Impact", 0, 1, 0, {
     TargetAllOpponents(
-        Attack(1.5, PRECISE),
+        Attack(1.5, PRECISE|BYPASS_ALERT),
         ReduceSpeed(50.0, 3, 0)
     )
 });
@@ -8342,7 +8342,7 @@ RevengeAbility PreciseRevenge51B4("Precise Revenge", 0, 1, 0, {
     )
 }, 0, 1, 0, {
     TargetAllOpponents(
-        Attack(2.0, PRECISE)
+        Attack(2.0, PRECISE|BYPASS_ALERT)
     )
 });
 
@@ -8774,7 +8774,7 @@ Ability ResilientStrikeFEDE("Resilient Strike", 0, 0, 0, {
 
 Ability RestrictedGroupDistraction08AC("Restricted Group Distraction", 0, 1, 0, {
     TargetAllOpponents(
-        Attack(1.5),
+        Attack(1.5, BYPASS_ALERT),
         ReduceDamage(50.0, 1, 2)
     )
 });
@@ -8878,13 +8878,13 @@ RevengeAbility RevengeGroupDisablingImpact2C08("Revenge Group Disabling Impact",
     TargetAllOpponents(
         ReduceDamage(50.0, 2, 4),
         ReduceSpeed(50.0, 2, 4),
-        Attack(1.5)
+        Attack(1.5, BYPASS_ALERT)
     )
 }, 0, 0, 1, {
     TargetAllOpponents(
         ReduceDamage(100.0, 1, 2),
         ReduceSpeed(50.0, 2, 4),
-        Attack(1.5)
+        Attack(1.5, BYPASS_ALERT)
     )
 });
 
@@ -8951,7 +8951,7 @@ RevengeAbility RevengeInstinct98BC("Revenge Instinct", 0, 2, 1, {
         Cleanse(REDUCED_DAMAGE)
     ),
     TargetAllOpponents(
-        Attack(1.5)
+        Attack(1.5, BYPASS_ALERT)
     )
 });
 
@@ -9212,7 +9212,7 @@ ThreatenedAbility ShieldingAlertRampage3625("Shielding Alert Rampage", 0, 2, 0, 
         Shield(50.0, 1, 4)
     ),
     TargetAllOpponents(
-        Attack(2.0, BYPASS_ARMOR)
+        Attack(2.0, BYPASS_ARMOR|BYPASS_ALERT)
     )
 }, 50, ThreatComparison::Lower, 0, 2, 1, {
     TargetAllOpponents(
@@ -9222,7 +9222,7 @@ ThreatenedAbility ShieldingAlertRampage3625("Shielding Alert Rampage", 0, 2, 0, 
         Shield(100.0, 1, 8)
     ),
     TargetAllOpponents(
-        Attack(2.0, BYPASS_ARMOR)
+        Attack(2.0, BYPASS_ARMOR|BYPASS_ALERT)
     )
 });
 
@@ -9270,7 +9270,7 @@ Ability Sidestep5439("Sidestep", 0, 0, 1, {
 
 Ability SkewerB3B7("Skewer", 0, 2, 0, {
     TargetAllOpponents(
-        Attack(1.5, BYPASS_ARMOR),
+        Attack(1.5, BYPASS_ARMOR|BYPASS_ALERT),
         Stun(100.0, 1),
         UnableToSwap(1)
     )
@@ -9282,7 +9282,7 @@ Ability Skirmish0914("Skirmish", 1, 1, 0, {
     ),
     TargetAllOpponents(
         Remove(SHIELD|TAUNT),
-        Attack(2.0, BYPASS_ARMOR)
+        Attack(2.0, BYPASS_ARMOR|BYPASS_ALERT)
     )
 });
 
@@ -9455,7 +9455,7 @@ Ability SuperDistractionDE40("Super Distraction", 0, 3, 1, {
         Remove(DODGE)
     ),
     TargetAllOpponents(
-        Attack(1.5)
+        Attack(1.5, BYPASS_ALERT)
     ),
     TargetLast(
         DamageOverTime(25.0, 2),
@@ -9675,7 +9675,7 @@ Ability TeamFortificationB18F("Team Fortification", 0, 3, 0, {
 
 Ability TerritorialStrikeFC54("Territorial Strike", 0, 0, 0, {
     TargetAllOpponents(
-        Attack(1.0, BYPASS_ARMOR),
+        Attack(1.0, BYPASS_ARMOR|BYPASS_ALERT),
         DamageOverTime(10.0, 2)
     ),
     TargetSelf(
@@ -9757,7 +9757,7 @@ ThreatenedAbility Tyrant_sRoarD436("Tyrant'S Roar", 0, 2, 0, {
     )
 }, 50, ThreatComparison::Lower, 0, 2, 1, {
     TargetAllOpponents(
-        Attack(1.5, BYPASS_ARMOR)
+        Attack(1.5, BYPASS_ARMOR|BYPASS_ALERT)
     ),
     TargetTeam(
         IncreaseDamage(50.0, 2, 2),
@@ -9771,7 +9771,7 @@ ThreatenedAbility Tyrant_sRoarD436("Tyrant'S Roar", 0, 2, 0, {
 Ability UnstoppableForce55F5("Unstoppable Force", 2, 2, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
-        Attack(2.5, PRECISE),
+        Attack(2.5, PRECISE|BYPASS_ALERT),
         Stun(50.0, 1)
     )
 });
