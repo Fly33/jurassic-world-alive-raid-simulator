@@ -343,7 +343,7 @@ struct Dino
     void PassTurn();
     bool Taunt() const
     {
-        return taunt;
+        return taunt && !stun;
     }
     void DevourHeal();
     void DamageOverTime(Dino team[], int team_size);
