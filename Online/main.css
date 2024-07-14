@@ -1,0 +1,179 @@
+body {
+  font-family: Calibri, Arial;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+div.container {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center; /* Горизонтальное выравнивание */
+}
+div.console {
+  flex: 1;
+  height: auto;
+  min-height: 50vh;
+  position: relative;
+  min-width: 200px;
+}
+div.controls {
+  flex: 0;
+  padding: 10px;
+}
+div.row {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: center; /* Горизонтальное выравнивание */
+  align-items: flex-end;
+}
+div.wrap {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center; /* Горизонтальное выравнивание */
+  align-items: flex-end;
+}
+div.cell {
+  flex: 1;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: center; /* Горизонтальное выравнивание */
+  align-items: center; /* Вертикальное выравнивание */
+}
+pre.console {
+  font-size: small;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: 10px;
+  overflow: auto;
+  background-color: #000;
+  color: #fff;
+}
+#add {
+  color: lightgreen;
+}
+#remove {
+  color: red;
+}
+img.creature {
+  width: 50px;
+  margin: 5px;
+}
+select.creature {
+  margin: 5px;
+}
+img.ability {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  top: 0px;
+  left: 0px;
+}
+select.ability {
+  margin: 5px;
+}
+button.control {
+  margin: 5px;
+}
+select.team {
+  margin: 5px;
+}
+div.ability {
+  flex-shrink: 0;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  width: 50px;
+  height: 50px;
+  margin: 5px;
+}
+img.precise {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+img.priority {
+  width: 20px;
+  height: 13px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+img.alert {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  bottom: -10px;
+  right: 15px;
+}
+img.revenge {
+   width: 20px;
+   height: 20px;
+   position: absolute;
+   bottom: -10px;
+   right: 15px;
+}
+img.act-last {
+  width: 20px;
+  height: 13px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+div.header {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  flex: 0;
+}
+div.footer {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  flex: 0;
+}
+h1 {
+  margin: 0;
+}
+img.boss {
+  display: inline-block;
+}
+img.minion {
+  display: none;
+  width: 30px;
+}
+div#abilities-container > div.turn:nth-child(odd) {
+  background-color: #fff;
+}
+div#abilities-container > div.turn:nth-child(even) {
+  background-color: #eee;
+}
+div.team {
+  background-color: #ddd;
+}
+button.menu {
+  background: inherit;
+  border: inherit;
+  margin: 5px;
+  font-weight: bold;
+}
+select.strategy {
+  margin: 5px;
+}
+button {
+  margin: 5px;
+}
+select.method {
+  margin: 5px;
+}

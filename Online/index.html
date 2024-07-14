@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jurassic World Alive Raid Simulator</title>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();
+   for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(97692883, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/97692883" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<div class="header">
+  <h1>Jurassic World Alive Raid Simulator</h1>
+</div>
+<div class="container">
+  <div class="controls">
+    <dialog id="strategyDialog">
+      <div class="row">
+        <label>Title: <input type="text" class="title" placeholder="title"></label>
+      </div>
+      <div class="row">
+        <button class="link">Copy link 🔗</button>
+      </div>
+      <div class="row">
+        <button class="new">New</button>
+        <button class="duplicate">Duplicate</button>
+        <button class="delete">Delete</button>
+      </div>
+      <div class="row">
+        <button class="ok">Ok</button>
+        <button class="cancel">Cancel</button>
+      </div>
+    </dialog>
+  
+    <div class="row">
+      <select class="strategy" id="strategy">
+      </select>
+      <button class="menu" id="menu">⋮</button>
+    </div>
+    
+    <!-- Boss -->
+    <dialog id="bossDialog">
+      <div class="row boss">
+        <img class="creature minion" src="creature.png"/>
+        <img class="creature boss" src="creature.png"/>
+        <img class="creature minion" src="creature.png"/>
+      </div>
+      <div class="row">
+        <div class="cell">
+          <select class="creature boss">
+            <option></option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <button class="ok">Ok</button>
+        <button class="cancel">Cancel</button>
+      </div>
+    </dialog>
+
+    <div class="row" id="boss">
+      <div class="cell">
+        <div class="row boss">
+          <img class="creature minion" src="creature.png"/>
+          <img class="creature boss" src="creature.png"/>
+          <img class="creature minion" src="creature.png"/>
+        </div>
+      </div>
+    </div>
+
+    <dialog id="dinoDialog">
+      <div class="row">
+        <div class="cell">
+          <img class="creature" src="creature.png"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="cell">
+          <select class="creature">
+            <option value="" selected>None</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="cell">
+          <label>Level: <input class="level" type="number" placeholder="level" min="0" max="30"></label>
+          <label>Health: <input class="health" type="number" placeholder="health" min="0" max="20"></label>
+          <label>Damage: <input class="damage" type="number" placeholder="damage" min="0" max="20"></label>
+          <label>Speed: <input class="speed" type="number" placeholder="speed" min="0" max="20"></label>
+        </div>
+      </div>
+      <div class="row omega">
+        <div class="cell">
+          <label>Omega health:<input class="omega_health" type="number" placeholder="health" min="0" max="100"></label>
+          <label>Omega damage:<input class="omega_damage" type="number" placeholder="damage" min="0" max="100"></label>
+          <label>Omega speed:<input class="omega_speed" type="number" placeholder="speed" min="0" max="100"></label>
+          <label>Omega armor:<input class="omega_armor" type="number" placeholder="armor" min="0" max="100"></label>
+          <label>Omega crit chance:<input class="omega_crit_chance" type="number" placeholder="crit chance" min="0" max="100"></label>
+          <label>Omega crit factor:<input class="omega_crit_factor" type="number" placeholder="crit factor" min="0" max="100"></label>
+        </div>
+      </div>
+      <div class="row">
+        <button class="ok">Ok</button>
+        <button class="cancel">Cancel</button>
+      </div>
+    </dialog>
+
+    <!-- Dinosaurs -->
+    <div class="row team">
+      <div class="cell">
+        <div class="row">
+          <div class="cell">
+            <img class="creature team dino1" src="creature.png"/>
+          </div>
+        </div>
+      </div>
+      <div class="cell">
+        <div class="row">
+          <div class="cell">
+            <img class="creature team dino2" src="creature.png"/>
+          </div>
+        </div>
+      </div>
+      <div class="cell">
+        <div class="row">
+          <div class="cell">
+            <img class="creature team dino3" src="creature.png"/>
+          </div>
+        </div>
+      </div>
+      <div class="cell">
+        <div class="row">
+          <div class="cell">
+            <img class="creature team dino4" src="creature.png"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <dialog id="abilityDialog">
+      <div class="row">
+        <div class="cell">
+          <div class='ability'>
+            <img class="ability" src="ability.png"/>
+            <img class="precise" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/precise.png"/>
+            <img class="priority" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/priority.png"/>
+            <img class="alert" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/alert.png"/>
+            <img class="revenge" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/revenge.png"/>
+            <img class="act-last" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/act-last.png"/>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="cell">
+          <select class="ability">
+            <option value='0'>any</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <button class="ok">Ok</button>
+        <button class="cancel">Cancel</button>
+      </div>
+    </dialog>
+
+    <!-- Abilities -->
+    <div id="abilities-container">
+      <div class="row turn">
+        <div class="cell">
+          <div class="row">
+            <div class="cell">
+              <div class='ability'>
+                <img class="ability dino1" src="ability.png"/>
+                <img class="precise dino1" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/precise.png"/>
+                <img class="priority dino1" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/priority.png"/>
+                <img class="alert dino1" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/alert.png"/>
+                <img class="revenge dino1" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/revenge.png"/>
+                <img class="act-last dino1" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/act-last.png"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cell">
+          <div class="row">
+            <div class="cell">
+              <div class='ability'>
+                <img class="ability dino2" src="ability.png"/>
+                <img class="precise dino2" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/precise.png"/>
+                <img class="priority dino2" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/priority.png"/>
+                <img class="alert dino2" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/alert.png"/>
+                <img class="revenge dino2" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/revenge.png"/>
+                <img class="act-last dino2" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/act-last.png"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cell">
+          <div class="row">
+            <div class="cell">
+              <div class='ability'>
+                <img class="ability dino3" src="ability.png"/>
+                <img class="precise dino3" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/precise.png"/>
+                <img class="priority dino3" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/priority.png"/>
+                <img class="alert dino3" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/alert.png"/>
+                <img class="revenge dino3" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/revenge.png"/>
+                <img class="act-last dino3" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/act-last.png"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cell">
+          <div class="row">
+            <div class="cell">
+              <div class='ability'>
+                <img class="ability dino4" src="ability.png"/>
+                <img class="precise dino4" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/precise.png"/>
+                <img class="priority dino4" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/priority.png"/>
+                <img class="alert dino4" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/alert.png"/>
+                <img class="revenge dino4" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/revenge.png"/>
+                <img class="act-last dino4" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/act-last.png"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="cell">
+            <button class="control" id="add">➕</button>
+        </div>
+        <div class="cell">
+            <button class="control" id="remove">❌</button>
+        </div>
+    </div>
+    <div class="row">
+          <select class="method">
+            <option value="check" selected>Check</option>
+            <option value="explain_defeat">Explain defeat</option>
+            <option value="explain_win">Eplain win</option>
+            <option value="chance">Chance</option>
+            <option value="search_rand">Random search</option>
+            <option value="search_full">Full search</option>
+          </select>
+          <!--input class="n_tries" type="number" value="1000" disabled-->
+          <button class="run">Run</button>
+    </div>
+  </div>
+
+  <div class="console">
+    <pre class="console" id="console"></pre>
+  </div>
+</div>
+<div class="footer">
+  Jurassic World Alive Raid Simulator © <a href="https://t.me/Fly33">Fly33</a>,
+  discuss on <a href="https://t.me/jwa_raid_sim">Telegram</a>,
+  donate via <a href="https://patreon.com/fly33">Patreon</a>,
+  released under the <a href="https://opensource.org/licenses/MIT">MIT license</a>,
+  icons by <a href="https://www.paleo.gg/games/jurassic-world-alive/">Paleo</a>
+</div>
+
+<script type="text/javascript" src="main.js"></script>
+
+</body>
+</html>
