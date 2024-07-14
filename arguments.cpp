@@ -39,7 +39,7 @@ bool ParseArguments(int argc, char *argv[], const vector<Argument> &argument)
                 return false;
             i = index[res];
         }
-        if (argument[i].has_value == optional_argument && optarg == nullptr && argv[optind] != nullptr && argv[optind][0] != '-')
+        if (argument[i].has_value == optional_argument && optarg == nullptr && optind < argc && argv[optind] != nullptr && argv[optind][0] != '-')
             optarg = argv[optind++];
         if (!argument[i].checker(argc, argv, optarg, argument[i].data))
             return false;
