@@ -28,7 +28,7 @@ def GetPath(path):
         try:
             return json.load(f)
         except:
-            print(f'Error in "{path}"')
+            print(f'Error in "{path}"', file=sys.stderr)
             raise
 
 
@@ -232,7 +232,8 @@ def ParseAction(data, guid):
         
         return action
     except Exception:
-        print(action_data)
+        if 'action_data' in locals():
+            print(action_data, file=sys.stderr)
         raise
 
 
@@ -279,8 +280,8 @@ def ParseAbility(data, guid, l10n):
                 ability['actions'].append(action)
         return ability
     except:
-        print(ability_data)
-        print(ability)
+        print(ability_data, file=sys.stderr)
+        print(ability, file=sys.stderr)
         raise
 
 
@@ -302,7 +303,7 @@ def GetAbility(data, ability_data, kind, ability_dex, l10n):
             ability_dex[ability_data['ai']['guid']] = ability
         return ability_dex[ability_data['ai']['guid']]
     except:
-        print(ability_data)
+        print(ability_data, file=sys.stderr)
         raise
 
 
@@ -430,7 +431,7 @@ def GetDino(l10n, data, dino_data, ability_dex):
             }
         return dino
     except:
-        print(dino_data)
+        print(dino_data, file=sys.stderr)
         raise
 
 
@@ -442,7 +443,14 @@ def GetTeam(l10n, data, dino_dex, ability_dex):
         dino_data = GetPath(PATH + CREATURES_STATIC_DATA + file)
         if not dino_data['el']:
             continue
-        dino = GetDino(l10n, data, dino_data, ability_dex)
+        try:
+            dino = GetDino(l10n, data, dino_data, ability_dex)
+        except:
+            import traceback
+            traceback.print_exc()
+            print(dino_data, file=sys.stderr)
+            print(f'Skipping dino {dino_data["dn"]}')
+            continue
         dino_dex[dino['dev_name']] = dino
 
 
