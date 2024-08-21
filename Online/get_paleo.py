@@ -11,6 +11,7 @@ def DevName(s, guid=''):
     return '_'.join(re.split(r'\W+', ''.join(w.capitalize() for w in s.split()))) + guid[:4].upper()
 
 
+print("Get bosses...", file=sys.stderr)
 res = requests.get("https://www.paleo.gg/games/jurassic-world-alive/bossdex")
 assert res.status_code == 200
 # print(res.text, file=sys.stderr)
@@ -68,6 +69,7 @@ for creature in creatures:
 # print(json.dumps(boss, indent=2))
 # exit()
 
+print("Get dinos...", file=sys.stderr)
 res = requests.get("https://www.paleo.gg/games/jurassic-world-alive/dinodex", {"Referer": "https://www.paleo.gg/games/jurassic-world-alive/bossdex"})
 assert res.status_code == 200
 # print(res.text, file=sys.stderr)
@@ -78,9 +80,10 @@ data = json.loads(match[1])
 creatures = data["props"]["pageProps"]["dex"]["items"]
 
 dino = []
-for creature in creatures:
+for i, creature in enumerate(creatures):
     # if creature["name"] != "Rexy":
         # continue
+    print("Processing ({}/{}) {}".format(i+1, len(creatures), creature["name"]), file=sys.stderr)
     res = requests.get(f'https://www.paleo.gg/games/jurassic-world-alive/dinodex/{creature["uuid"]}')
     assert res.status_code == 200
     # print(res.text, file=sys.stderr)
