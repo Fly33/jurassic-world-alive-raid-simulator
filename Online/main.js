@@ -51,6 +51,13 @@ function decodeData(base64Data) {
     return originalData;
 }
 
+function escapeHTML(str) {
+    return str.replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/"/g, "&quot;")
+              .replace(/'/g, "&#039;");
+}
 
 async function writeClipboardText(text) {
   try {
@@ -577,7 +584,7 @@ function dataReady(dino_data) {
     const consoleElement = document.getElementById('console');
     const runButton = document.querySelector('button.run');
     
-    function start() {
+    function start(input, method) {
         runButton.innerHTML = 'Stop';
         consoleElement.innerHTML = '';
 
@@ -588,10 +595,10 @@ function dataReady(dino_data) {
             'chance': '--chance',
             'search_rand': '--search --method random',
             'search_full': '--search --method full',
+            'help': '--help check',
         };
 
-        let strat = strategyToText(data.strategy[data.current_strategy_id]);
-        let method = method_map[data.strategy[data.current_strategy_id].method || 'check'];
+        let method_args = method_map[method];
                             
         worker = new Worker('worker.js');
       
@@ -599,15 +606,15 @@ function dataReady(dino_data) {
         worker.onmessage = (event) => {
             const result = event.data;
             if (result.type == "output") {
-                consoleElement.innerHTML += result.data + "\n";
+                consoleElement.innerHTML += escapeHTML(result.data) + "\n";
             } else if (result.type == "done") {
                 stop();
             }
         };
         
         worker.postMessage({
-            commandLine: `JWAcalc ${method} --loglevel 4`,
-            input: strat,
+            commandLine: `JWAcalc ${method_args} --loglevel 4`,
+            input: input,
         });
     }
     
@@ -619,7 +626,7 @@ function dataReady(dino_data) {
     
     runButton.addEventListener('click', function() {
         if (!worker)
-            start();
+            start(strategyToText(data.strategy[data.current_strategy_id]), data.strategy[data.current_strategy_id].method || 'check');
         else
             stop();
     });
@@ -646,5 +653,6 @@ function dataReady(dino_data) {
 
     initTurn(firstTurn, 0);
     updateStrategySelect();
+//    start('', 'help');
     loadStrategy(data.strategy[data.current_strategy_id]);
 }
