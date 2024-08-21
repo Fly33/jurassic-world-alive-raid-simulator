@@ -44,7 +44,7 @@ void AttackAction::Do(Dino &self, Dino &target) const
 {
     double damage;
     if (flags & REND)
-        damage = target.max_total_health * (1 - target.rend_resistance); // affliction doesn't affect rend
+        damage = target.max_health * target.ResistanceFactor(&Dino::rend_resistance);
     else
         damage = self.damage;
     damage = floor(damage * self.DamageFactor());
