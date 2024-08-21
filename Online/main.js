@@ -1,17 +1,17 @@
 // Function to save data to local storage
-function saveToLocalStorage(key, data) {
+function saveToLocalStorage(data) {
   try {
       const jsonData = JSON.stringify(data);
-      localStorage.setItem(key, jsonData);
+      localStorage.setItem(location.pathname, jsonData);
   } catch (error) {
       console.error('Error saving to local storage', error);
   }
 }
 
 // Function to load data from local storage
-function loadFromLocalStorage(key) {
+function loadFromLocalStorage() {
   try {
-      const jsonData = localStorage.getItem(key);
+      const jsonData = localStorage.getItem(location.pathname);
       return jsonData ? JSON.parse(jsonData) : null;
   } catch (error) {
       console.error('Error loading from local storage', error);
@@ -38,8 +38,8 @@ function decodeData(base64Data) {
     // Заменяем символы '-' на '+', а '_' на '/'
     const base64Standard = base64Data.replace(/-/g, '+').replace(/_/g, '/');
 
-    // Добавляем необходимые символы для дополнения до стандартной длины Base64
-    const paddingLength = 4 - (base64Standard.length % 4);
+    // Добавляем необходимые символы для дополнения до стандартной длины Base64, если нужно
+    const paddingLength = (4 - (base64Standard.length % 4)) % 4;
     const paddedBase64 = base64Standard + '='.repeat(paddingLength);
 
     // Декодируем Base64 в исходные данные
@@ -74,7 +74,7 @@ fetch('data.json')
 function dataReady(dino_data) {
     let boss = {};
     let dino = {};
-    let data = loadFromLocalStorage("data") || {
+    let data = loadFromLocalStorage() || {
         current_strategy_id: undefined,
         new_strategy_id: 1,
         strategy: {},
@@ -115,18 +115,18 @@ function dataReady(dino_data) {
         strategy.name += " (imported)";
         data.strategy[strategy_id] = strategy;
         data.current_strategy_id = strategy_id;
-        saveToLocalStorage("data", data);
+        saveToLocalStorage(data);
     }
   
     if (Object.keys(data.strategy).length === 0) {
         data.current_strategy_id = newStrategy(data);
-        saveToLocalStorage("data", data);
+        saveToLocalStorage(data);
     }
 
     const strategySelect = document.getElementById("strategy");
     strategySelect.addEventListener('change', function() {
         data.current_strategy_id = this.options[this.selectedIndex].value;
-        saveToLocalStorage("data", data);
+        saveToLocalStorage(data);
         loadStrategy(data.strategy[data.current_strategy_id]);
     });
 
@@ -211,7 +211,7 @@ function dataReady(dino_data) {
     bossDialogOkButton.addEventListener('click', function() {
         const paleo_id = bossSelect.options[bossSelect.selectedIndex].value;
         data.strategy[data.current_strategy_id].boss.paleo_id = paleo_id;
-        saveToLocalStorage("data", data);
+        saveToLocalStorage(data);
         updateBossImage(bossElement, paleo_id);
         bossDialog.close();
     });
@@ -359,7 +359,7 @@ function dataReady(dino_data) {
                     })
                 }
                 data.strategy[data.current_strategy_id].team[dino_index] = dino_params;
-                saveToLocalStorage("data", data);
+                saveToLocalStorage(data);
                 dinoDialogCancelButtonClick();
             }
             var dinoDialogCancelButtonClick = function() {
@@ -416,7 +416,7 @@ function dataReady(dino_data) {
                     let ability_index = +abilityDialogSelect[abilityDialogSelect.selectedIndex].value;
                     
                     data.strategy[data.current_strategy_id].turn[turn_index][dino_index] = ability_index;
-                    saveToLocalStorage("data", data);
+                    saveToLocalStorage(data);
                     
                     updateAbilityImage(ability, paleo_id, ability_index);
 
@@ -476,7 +476,7 @@ function dataReady(dino_data) {
       const turn_index = data.strategy[data.current_strategy_id].turn.length;
       
       data.strategy[data.current_strategy_id].turn.push([0, 0, 0, 0]);
-      saveToLocalStorage("data", data);
+      saveToLocalStorage(data);
 
       initTurn(newTurn, turn_index);
       
@@ -489,7 +489,7 @@ function dataReady(dino_data) {
     removeButton.addEventListener('click', function() {
       if (data.strategy[data.current_strategy_id].turn.length >= 2) {
         data.strategy[data.current_strategy_id].turn.pop();
-        saveToLocalStorage("data", data);
+        saveToLocalStorage(data);
         const lastTurn = abilitiesContainer.querySelector('div.turn:last-child');
         abilitiesContainer.removeChild(lastTurn);
       }
@@ -519,7 +519,7 @@ function dataReady(dino_data) {
     newStrategyButton.addEventListener('click', function() {
         strategyDialog.close();
         data.current_strategy_id = newStrategy(data);
-        saveToLocalStorage("data", data);
+        saveToLocalStorage(data);
         updateStrategySelect();
         loadStrategy(data.strategy[data.current_strategy_id]);
     });
@@ -532,7 +532,7 @@ function dataReady(dino_data) {
         strategy.name += " (copy)";
         data.strategy[strategy_id] = strategy;
         data.current_strategy_id = strategy_id;
-        saveToLocalStorage("data", data);
+        saveToLocalStorage(data);
         updateStrategySelect();
         loadStrategy(data.strategy[data.current_strategy_id]);
     });
@@ -549,14 +549,14 @@ function dataReady(dino_data) {
             let keys = Object.keys(data.strategy).sort((i, j) => data.strategy[i].name.localeCompare(data.strategy[j].name));
             data.current_strategy_id = keys.find((i) => name <= data.strategy[i].name) || keys[keys.length-1];
         }
-        saveToLocalStorage("data", data);
+        saveToLocalStorage(data);
         updateStrategySelect();
         loadStrategy(data.strategy[data.current_strategy_id]);
     });
 
     okStrategyButton.addEventListener('click', function() {
         data.strategy[data.current_strategy_id].name = strategyTitle.value;
-        saveToLocalStorage("data", data);
+        saveToLocalStorage(data);
         updateStrategySelect();
         loadStrategy(data.strategy[data.current_strategy_id]);
         strategyDialog.close();
@@ -569,7 +569,7 @@ function dataReady(dino_data) {
     const selectMethod = document.querySelector('select.method');
     selectMethod.addEventListener('change', function() {
         data.strategy[data.current_strategy_id].method = this.options[this.selectedIndex].value;
-        saveToLocalStorage("data", data);
+        saveToLocalStorage(data);
     });
 
     let worker;
