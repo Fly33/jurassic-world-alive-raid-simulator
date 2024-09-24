@@ -328,14 +328,13 @@ unique_ptr<Command> ParseLine(int team_size, const string &indent, int offset)
         return {};
     }
     auto line = GetLine();
-    if (*line.c_str() == '?') {
+    char first_char = *line.c_str();
+    if (first_char == '?') {
         return ParseCondition(team_size, line.c_str(), indent, offset);
-    } else if (isdigit(*line.c_str())) {
-        return ParseMoveset(team_size, line.c_str(), offset);
     } else if (*line.c_str() == '\n' && indent == "") {
         return {};
     } else
-        return unique_ptr<Command>(new MalformedCommand(strprintf("Invalid line format near \"%.10s...\"", line.c_str())));
+        return ParseMoveset(team_size, line.c_str(), offset);
 }
 
 unique_ptr<Command> ParseBlock(int team_size, const string &indent, int offset)
