@@ -596,6 +596,7 @@ function dataReady(dino_data) {
             'search_rand': '--search --method random',
             'search_full': '--search --method full',
             'help': '--help check',
+            'version': '--version',
         };
 
         let method_args = method_map[method];
@@ -653,6 +654,6 @@ function dataReady(dino_data) {
 
     initTurn(firstTurn, 0);
     updateStrategySelect();
-//    start('', 'help');
+    start('', 'version');
     loadStrategy(data.strategy[data.current_strategy_id]);
 }
