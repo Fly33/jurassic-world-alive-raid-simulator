@@ -177,3 +177,27 @@ button {
 select.method {
   margin: 5px;
 }
+input.short {
+  width: 40px;
+}
+input.long {
+  width: 60px;
+}
+div.stats {
+  align-items: flex-end;
+}
+div.info {
+  font-size: large;
+  color: gray;
+  position: relative;
+  bottom: 4px;
+}
+div.ability-number {
+  position: absolute;
+  right: 0px;
+  bottom: -5px;
+  font-size: x-large;
+  text-shadow: 1px 1px 1px white, 1px -1px 1px white, -1px 1px 1px white, -1px -1px 1px white;
+  font-family: monospace;
+  font-weight: bold;
+}

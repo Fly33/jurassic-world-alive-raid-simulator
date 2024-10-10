@@ -96,21 +96,21 @@
         </div>
       </div>
       <div class="row">
-        <div class="cell">
-          <label>Level: <input class="level" type="number" placeholder="level" min="0" max="30"></label>
-          <label>Health: <input class="health" type="number" placeholder="health" min="0" max="20"></label>
-          <label>Damage: <input class="damage" type="number" placeholder="damage" min="0" max="20"></label>
-          <label>Speed: <input class="speed" type="number" placeholder="speed" min="0" max="20"></label>
+        <div class="cell stats">
+          <label title="Creature level (1..30)">Level: <input class="level short" type="number" placeholder="level" min="0" max="30"> 🛈</label>
+          <label title="Creature health boosts (0..20) or exact health value (21+)">Health: <input class="health long" type="number" placeholder="health" min="0" max="20"> 🛈</label>
+          <label title="Creature damage boosts (0..20) or exact damage value (21+)">Damage: <input class="damage long" type="number" placeholder="damage" min="0" max="20"> 🛈</label>
+          <label title="Creature speed boosts (0..20) or exact speed value (21+)">Speed: <input class="speed long" type="number" placeholder="speed" min="0" max="20"> 🛈</label>
         </div>
       </div>
       <div class="row omega">
-        <div class="cell">
-          <label>Omega health:<input class="omega_health" type="number" placeholder="health" min="0" max="100"></label>
-          <label>Omega damage:<input class="omega_damage" type="number" placeholder="damage" min="0" max="100"></label>
-          <label>Omega speed:<input class="omega_speed" type="number" placeholder="speed" min="0" max="100"></label>
-          <label>Omega armor:<input class="omega_armor" type="number" placeholder="armor" min="0" max="100"></label>
-          <label>Omega crit chance:<input class="omega_crit_chance" type="number" placeholder="crit chance" min="0" max="100"></label>
-          <label>Omega crit factor:<input class="omega_crit_factor" type="number" placeholder="crit factor" min="0" max="100"></label>
+        <div class="cell stats">
+          <label title="Omega health points">Omega health: <input class="omega_health short" type="number" placeholder="health" min="0" max="100"> 🛈</label>
+          <label title="Omega damage points">Omega damage: <input class="omega_damage short" type="number" placeholder="damage" min="0" max="100"> 🛈</label>
+          <label title="Omega speed points">Omega speed: <input class="omega_speed short" type="number" placeholder="speed" min="0" max="100"> 🛈</label>
+          <label title="Omega armor points">Omega armor: <input class="omega_armor short" type="number" placeholder="armor" min="0" max="100"> 🛈</label>
+          <label title="Omega crit chance points">Omega crit chance: <input class="omega_crit_chance short" type="number" placeholder="crit chance" min="0" max="100"> 🛈</label>
+          <label title="Omega crit factor points">Omega crit factor: <input class="omega_crit_factor short" type="number" placeholder="crit factor" min="0" max="100"> 🛈</label>
         </div>
       </div>
       <div class="row">
@@ -190,6 +190,7 @@
                 <img class="alert dino1" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/alert.png"/>
                 <img class="revenge dino1" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/revenge.png"/>
                 <img class="act-last dino1" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/act-last.png"/>
+                <div class="ability-number" style="display: none">0</div>
               </div>
             </div>
           </div>
@@ -204,6 +205,7 @@
                 <img class="alert dino2" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/alert.png"/>
                 <img class="revenge dino2" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/revenge.png"/>
                 <img class="act-last dino2" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/act-last.png"/>
+                <div class="ability-number" style="display: none">0</div>
               </div>
             </div>
           </div>
@@ -218,6 +220,7 @@
                 <img class="alert dino3" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/alert.png"/>
                 <img class="revenge dino3" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/revenge.png"/>
                 <img class="act-last dino3" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/act-last.png"/>
+                <div class="ability-number" style="display: none">0</div>
               </div>
             </div>
           </div>
@@ -232,6 +235,7 @@
                 <img class="alert dino4" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/alert.png"/>
                 <img class="revenge dino4" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/revenge.png"/>
                 <img class="act-last dino4" style="display: none" src="https://cdn.paleo.gg/games/jwa/images/move/indicator/act-last.png"/>
+                <div class="ability-number" style="display: none">0</div>
               </div>
             </div>
           </div>
@@ -248,16 +252,28 @@
         </div>
     </div>
     <div class="row">
-          <select class="method">
-            <option value="check" selected>Check</option>
-            <option value="explain_defeat">Explain defeat</option>
-            <option value="explain_win">Eplain win</option>
-            <option value="chance">Chance</option>
-            <option value="search_rand">Random search</option>
-            <option value="search_full">Full search</option>
-          </select>
+      <div class="cell">
+        <div class="row">
+          <label title='check - runs once with detailed output
+explain - runs until win/defeat is encountered
+chance - runs several times and prints statistics
+search - searches for the best strategy (use "any" for abilities to search)'>
+            <select class="method">
+              <option value="check" selected>Check</option>
+              <option value="explain_defeat">Explain defeat</option>
+              <option value="explain_win">Eplain win</option>
+              <option value="chance">Chance</option>
+              <option value="search_rand">Random search</option>
+              <option value="search_full">Full search</option>
+            </select>
+            🛈
+          </label>
+        </div>
           <!--input class="n_tries" type="number" value="1000" disabled-->
+        <div class="row">
           <button class="run">Run</button>
+        </div>
+      </div>
     </div>
   </div>
 
