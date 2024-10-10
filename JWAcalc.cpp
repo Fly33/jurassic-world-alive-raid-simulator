@@ -601,6 +601,12 @@ bool List(int, char *[], const char *regexp, void *)
     return false;
 }
 
+bool Version(int, char *[], const char *regexp, void *)
+{
+    LOG("3.9.25");
+    return false;
+}
+
 int main(int argc, char *argv[])
 {
     Srand();
@@ -615,6 +621,7 @@ int main(int argc, char *argv[])
         {'s', "search", optional_argument, SearchInput, nullptr},
         {'l', "list", optional_argument, List, nullptr},
         {'h', "help", optional_argument, Help, nullptr},
+        {'v', "version", no_argument, Version, nullptr},
         {':', nullptr, no_argument, Help, nullptr},
         {'?', nullptr, no_argument, Help, nullptr}
     };
