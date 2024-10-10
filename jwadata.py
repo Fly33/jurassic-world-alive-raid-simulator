@@ -152,7 +152,8 @@ def ParseAction(data, guid):
                                             VULNERABILITY=action_data.get("ce")=="Vulnerable",
                                             REDUCED_SPEED=action_data.get("ce")=="DebuffSpeed",
                                             DAMAGE_OVER_TIME=action_data.get("ce")=="DamageOverTime",
-                                            REDUCED_CRIT_CHANCE=action_data.get("ce")=="DebuffCrit")
+                                            REDUCED_CRIT_CHANCE=action_data.get("ce")=="DebuffCrit",
+                                            REDUCED_ARMOR=action_data.get("ce")=="DebuffArmor")
                 elif type.startswith("BeEfInReDeDaDa"):
                     action["Action"] = Action("Cleanse", REDUCED_DAMAGE=True)
                 elif type.startswith("BeEfInReHaFoSwDa"):
@@ -263,7 +264,12 @@ def ParseAbility(data, guid, l10n):
         }
         default_target = "Unknown"
         for action_data in ability_data['bl']:
-            action = ParseAction(data, action_data['b']['guid'])
+            try:
+                action = ParseAction(data, action_data['b']['guid'])
+            except Exception as e:
+                traceback.print_exc()
+                print("Skipping invalid action", file=sys.stderr)
+                continue
             if action_data['t'] == 's':
                 default_target = action["Target"]
             elif action_data['t'] == 'u' and default_target != "Unknown":
@@ -446,7 +452,6 @@ def GetTeam(l10n, data, dino_dex, ability_dex):
         try:
             dino = GetDino(l10n, data, dino_data, ability_dex)
         except:
-            import traceback
             traceback.print_exc()
             print(dino_data, file=sys.stderr)
             print(f'Skipping dino {dino_data["dn"]}')

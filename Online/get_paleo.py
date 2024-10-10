@@ -18,18 +18,24 @@ assert res.status_code == 200
 match = re.search(r'<script id="__NEXT_DATA__" type="application/json">(.*?)</script>', res.text)
 assert match
 data = json.loads(match[1])
-# print(json.dumps(data, indent=2))
-creatures = data["props"]["pageProps"]["creatures"]
+#print(json.dumps(data, indent=2))
+creatures = data["props"]["pageProps"]["dex"]["items"]
 
 temp = {}
 for creature in creatures:
     temp[creature["uuid"]] = creature
 boss = []
-for creature in creatures:
+for i, creature in enumerate(creatures):
     if creature["type"] != "raid_boss":
         continue
-    # res = requests.get(f'https://www.paleo.gg/games/jurassic-world-alive/bossdex/{creature["uuid"]}')
-    # assert res.status_code == 200    
+    print("Processing ({}/{}) {}".format(i+1, len(creatures), creature["name"]), file=sys.stderr)
+    res = requests.get(f'https://www.paleo.gg/games/jurassic-world-alive/bossdex/{creature["uuid"]}')
+    assert res.status_code == 200    
+    match = re.search(r'<script id="__NEXT_DATA__" type="application/json">(.*?)</script>', res.text)
+    assert match
+    boss_data = json.loads(match[1])
+    detail = boss_data["props"]["pageProps"]["detail"]
+    # print(json.dumps(boss_data, indent=2))
     b = {
         "paleo_id": creature["uuid"],
         "name": creature["name"],
@@ -41,10 +47,10 @@ for creature in creatures:
         "armor": creature["armor"],
         "crit_chance": creature["crit"],
         "crit_factor": creature["critm"],
-        "level": creature["level"],
-        "health_boost": creature["boostHealth"],
-        "damage_boost": creature["boostDamage"],
-        "speed_boost": creature["boostSpeed"],
+        "level": detail["level"],
+        "health_boost": detail["boostHealth"],
+        "damage_boost": detail["boostDamage"],
+        "speed_boost": detail["boostSpeed"],
         "minions": [
             {
                 "paleo_id": minion["uuid"],
@@ -60,7 +66,7 @@ for creature in creatures:
                 "health_boost": minion["boostHealth"],
                 "damage_boost": minion["boostDamage"],
                 "speed_boost": minion["boostSpeed"],
-            } for minion in creature["minions"]
+            } for minion in detail["minions"]
         ]
     }
     boss.append(b)
