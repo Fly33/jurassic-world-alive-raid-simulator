@@ -5,6 +5,7 @@ import re
 import traceback
 import json_fix
 import math
+import argparse
 
 
 PATH = "assets\\Database\\"
@@ -560,12 +561,14 @@ def WriteAbilityDex(ability_dex, f):
         print(f'', file=f)
 
 
-def WriteDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid_dex, f):
+def WriteDex(version, dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid_dex, f):
     print(f'#include "dex.h"', file=f)
     print(f'#include "actions.h"', file=f)
     print(f'#include "dino.h"', file=f)
     print(f'', file=f)
     print(f'using namespace actions;', file=f)
+    print(f'', file=f)
+    print(f'const char VERSION[] = "{version}";', file=f)
     print(f'', file=f)
     print(f'namespace boss {{', file=f)
     print(f'', file=f)
@@ -598,7 +601,7 @@ def WriteDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid
     print(f'}};', file=f)
 
 
-def GetAll():
+def GetAll(version):
     l10n = GetPath("Localization_JW_2_Global_ENGLISH.json")
     data = GetPath(PATH + DATA)
     dino_dex = {}
@@ -623,10 +626,18 @@ def GetAll():
     with open("raid_dex.json", "w") as f:
         json.dump(raid_dex, f, indent=4)
     with open("dex.cpp", "w") as f:
-        WriteDex(dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid_dex, f)
+        WriteDex(version, dino_dex, minion_dex, ability_dex, boss_dex, boss_ability_dex, raid_dex, f)
 
 def main():
-    GetAll()
+    parser = argparse.ArgumentParser(description="Program to check arguments")
+    parser.add_argument("--version", type=str, help="Specify the program version")
+    args = parser.parse_args()
+    
+    if not args.version:
+        print("Error: '--version' argument is missing or empty")
+        return
+
+    GetAll(args.version)
 
 if __name__ == "__main__":
     main()

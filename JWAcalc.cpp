@@ -603,7 +603,7 @@ bool List(int, char *[], const char *regexp, void *)
 
 bool Version(int, char *[], const char *regexp, void *)
 {
-    LOG("3.9.25");
+    LOG(VERSION);
     return false;
 }
 
