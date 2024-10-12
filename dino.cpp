@@ -44,6 +44,7 @@ static const double LevelFactor[] = {
         1.2155062500000002
 };
 static const double BoostFactor[] = {1.0, 1.025, 1.05, 1.075, 1.1, 1.125, 1.15, 1.175, 1.2, 1.225, 1.25, 1.275, 1.3, 1.325, 1.35, 1.375, 1.4, 1.425, 1.45, 1.475, 1.5};
+static const int RarityPriority[] = {0, 1, 2, 3, 4, 5, 0};
 
 bool ActionOrderCmp(const Dino &dino1, const Dino &dino2)
 {
@@ -59,9 +60,9 @@ bool ActionOrderCmp(const Dino &dino1, const Dino &dino2)
         return true;
     if (dino1.level < dino2.level)
         return false;
-    if (dino1.kind->rarity > dino2.kind->rarity)
+    if (RarityPriority[dino1.kind->rarity] > RarityPriority[dino2.kind->rarity])
         return true;
-    if (dino1.kind->rarity < dino2.kind->rarity)
+    if (RarityPriority[dino1.kind->rarity] < RarityPriority[dino2.kind->rarity])
         return false;
     if (dino1.minor < dino2.minor)
         return true;
