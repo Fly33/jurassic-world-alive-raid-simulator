@@ -5,6 +5,8 @@
 #include <memory>
 #include <memory.h>
 #include "stats.h"
+#include <numeric>
+#include <algorithm>
 
 using namespace std;
 using namespace modifiers;
@@ -77,34 +79,40 @@ bool ActionOrderCmp(const Dino &dino1, const Dino &dino2)
     return false;
 }
 
-static int PointsDistribution(int points, int index, const vector<int> &max)
+static int PointsDistribution(int target_total_points, int index, const vector<int> &current_points, const vector<int> &max_points)
 {
-    int n = (int)max.size();
-    int left = -1, right = points * n;
-    while (right - left > 1) {
-        int middle = (left + right) / 2;
-        int curr_points = 0;
-        for (int i = 0; i < (int)max.size(); ++i) {
-            curr_points += min(max[i], (middle + n - 1 - i) / n);
+    int current_total_points = accumulate(current_points.begin(), current_points.end(), 0);
+    int n = (int)max_points.size();
+    if (current_total_points < target_total_points) {
+        int left = -1, right = target_total_points * n;
+        while (right - left > 1) {
+            int middle = (left + right) / 2;
+            int curr_points = 0;
+            for (int i = 0; i < n; ++i) {
+                curr_points += min(max(max_points[i] - current_points[i], 0), (middle + n - 1 - i) / n) + current_points[i];
+            }
+            if (curr_points >= target_total_points)
+                right = middle;
+            else
+                left = middle;
         }
-        if (curr_points >= points)
-            right = middle;
-        else
-            left = middle;
+        return min(max(max_points[index] - current_points[index], 0), (right + n - 1 - index) / n) + current_points[index];
+    } else {
+        int left = -1, right = target_total_points * n;
+        while (right - left > 1) {
+            int middle = (left + right) / 2;
+            int curr_points = 0;
+            for (int i = 0; i < n; ++i) {
+                curr_points += min(current_points[i], (middle + n - 1 - i) / n);
+            }
+            if (curr_points >= target_total_points)
+                right = middle;
+            else
+                left = middle;
+        }
+        return min(current_points[index], (right + n - 1 - index) / n);
     }
-    return min(max[index], (right + n - 1 - index) / n);
 }
-
-Dino::Dino(int _team, int _index, int _level, int _health_boost, int _damage_boost, int _speed_boost, const DinoKind *_kind)
-    : Dino(_team, _index, _level, _health_boost, _damage_boost, _speed_boost,
-           _kind->rarity == OMEGA ? PointsDistribution(_kind->level_points[_level], 1, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
-           _kind->rarity == OMEGA ? PointsDistribution(_kind->level_points[_level], 0, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
-           _kind->rarity == OMEGA ? PointsDistribution(_kind->level_points[_level], 2, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
-           _kind->rarity == OMEGA ? PointsDistribution(_kind->level_points[_level], 3, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
-           _kind->rarity == OMEGA ? PointsDistribution(_kind->level_points[_level], 4, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
-           _kind->rarity == OMEGA ? PointsDistribution(_kind->level_points[_level], 5, {_kind->max_omega_damage_points, _kind->max_omega_health_points, _kind->max_omega_speed_points, _kind->max_omega_armor_points, _kind->max_omega_crit_chance_points, _kind->max_omega_crit_factor_points}) : 0,
-           _kind)
-{}
 
 Dino::Dino(int _team, int _index, int _level, int _health_boost, int _damage_boost, int _speed_boost,
      int _omega_health_points, int _omega_damage_points, int _omega_speed_points, int _omega_armor_points, int _omega_crit_chance_points, int _omega_crit_factor_points,
@@ -118,12 +126,96 @@ Dino::Dino(int _team, int _index, int _level, int _health_boost, int _damage_boo
     , damage_boost(_damage_boost)
     , speed_boost(_speed_boost)
     , name(team != 0 ? strprintf("%s#%d", kind->name.c_str(), _index) : kind->name)
-    , omega_health_points(_omega_health_points)
-    , omega_damage_points(_omega_damage_points)
-    , omega_speed_points(_omega_speed_points)
-    , omega_armor_points(_omega_armor_points)
-    , omega_crit_chance_points(_omega_crit_chance_points)
-    , omega_crit_factor_points(_omega_crit_factor_points)
+    , omega_health_points(_kind->rarity == OMEGA ? PointsDistribution(_kind->level_points[_level], 1, {
+                                    _omega_damage_points,
+                                    _omega_health_points,
+                                    _omega_speed_points,
+                                    _omega_armor_points,
+                                    _omega_crit_chance_points,
+                                    _omega_crit_factor_points
+                            }, {
+                                    _kind->max_omega_damage_points,
+                                    _kind->max_omega_health_points,
+                                    _kind->max_omega_speed_points,
+                                    _kind->max_omega_armor_points,
+                                    _kind->max_omega_crit_chance_points,
+                                    _kind->max_omega_crit_factor_points
+                            }) : 0)
+    , omega_damage_points(_kind->rarity == OMEGA ? PointsDistribution(_kind->level_points[_level], 0, {
+                                    _omega_damage_points,
+                                    _omega_health_points,
+                                    _omega_speed_points,
+                                    _omega_armor_points,
+                                    _omega_crit_chance_points,
+                                    _omega_crit_factor_points
+                            }, {
+                                    _kind->max_omega_damage_points,
+                                    _kind->max_omega_health_points,
+                                    _kind->max_omega_speed_points,
+                                    _kind->max_omega_armor_points,
+                                    _kind->max_omega_crit_chance_points,
+                                    _kind->max_omega_crit_factor_points
+                            }) : 0)
+    , omega_speed_points(_kind->rarity == OMEGA ? PointsDistribution(_kind->level_points[_level], 2, {
+                                    _omega_damage_points,
+                                    _omega_health_points,
+                                    _omega_speed_points,
+                                    _omega_armor_points,
+                                    _omega_crit_chance_points,
+                                    _omega_crit_factor_points
+                            }, {
+                                    _kind->max_omega_damage_points,
+                                    _kind->max_omega_health_points,
+                                    _kind->max_omega_speed_points,
+                                    _kind->max_omega_armor_points,
+                                    _kind->max_omega_crit_chance_points,
+                                    _kind->max_omega_crit_factor_points
+                            }) : 0)
+    , omega_armor_points(_kind->rarity == OMEGA ? PointsDistribution(_kind->level_points[_level], 3, {
+                                    _omega_damage_points,
+                                    _omega_health_points,
+                                    _omega_speed_points,
+                                    _omega_armor_points,
+                                    _omega_crit_chance_points,
+                                    _omega_crit_factor_points
+                            }, {
+                                    _kind->max_omega_damage_points,
+                                    _kind->max_omega_health_points,
+                                    _kind->max_omega_speed_points,
+                                    _kind->max_omega_armor_points,
+                                    _kind->max_omega_crit_chance_points,
+                                    _kind->max_omega_crit_factor_points
+                            }) : 0)
+    , omega_crit_chance_points(_kind->rarity == OMEGA ? PointsDistribution(_kind->level_points[_level], 4, {
+                                    _omega_damage_points,
+                                    _omega_health_points,
+                                    _omega_speed_points,
+                                    _omega_armor_points,
+                                    _omega_crit_chance_points,
+                                    _omega_crit_factor_points
+                            }, {
+                                    _kind->max_omega_damage_points,
+                                    _kind->max_omega_health_points,
+                                    _kind->max_omega_speed_points,
+                                    _kind->max_omega_armor_points,
+                                    _kind->max_omega_crit_chance_points,
+                                    _kind->max_omega_crit_factor_points
+                            }) : 0)
+    , omega_crit_factor_points(_kind->rarity == OMEGA ? PointsDistribution(_kind->level_points[_level], 5, {
+                                    _omega_damage_points,
+                                    _omega_health_points,
+                                    _omega_speed_points,
+                                    _omega_armor_points,
+                                    _omega_crit_chance_points,
+                                    _omega_crit_factor_points
+                            }, {
+                                    _kind->max_omega_damage_points,
+                                    _kind->max_omega_health_points,
+                                    _kind->max_omega_speed_points,
+                                    _kind->max_omega_armor_points,
+                                    _kind->max_omega_crit_chance_points,
+                                    _kind->max_omega_crit_factor_points
+                            }) : 0)
 {
     for (int i = 0; i < (int)kind->round.size(); ++i) {
         InitRound(i);

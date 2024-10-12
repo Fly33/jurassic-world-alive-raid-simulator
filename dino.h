@@ -276,7 +276,9 @@ struct Dino
     std::vector<const Ability *> ability;
     const CounterAbility *counter_attack;
 
-    Dino(int _team, int _index, int _level, int _health_boost, int _damage_boost, int _speed_boost, const DinoKind *_kind);
+    Dino(int _team, int _index, int _level, int _health_boost, int _damage_boost, int _speed_boost, const DinoKind *_kind)
+        : Dino(_team, _index, _level, _health_boost, _damage_boost, _speed_boost, 0, 0, 0, 0, 0, 0, _kind)
+    {}
     Dino(int _team, int _index, int _level, int _health_boost, int _damage_boost, int _speed_boost,
          int _omega_health_points, int _omega_damage_points, int _omega_speed_points, int _omega_armor_points, int _omega_crit_chance_points, int _omega_crit_factor_points,
          const DinoKind *_kind);
