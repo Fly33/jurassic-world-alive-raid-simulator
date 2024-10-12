@@ -45,7 +45,7 @@ struct DinoRound
 	double healing_reduction_resistance;
 	std::vector<const Ability *> ability;
 	const CounterAbility *counter_attack;
-    DinoRound(int _health, int _damage, int _speed, int _armor, int _crit_chance, int _crit_factor,
+    DinoRound(int _health, int _damage, int _speed, double _armor, double _crit_chance, double _crit_factor,
             double _crit_reduction_resistance,
             double _damage_over_time_resistance,
             double _damage_reduction_resistance,
