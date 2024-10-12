@@ -165,7 +165,7 @@ struct Vulnerability: public Modifier
     }
     virtual void Impose(Dino &target, Mod *mod) const override;
     virtual void Dispose(Dino &target, Mod *mod) const override;
-    virtual std::string Name(const Mod *mod) const
+    virtual std::string Name(const Mod *mod) const override
     {
     	return strprintf("%s by %.1lf%%", name.c_str(), mod->value * 100);
     }
@@ -209,7 +209,7 @@ struct IncreasedCritChance: public Modifier
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
     virtual void Dispose(Dino &target, Mod *mod) const override;
-    virtual std::string Name(const Mod *mod) const
+    virtual std::string Name(const Mod *mod) const override
     {
     	return strprintf("%s by %.1lf%%", name.c_str(), factor * 100);
     }
@@ -236,7 +236,7 @@ struct IncreasedDamage: public Modifier
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
     virtual void Dispose(Dino &target, Mod *mod) const override;
-    virtual std::string Name(const Mod *mod) const
+    virtual std::string Name(const Mod *mod) const override
     {
     	return strprintf("%s by %.1lf%%", name.c_str(), factor * 100);
     }
@@ -267,7 +267,7 @@ struct ReducedSpeed: public Modifier
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
     virtual void Dispose(Dino &target, Mod *mod) const override;
-    virtual std::string Name(const Mod *mod) const
+    virtual std::string Name(const Mod *mod) const override
     {
     	return strprintf("%s by %.1lf%%", name.c_str(), mod->value * 100);
     }
@@ -290,7 +290,7 @@ struct ReducedDamage: public Modifier
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
     virtual void Dispose(Dino &target, Mod *mod) const override;
-    virtual std::string Name(const Mod *mod) const
+    virtual std::string Name(const Mod *mod) const override
     {
     	return strprintf("%s by %.1lf%%", name.c_str(), mod->value * 100);
     }
@@ -325,7 +325,7 @@ struct Dodge : public Modifier
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
     virtual void Dispose(Dino &target, Mod *mod) const override;
-    virtual std::string Name(const Mod *mod) const
+    virtual std::string Name(const Mod *mod) const override
     {
     	return strprintf("%.1lf%% chance to dodge by %.1lf%%", chance * 100, factor * 100);
     }
@@ -356,7 +356,7 @@ struct IncreasedSpeed: public Modifier
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
     virtual void Dispose(Dino &target, Mod *mod) const override;
-    virtual std::string Name(const Mod *mod) const
+    virtual std::string Name(const Mod *mod) const override
     {
     	return strprintf("%s by %.1lf%%", name.c_str(), factor * 100);
     }
@@ -379,7 +379,7 @@ struct ReducedCritChance: public Modifier
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
     virtual void Dispose(Dino &target, Mod *mod) const override;
-    virtual std::string Name(const Mod *mod) const
+    virtual std::string Name(const Mod *mod) const override
     {
     	return strprintf("%s by %.1lf%%", name.c_str(), mod->value * 100);
     }
@@ -408,7 +408,7 @@ struct Shield : public Modifier
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
     virtual void Dispose(Dino &target, Mod *mod) const override;
-    virtual std::string Name(const Mod *mod) const
+    virtual std::string Name(const Mod *mod) const override
     {
     	return strprintf("%s by %.1lf%%", name.c_str(), factor * 100);
     }
@@ -460,7 +460,7 @@ struct DevourHeal : public Modifier
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
     virtual void Dispose(Dino &target, Mod *mod) const override;
-    virtual std::string Name(const Mod *mod) const
+    virtual std::string Name(const Mod *mod) const override
     {
     	return strprintf("%s by %.0lf", name.c_str(), mod->value);
     }
@@ -483,7 +483,7 @@ struct DamageOverTime : public Modifier
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
     virtual void Dispose(Dino &target, Mod *mod) const override;
-    virtual std::string Name(const Mod *mod) const
+    virtual std::string Name(const Mod *mod) const override
     {
     	return strprintf("%s by %.1lf%%", name.c_str(), mod->value * 100);
     }
@@ -527,7 +527,7 @@ struct Cloak : public Modifier
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
     virtual void Dispose(Dino &target, Mod *mod) const override;
-    virtual std::string Name(const Mod *mod) const
+    virtual std::string Name(const Mod *mod) const override
     {
     	return strprintf("cloak %.1lfx damage on next attack and %.1lf%% chance to dodge by %.1lf%%", attack_factor, dodge_chance, dodge_factor);
     }
@@ -554,7 +554,7 @@ struct IncreasedArmor: public Modifier
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
     virtual void Dispose(Dino &target, Mod *mod) const override;
-    virtual std::string Name(const Mod *mod) const
+    virtual std::string Name(const Mod *mod) const override
     {
     	return strprintf("%s by %.1lf%%", name.c_str(), factor * 100);
     }
@@ -581,7 +581,7 @@ struct ReducedArmor: public Modifier
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
     virtual void Dispose(Dino &target, Mod *mod) const override;
-    virtual std::string Name(const Mod *mod) const
+    virtual std::string Name(const Mod *mod) const override
     {
     	return strprintf("%s by %.1lf%%", name.c_str(), mod->value * 100);
     }
@@ -608,7 +608,7 @@ struct Affliction : public Modifier
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
     virtual void Dispose(Dino &target, Mod *mod) const override;
-    virtual std::string Name(const Mod *mod) const
+    virtual std::string Name(const Mod *mod) const override
     {
     	return strprintf("%s by %.1lf%%", name.c_str(), mod->value * 100);
     }
@@ -652,7 +652,7 @@ struct IncreasedHealing: public Modifier
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
     virtual void Dispose(Dino &target, Mod *mod) const override;
-    virtual std::string Name(const Mod *mod) const
+    virtual std::string Name(const Mod *mod) const override
     {
         return strprintf("%s by %.1lf%%", name.c_str(), factor * 100);
     }
@@ -679,7 +679,7 @@ struct ReducedHealing: public Modifier
     {}
     virtual void Impose(Dino &target, Mod *mod) const override;
     virtual void Dispose(Dino &target, Mod *mod) const override;
-    virtual std::string Name(const Mod *mod) const
+    virtual std::string Name(const Mod *mod) const override
     {
         return strprintf("%s by %.1lf%%", name.c_str(), mod->value * 100);
     }

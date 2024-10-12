@@ -198,7 +198,7 @@ string Explain(Dino team0[], int team_size, const Strategy &strategy, bool win, 
         Logger::SetBuf();
         vector<Dino> team(team0, team0 + team_size);
         if ((Check(team.data(), team_size, strategy) == 1) == win)
-            return move(Logger::TakeBuf());
+            return std::move(Logger::TakeBuf());
         Logger::TakeBuf();
     }
     if (win)
@@ -232,7 +232,7 @@ Strategy Randomize(Dino team0[], int team_size, const Strategy &base_strategy, i
         }
         if (best < res) {
             best = res;
-            best_strategy = move(strategy);
+            best_strategy = std::move(strategy);
         }
     }
     Logger::level = log;
@@ -282,7 +282,7 @@ Strategy Full(Dino team0[], int team_size, Strategy base_strategy, int n_checks 
             }
             if (best < res) {
                 best = res;
-                best_strategy = move(strategy);
+                best_strategy = std::move(strategy);
             }
             if (100 * i / imax / 5 < 100 * (i+1) / imax / 5)
                 LOG("%d%%", (int)(100 * (i+1) / imax));
@@ -322,10 +322,10 @@ Strategy TurnByTurn(Dino team0[], int team_size, Strategy base_strategy, int n_c
 #pragma omp critical
             if (best < res) {
                 best = res;
-                best_strategy = move(strategy);
+                best_strategy = std::move(strategy);
             }
         }
-        base_strategy = move(best_strategy);
+        base_strategy = std::move(best_strategy);
         LOG("win: %.1lf%%", best * 100);
         LOG("%s", base_strategy.ToString().c_str());
     }
@@ -603,7 +603,7 @@ bool List(int, char *[], const char *regexp, void *)
 
 bool Version(int, char *[], const char *regexp, void *)
 {
-    LOG(VERSION);
+    LOG("%s", VERSION);
     return false;
 }
 

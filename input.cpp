@@ -160,7 +160,7 @@ struct MalformedCommand : public Command
         : message(_message)
     {}
     virtual ~MalformedCommand() {}
-    virtual bool IsMalformed() const { return true; }
+    virtual bool IsMalformed() const override { return true; }
     virtual vector<Instruction> GetInstructions(int next) const override { return {}; }
     virtual int Enumerate(int index) override { return 0; }
 };
@@ -183,7 +183,7 @@ struct Block : public Command
         for (int i = 0; i < (int)commands.size(); ++i) {
             auto instructions = commands[i]->GetInstructions(i+1 < (int)commands.size() ? commands[i+1]->number : next);
             for (auto &instruction: instructions)
-                result.push_back(move(instruction));
+                result.push_back(std::move(instruction));
         }
         return result;
     }
@@ -206,16 +206,16 @@ struct Condition : public Command
     {
         vector<Instruction> result;
         Instruction condition;
-        condition.expression = move(expression->Copy());
+        condition.expression = std::move(expression->Copy());
         condition.success = success->number;
         condition.failure = failure.get() ? failure->number : next;
         condition.next = next;
-        result.push_back(move(condition));
+        result.push_back(std::move(condition));
         for (auto &instruction: success->GetInstructions(next))
-            result.push_back(move(instruction));
+            result.push_back(std::move(instruction));
         if (failure.get())
             for (auto &instruction: failure->GetInstructions(next))
-                result.push_back(move(instruction));
+                result.push_back(std::move(instruction));
         return result;
     }
 };
@@ -426,7 +426,7 @@ int Input(vector<Dino> &team, Strategy &strategy)
                 instruction.abilities.push_back(ability[j][i]);
             instruction.failure = i + 1;
             instruction.success = i + 1;
-            strategy.instructions.push_back(move(instruction));
+            strategy.instructions.push_back(std::move(instruction));
         }
     } else {
         auto block = ParseBlock(team_size, "", 0);
@@ -452,6 +452,6 @@ void MakeStrategy(const vector<vector<int>> &ability, Strategy &strategy)
             instruction.abilities.push_back(i < (int)ability[j].size() ? ability[j][i] : 0);
         instruction.failure = i + 1;
         instruction.success = i + 1;
-        strategy.instructions.push_back(move(instruction));
+        strategy.instructions.push_back(std::move(instruction));
     }
 }

@@ -23,14 +23,14 @@ list<unique_ptr<Action>> actions::Attack(double _factor, int _flags)
 
 list<unique_ptr<Action>> actions::DevouringAttack(double _attack_factor, double _devour_factor, int _duration, int _flags)
 {
-    list<unique_ptr<Action>> list = move(actions::Attack(_attack_factor, _flags));
+    list<unique_ptr<Action>> list = std::move(actions::Attack(_attack_factor, _flags));
     list.emplace_back(new DevourHeal(_devour_factor, _duration))->target = TARGET_SELF;
     return list;
 }
 
 list<unique_ptr<Action>> actions::Rend(double _factor, int _flags)
 {
-    return move(actions::Attack(_factor / 100., _flags | REND));
+    return std::move(actions::Attack(_factor / 100., _flags | REND));
 }
 
 void PrepareAttack::Do(Dino &self, Dino &target) const
@@ -270,7 +270,7 @@ void UnableToSwap::Do(Dino &self, Dino &target) const
 
 list<unique_ptr<Action>> actions::Swap()
 {
-    return move(list<unique_ptr<Action>>());
+    return std::move(list<unique_ptr<Action>>());
 }
 
 void IncreaseHealing::Do(Dino &self, Dino &target) const
