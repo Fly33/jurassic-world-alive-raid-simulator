@@ -283,3 +283,7 @@ void ReduceHealing::Do(Dino &self, Dino &target) const
     target.Impose(&reduced_healing, self);
 }
 
+void CheatDeath::Do(Dino &self, Dino &target) const
+{
+    target.Impose(&cheat_death, self);
+}

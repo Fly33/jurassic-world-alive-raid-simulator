@@ -425,6 +425,14 @@ struct ReduceHealing : public Action
     virtual void Do(Dino &self, Dino &target) const override;
 };
 
+struct CheatDeath : public Action
+{
+    modifiers::CheatDeath cheat_death;
+    CheatDeath(int _duration, int _number)
+        : cheat_death(_duration, _number)
+    {}
+    virtual void Do(Dino &self, Dino &target) const override;
+};
 
 } // namespace actions
 

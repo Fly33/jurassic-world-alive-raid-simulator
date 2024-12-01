@@ -427,12 +427,16 @@ void Dino::Hit(const Dino &attacker, int damage, bool premature)
 {
     auto old_health = health;
     auto full_damage = damage;
-    if (premature && damage >= total_health) {
+    if (damage >= total_health && premature && !cheat_death) {
         damage = total_health;
         health = 0;
     } else {
-        if (damage >= health)
-            damage = health;
+        if (damage >= health) {
+            if (cheat_death)
+                damage = health - 1;
+            else
+                damage = health;
+        }
         health -= damage;
     }
     total_health -= damage;

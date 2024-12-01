@@ -247,3 +247,15 @@ void ReducedHealing::Dispose(Dino &target, Mod *mod) const
     target.healing_factor += mod->value;
 }
 
+void CheatDeath::Impose(Dino &target, Mod *) const
+{
+    ++target.cheat_death;
+    ++target.n_positive_effects;
+}
+
+void CheatDeath::Dispose(Dino &target, Mod *) const
+{
+    --target.cheat_death;
+    --target.n_positive_effects;
+}
+

@@ -180,6 +180,8 @@ def ParseAction(data, guid):
                     action["Action"] = Action("Dodge", action_data["p"] / 100000., action_data["pdr"] / 100000., action_data["d"] if action_data.get("dho") != "END_OF_THIS_TURN" else 0, action_data["eac"])
                 elif type.startswith("BeEfDuInDa"):
                     action["Action"] = Action("Cloak", action_data["mn"] / 10000000., action_data["p"] / 100000., action_data["pdr"] / 100000., action_data["d"], action_data.get("eac", 0))
+                elif type.startswith("BeEfDuChDeDa"):
+                    action["Action"] = Action("CheatDeath", action_data["d"], action_data.get("eac", 0))
                 elif type.startswith("BeEfDuReBuDeDa"):
                     if action_data["p"] > 0:
                         raise Exception(f'Unknown action type "{type.split(",")[0]}"')
@@ -269,8 +271,10 @@ def ParseAbility(data, guid, l10n):
                 action = ParseAction(data, action_data['b']['guid'])
             except Exception as e:
                 traceback.print_exc()
-                print("Skipping invalid action", file=sys.stderr)
-                continue
+                if skip_invalid_actions:
+                    print("Skipping invalid action", file=sys.stderr)
+                    continue
+                raise
             if action_data['t'] == 's':
                 default_target = action["Target"]
             elif action_data['t'] == 'u' and default_target != "Unknown":
@@ -630,12 +634,21 @@ def GetAll(version):
 
 def main():
     parser = argparse.ArgumentParser(description="Program to check arguments")
-    parser.add_argument("--version", type=str, help="Specify the program version")
+    parser.add_argument("--version", type=str, required=True, help="Specify the program version")
+    parser.add_argument("--skip-invalid-actions", action="store_true", help="Skip invalid actions")
     args = parser.parse_args()
+    
+    if args.skip_invalid_actions:
+        print("Skipping invalid actions is enabled.")
+    else:
+        print("Skipping invalid actions is disabled.")
     
     if not args.version:
         print("Error: '--version' argument is missing or empty")
         return
+    
+    global skip_invalid_actions
+    skip_invalid_actions = args.skip_invalid_actions
 
     GetAll(args.version)
 

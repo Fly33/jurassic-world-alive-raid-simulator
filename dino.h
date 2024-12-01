@@ -253,6 +253,7 @@ struct Dino
     int n_positive_effects = 0;
     int stun = 0;
     std::multiset<double, std::greater<double>> cloak_factor;
+    int cheat_death = 0;
     std::string name;
     class Stats *stats = nullptr;
     int omega_health_points;
