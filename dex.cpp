@@ -4,7 +4,7 @@
 
 using namespace actions;
 
-const char VERSION[] = "3.10.28";
+const char VERSION[] = "3.11.29";
 
 namespace boss {
 
@@ -3315,6 +3315,16 @@ Ability AerialStrike6CC6("Aerial Strike", 0, 0, 0, {
     )
 });
 
+Ability AfflictedWoundingDistractionFFA6("Afflicted Wounding Distraction", 0, 2, 1, {
+    TargetHighestDamage(
+        Affliction(50.0, 1, 2),
+        ReduceHealing(50.0, 2, 4),
+        ReduceDamage(50.0, 2, 4),
+        Attack(1.5),
+        DamageOverTime(25.0, 3)
+    )
+});
+
 ThreatenedAbility AfflictingAlertStun7106("Afflicting Alert Stun", 0, 1, 1, {
     TargetSelf(
         Shield(100.0, 1, 2)
@@ -3370,8 +3380,13 @@ Ability AfflictingLockdownImpact2EFB("Afflicting Lockdown Impact", 0, 3, 0, {
         Remove(SHIELD|TAUNT),
         Attack(1.5, BYPASS_ARMOR)
     ),
-    TargetEveryone(
-        Affliction(100.0, 0, 1),
+    TargetLowestHP(
+        Affliction(100.0, 0, 1)
+    ),
+    TargetLowestHP(
+        UnableToSwap(2)
+    ),
+    TargetSelf(
         UnableToSwap(2)
     )
 });
@@ -3546,7 +3561,7 @@ ThreatenedCounterAbility AlertCounterEF7D("Alert Counter", {
     TargetAttacker(
         Attack(0.5, PRECISE)
     )
-}, 50, ThreatComparison::Higher, {
+}, 50, ThreatComparison::Lower, {
     TargetAttacker(
         Remove(SHIELD),
         Attack(0.5)
@@ -3555,13 +3570,21 @@ ThreatenedCounterAbility AlertCounterEF7D("Alert Counter", {
 
 ThreatenedCounterAbility AlertCounterSurvivalFA94("Alert Counter Survival", {
     TargetSelf(
-        IncreaseArmor(34.99999, 2, 4),
+        IncreaseArmor(15.0, 2, 4)
+    ),
+    TargetAttacker(
+        Attack(0.5),
         ReduceSpeed(25.0, 2, 4)
     )
 }, 50, ThreatComparison::Lower, {
     TargetSelf(
-        IncreaseArmor(15.0, 2, 4),
-        ReduceSpeed(50.0, 2, 4)
+        IncreaseArmor(34.99999, 2, 4)
+    ),
+    TargetAttacker(
+        ReduceSpeed(50.0, 2, 0)
+    ),
+    TargetSelf(
+        RallyHeal(15.0)
     )
 });
 
@@ -3611,11 +3634,11 @@ ThreatenedCounterAbility AlertDeception0644("Alert Deception", {
     )
 });
 
-ThreatenedAbility AlertDefenseF5F7("Alert Defense", 0, 2, 1, {
+ThreatenedAbility AlertDefenseF5F7("Alert Defense", 1, 2, 1, {
     TargetHighestHP(
         DevouringAttack(2.0, 80.0, 4, BYPASS_ARMOR)
     )
-}, 50, ThreatComparison::Higher, 0, 2, 1, {
+}, 50, ThreatComparison::Lower, 0, 2, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS),
         Shield(50.0, 2, 4),
@@ -3642,6 +3665,24 @@ ThreatenedAbility AlertDefensiveRampageACBA("Alert Defensive Rampage", 1, 2, 1, 
     ),
     TargetTeam(
         RallyHeal(33.0)
+    )
+});
+
+ThreatenedAbility AlertDevouringImpact014B("Alert Devouring Impact", 0, 2, 1, {
+    TargetSelf(
+        Cleanse(VULNERABILITY)
+    ),
+    TargetLowestHP(
+        Remove(TAUNT|SHIELD),
+        DevouringAttack(1.5, 60.0, 3, BYPASS_ARMOR)
+    )
+}, 50, ThreatComparison::Lower, 0, 2, 0, {
+    TargetSelf(
+        Heal(1.5)
+    ),
+    TargetAllOpponents(
+        Remove(TAUNT),
+        Attack(1.5, BYPASS_ARMOR|PRECISE)
     )
 });
 
@@ -3815,7 +3856,7 @@ ThreatenedAbility AlertImpactDA02("Alert Impact", 0, 1, 0, {
         Remove(SHIELD),
         DevouringAttack(1.75, 50.0, 2, BYPASS_ARMOR|BYPASS_ALERT)
     )
-}, 50, ThreatComparison::Higher, 0, 1, 0, {
+}, 50, ThreatComparison::Lower, 0, 1, 0, {
     TargetAllOpponents(
         ReduceSpeed(50.0, 2, 4),
         Attack(1.75, PRECISE|BYPASS_ALERT)
@@ -3932,6 +3973,25 @@ ThreatenedAbility AlertPersistentGroupShields2A85("Alert Persistent Group Shield
     )
 });
 
+ThreatenedAbility AlertProtectingRend2CFB("Alert Protecting Rend", 0, 1, 0, {
+    TargetSelf(
+        Cleanse(REDUCED_DAMAGE),
+        Heal(2.0),
+        Cleanse(NEGATIVE_EFFECTS),
+        Swap()
+    )
+}, 50, ThreatComparison::Higher, 0, 1, 0, {
+    TargetSelf(
+        Cleanse(REDUCED_DAMAGE)
+    ),
+    TargetFastest(
+        Rend(60.0, BYPASS_ARMOR|PRECISE)
+    ),
+    TargetSelf(
+        Shield(50.0, 2, 4)
+    )
+});
+
 ThreatenedAbility AlertRampageOverthrow7EE6("Alert Rampage Overthrow", 1, 2, 0, {
     TargetFastest(
         Attack(2.0, BYPASS_ARMOR|PRECISE)
@@ -4034,7 +4094,7 @@ ThreatenedAbility AlertStrike9EBE("Alert Strike", 0, 0, 0, {
         Remove(SHIELD|TAUNT),
         DevouringAttack(1.0, 40.0, 2, BYPASS_ARMOR)
     )
-}, 50, ThreatComparison::Higher, 0, 0, 0, {
+}, 50, ThreatComparison::Lower, 0, 0, 0, {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE),
         IncreaseArmor(15.0, 1, 2)
@@ -4201,6 +4261,18 @@ CounterAbility BaitAD47("Bait", {
     ),
     TargetAttacker(
         ReduceDamage(25.0, 1, 1)
+    )
+});
+
+Ability BaitingRampageBCD1("Baiting Rampage", 0, 3, 0, {
+    TargetHighestDamage(
+        ReduceDamage(50.0, 2, 4)
+    ),
+    TargetSelf(
+        IncreaseDamage(25.0, 2, 4)
+    ),
+    TargetHighestDamage(
+        Attack(2.0, PRECISE)
     )
 });
 
@@ -4472,6 +4544,18 @@ CounterAbility BlightedCounterStrike0834("Blighted Counter Strike", {
     )
 });
 
+Ability BlightedDodgingImpact1138("Blighted Dodging Impact", 0, 2, 0, {
+    TargetSelf(
+        Dodge(75.0, 66.69998, 2, 4)
+    ),
+    TargetLowestHP(
+        Attack(1.5)
+    ),
+    TargetLowestHP(
+        ReduceHealing(25.0, 2, 4)
+    )
+});
+
 CounterAbility BlightedPiercingCounter9B36("Blighted Piercing Counter", {
     TargetAttacker(
         Attack(1.0, BYPASS_ARMOR),
@@ -4603,6 +4687,19 @@ Ability Camouflage8414("Camouflage", 0, 0, 1, {
     TargetSelf(
         IncreaseSpeed(30.0, 2, 0),
         Dodge(75.0, 66.69999, 2, 2)
+    ),
+    TargetHighestDamage(
+        ReduceDamage(50.0, 1, 2)
+    )
+});
+
+Ability CamouflagedDigInBD8E("Camouflaged Dig In", 0, 2, 1, {
+    TargetSelf(
+        Heal(1.0),
+        Cleanse(NEGATIVE_EFFECTS),
+        IncreaseSpeed(30.0, 2, 0),
+        Dodge(75.0, 66.69999, 2, 2),
+        Shield(50.0, 2, 2)
     ),
     TargetHighestDamage(
         ReduceDamage(50.0, 1, 2)
@@ -4761,6 +4858,28 @@ Ability Cheater_sImpact7C86("Cheater'S Impact", 0, 3, 0, {
     )
 });
 
+Ability Cheater_sMockeryA9B4("Cheater'S Mockery", 0, 2, 1, {
+    TargetHighestDamage(
+        ReduceDamage(50.0, 2, 4)
+    ),
+    TargetHighestDamage(
+        ReduceSpeed(50.0, 2, 4)
+    ),
+    TargetSelf(
+        CheatDeath(1, 0)
+    )
+});
+
+Ability CheatingImpact9E23("Cheating Impact", 0, 2, 1, {
+    TargetSelf(
+        CheatDeath(1, 0),
+        Cleanse(DAMAGE_OVER_TIME)
+    ),
+    TargetHighestDamage(
+        Attack(1.5)
+    )
+});
+
 Ability ClawSleight8F2A("Claw Sleight", 1, 2, 1, {
     TargetSelf(
         Cleanse(NEGATIVE_EFFECTS)
@@ -4796,6 +4915,14 @@ Ability CleansingDeceleratingImpact66A0("Cleansing Decelerating Impact", 0, 2, 0
     TargetFastest(
         ReduceSpeed(50.0, 2, 0),
         Attack(1.5)
+    )
+});
+
+Ability CleansingFormation2446("Cleansing Formation", 0, 0, 0, {
+    TargetSelf(
+        Cleanse(REDUCED_DAMAGE|REDUCED_CRIT_CHANCE),
+        IncreaseDamage(25.0, 2, 4),
+        IncreaseCritChance(25.0, 2, 4)
     )
 });
 
@@ -4905,6 +5032,20 @@ CounterAbility CleverCounter3298("Clever Counter", {
     TargetAttacker(
         ReduceSpeed(50.0, 1, 1),
         Remove(CLOAK|DODGE)
+    )
+});
+
+Ability ClimbAway00E4("Climb Away", 0, 2, 0, {
+    TargetFastest(
+        Remove(DODGE)
+    ),
+    TargetFastest(
+        Remove(INCREASED_SPEED)
+    ),
+    TargetSelf(
+        IncreaseArmor(50.0, 2, 4),
+        IncreaseSpeed(25.0, 2, 4),
+        IncreaseDamage(25.0, 2, 4)
     )
 });
 
@@ -5247,6 +5388,18 @@ Ability CunningRampage8AEB("Cunning Rampage", 1, 1, 0, {
     )
 });
 
+Ability CunningRampageDevourF650("Cunning Rampage Devour", 1, 1, 0, {
+    TargetSelf(
+        Cleanse(DAMAGE_OVER_TIME)
+    ),
+    TargetHighestDamage(
+        Remove(INCREASED_CRIT_CHANCE|INCREASED_DAMAGE),
+        ReduceCritChance(100.0, 1, 2),
+        ReduceDamage(50.0, 1, 2),
+        DevouringAttack(2.0, 40.0, 3)
+    )
+});
+
 ThreatenedAbility CunningResilientAlertF5AD("Cunning Resilient Alert", 0, 2, 1, {
     TargetSelf(
         Dodge(75.0, 67.0, 2, 4),
@@ -5406,16 +5559,6 @@ Ability DebilitatingStrike1814("Debilitating Strike", 0, 0, 0, {
     TargetHighestDamage(
         ReduceDamage(75.0, 1, 2),
         Attack(1.0)
-    )
-});
-
-Ability DeceleratingCleanse6E7E("Decelerating Cleanse", 0, 0, 0, {
-    TargetSelf(
-        Cleanse(NEGATIVE_EFFECTS)
-    ),
-    TargetLowestHP(
-        Attack(1.0),
-        ReduceSpeed(25.0, 2, 2)
     )
 });
 
@@ -5932,6 +6075,18 @@ Ability DisarmingDecimateAndRunB62E("Disarming Decimate And Run", 2, 1, 0, {
     ),
     TargetSelf(
         Swap()
+    )
+});
+
+Ability DisarmingDecimation4EBE("Disarming Decimation", 1, 2, 0, {
+    TargetHighestDamage(
+        Attack(2.5)
+    ),
+    TargetHighestDamage(
+        ReduceArmor(50.0, 2, 4)
+    ),
+    TargetHighestDamage(
+        ReduceDamage(50.0, 2, 4)
     )
 });
 
@@ -6495,7 +6650,7 @@ Ability EvasiveStanceF473("Evasive Stance", 0, 3, 1, {
 
 Ability EvasiveStrikeA8EB("Evasive Strike", 0, 0, 0, {
     TargetSelf(
-        Dodge(75.0, 67.0, 1, 1)
+        Dodge(75.0, 67.0, 1, 2)
     ),
     TargetLowestHP(
         Attack(1.0)
@@ -6772,7 +6927,8 @@ Ability FerociousShieldedHeal2912("Ferocious Shielded Heal", 0, 0, 0, {
     TargetSelf(
         IncreaseDamage(50.0, 2, 2),
         Shield(50.0, 1, 2),
-        FixedHeal(50.0)
+        FixedHeal(50.0),
+        ReduceHealing(50.0, 3, 0)
     )
 });
 
@@ -6888,6 +7044,16 @@ Ability FierceImpactB3BE("Fierce Impact", 0, 1, 0, {
     TargetLowestHP(
         Remove(SHIELD|TAUNT),
         Attack(1.5, BYPASS_ARMOR)
+    )
+});
+
+Ability FiercePreciseRampage6D59("Fierce Precise Rampage", 1, 1, 0, {
+    TargetSelf(
+        Cleanse(VULNERABILITY)
+    ),
+    TargetHighestHP(
+        Remove(SHIELD|TAUNT),
+        Attack(2.0, BYPASS_ARMOR|PRECISE)
     )
 });
 
@@ -7324,14 +7490,14 @@ Ability GroupDefensiveEdge19D2("Group Defensive Edge", 0, 2, 0, {
     )
 });
 
-Ability GroupDefensiveRampage1969("Group Defensive Rampage", 1, 2, 0, {
+Ability GroupDefensiveRampage1969("Group Defensive Rampage", 1, 2, 1, {
     TargetTeam(
         Cleanse(REDUCED_DAMAGE),
         Heal(1.5),
         IncreaseArmor(15.0, 2, 4)
     ),
     TargetAllOpponents(
-        Attack(2.0, BYPASS_ALERT)
+        Attack(2.0, PRECISE|BYPASS_ALERT)
     )
 });
 
@@ -7733,10 +7899,10 @@ Ability Harden1485("Harden", 0, 2, 0, {
 
 Ability HasteningShelter3D24("Hastening Shelter", 0, 2, 1, {
     TargetTeam(
-        FixedHeal(66.0),
+        FixedHeal(50.0),
         Cleanse(NEGATIVE_EFFECTS),
         IncreaseSpeed(50.0, 2, 4),
-        Shield(75.0, 2, 4)
+        Shield(75.0, 2, 2)
     )
 });
 
@@ -7916,6 +8082,27 @@ Ability HowlingImpact29A5("Howling Impact", 0, 3, 1, {
     ),
     TargetAllOpponents(
         Attack(1.5, BYPASS_ALERT)
+    )
+});
+
+Ability HowlingRampage6241("Howling Rampage", 0, 2, 1, {
+    TargetTeam(
+        IncreaseDamage(30.0, 3, 6),
+        IncreaseSpeed(25.0, 3, 6)
+    ),
+    TargetAllOpponents(
+        Remove(SHIELD),
+        Attack(2.0, BYPASS_ALERT)
+    )
+});
+
+Ability Ids_tip_ability_title_group_decelerating_cleanse9740("Ids_tip_ability_title_group_decelerating_cleanse", 0, 0, 0, {
+    TargetTeam(
+        Cleanse(NEGATIVE_EFFECTS)
+    ),
+    TargetAllOpponents(
+        Attack(1.0, BYPASS_ALERT),
+        ReduceSpeed(25.0, 2, 2)
     )
 });
 
@@ -8179,6 +8366,19 @@ Ability InstantEvasiveDistractingImpactC5C2("Instant Evasive Distracting Impact"
     )
 });
 
+Ability InstantEvasivePreciseRampage6019("Instant Evasive Precise Rampage", 1, 1, 1, {
+    TargetSelf(
+        Dodge(75.0, 67.0, 2, 4),
+        Heal(1.0)
+    ),
+    TargetSlowest(
+        ReduceSpeed(50.0, 2, 4)
+    ),
+    TargetSlowest(
+        Attack(2.0, PRECISE)
+    )
+});
+
 RevengeAbility InstantFerociousRevenge3D5C("Instant Ferocious Revenge", 1, 2, 1, {
     TargetSelf(
         IncreaseDamage(50.0, 2, 2)
@@ -8232,9 +8432,9 @@ Ability InstantImpactAndRunA5E3("Instant Impact And Run", 1, 1, 1, {
     )
 });
 
-Ability InstantInvincibility9B21("Instant Invincibility", 1, 3, 1, {
+Ability InstantInvincibility9B21("Instant Invincibility", 1, 2, 1, {
     TargetSelf(
-        Shield(100.0, 0, 2)
+        Shield(100.0, 1, 4)
     )
 });
 
@@ -8438,6 +8638,24 @@ Ability Intimidate52C1("Intimidate", 1, 2, 1, {
     )
 });
 
+Ability IntimidatingBraceB7C9("Intimidating Brace", 0, 2, 1, {
+    TargetSelf(
+        Cleanse(REDUCED_DAMAGE),
+        Heal(1.0),
+        Cleanse(NEGATIVE_EFFECTS),
+        IncreaseDamage(25.0, 2, 4)
+    ),
+    TargetTeam(
+        IncreaseArmor(50.0, 2, 4)
+    ),
+    TargetLowestHP(
+        ReduceSpeed(50.0, 2, 0)
+    ),
+    TargetLowestHP(
+        ReduceDamage(25.0, 2, 2)
+    )
+});
+
 Ability IntimidatingImpact50F9("Intimidating Impact", 0, 1, 0, {
     TargetLowestHP(
         Remove(SHIELD),
@@ -8483,6 +8701,18 @@ ThreatenedAbility InvincibleAlert449E("Invincible Alert", 0, 2, 0, {
     )
 });
 
+Ability InvincibleBlightedStrike1755("Invincible Blighted Strike", 1, 1, 0, {
+    TargetSelf(
+        Shield(100.0, 0, 2)
+    ),
+    TargetLowestHP(
+        Attack(1.0)
+    ),
+    TargetLowestHP(
+        ReduceHealing(25.0, 2, 4)
+    )
+});
+
 Ability InvulnerableDevourImpactAB87("Invulnerable Devour Impact", 0, 1, 0, {
     TargetAllOpponents(
         Remove(SHIELD),
@@ -8517,6 +8747,24 @@ Ability Lacerate372D("Lacerate", 0, 3, 0, {
     TargetHighestHP(
         Attack(1.33),
         DamageOverTime(25.0, 4)
+    )
+});
+
+Ability LeaderLeech1E4E("Leader Leech", 1, 2, 1, {
+    TargetSelf(
+        Cleanse(REDUCED_DAMAGE)
+    ),
+    TargetHighestHP(
+        Remove(SHIELD)
+    ),
+    TargetHighestHP(
+        DevouringAttack(2.0, 60.0, 3, BYPASS_ARMOR|PRECISE)
+    ),
+    TargetHighestHP(
+        ReduceHealing(60.0, 3, 0)
+    ),
+    TargetHighestHP(
+        DamageOverTime(25.0, 3)
     )
 });
 
@@ -8847,6 +9095,16 @@ CounterAbility MediumDartingCounter4D9B("Medium Darting Counter", {
     ),
     TargetSelf(
         IncreaseSpeed(25.0, 1, 2)
+    )
+});
+
+CounterAbility MediumFerociousPiercingCounterC88B("Medium Ferocious Piercing Counter", {
+    TargetSelf(
+        IncreaseDamage(25.0, 2, 4)
+    ),
+    TargetAttacker(
+        Remove(SHIELD),
+        Attack(0.5, BYPASS_ARMOR|PRECISE)
     )
 });
 
@@ -9387,6 +9645,15 @@ Ability PreciseImpactAndRunF059("Precise Impact And Run", 1, 1, 0, {
     )
 });
 
+Ability PrecisePiercingRampageBBE5("Precise Piercing Rampage", 1, 1, 1, {
+    TargetSelf(
+        Cleanse(VULNERABILITY)
+    ),
+    TargetFastest(
+        Attack(2.0, BYPASS_ARMOR|PRECISE)
+    )
+});
+
 CounterAbility PrecisePiercingStrike5679("Precise Piercing Strike", {
     TargetAttacker(
         Attack(1.0, BYPASS_ARMOR|PRECISE)
@@ -9685,6 +9952,16 @@ Ability Rejuvenate381D("Rejuvenate", 1, 3, 0, {
         FixedHeal(100.0),
         Cleanse(NEGATIVE_EFFECTS),
         ReduceSpeed(50.0, 2, 0)
+    )
+});
+
+Ability RelentlessEndurance61C3("Relentless Endurance", 1, 2, -1, {
+    TargetSelf(
+        Cleanse(NEGATIVE_EFFECTS),
+        CheatDeath(2, 0)
+    ),
+    TargetHighestDamage(
+        Attack(2.0)
     )
 });
 
@@ -10456,6 +10733,18 @@ ThreatenedAbility SlipperyAlertB2DD("Slippery Alert", 0, 2, 0, {
     )
 });
 
+Ability SlothfulVulnerableImpactF951("Slothful Vulnerable Impact", 0, 2, -1, {
+    TargetSelf(
+        Cleanse(REDUCED_DAMAGE|DAMAGE_OVER_TIME|REDUCED_SPEED)
+    ),
+    TargetAllOpponents(
+        Remove(POSITIVE_EFFECTS),
+        Attack(1.5, BYPASS_ALERT),
+        ReduceSpeed(25.0, 2, 4),
+        ImposeVulnerability(50.0, 2, 1)
+    )
+});
+
 CounterAbility SlowingCounterPowerHeal6A69("Slowing Counter Power Heal", {
     TargetSelf(
         Cleanse(REDUCED_DAMAGE),
@@ -10720,6 +11009,25 @@ Ability SustainedGroupDistractingImpactC482("Sustained Group Distracting Impact"
     )
 });
 
+Ability TalonedGraspAndRunF775("Taloned Grasp And Run", 0, 2, 0, {
+    TargetSelf(
+        Cleanse(REDUCED_DAMAGE),
+        Shield(50.0, 1, 2)
+    ),
+    TargetLowestHP(
+        Remove(INCREASED_DAMAGE)
+    ),
+    TargetFastest(
+        Stun(75.0, 1)
+    ),
+    TargetFastest(
+        Attack(1.5)
+    ),
+    TargetSelf(
+        Swap()
+    )
+});
+
 Ability TauntShatteringRampageDE3B("Taunt Shattering Rampage", 1, 2, 0, {
     TargetSelf(
         Taunt(1)
@@ -10893,15 +11201,16 @@ Ability ThievishStrikeBD4A("Thievish Strike", 0, 0, 0, {
     )
 });
 
-Ability ThrashingImpactAndRun9E6F("Thrashing Impact And Run", 0, 2, 0, {
-    TargetSelf(
-        Cleanse(NEGATIVE_EFFECTS)
+Ability ThrashingImpact9E6F("Thrashing Impact", 1, 1, 0, {
+    TargetTeam(
+        Cleanse(NEGATIVE_EFFECTS),
+        IncreaseDamage(50.0, 2, 4)
+    ),
+    TargetLowestHP(
+        Remove(SHIELD)
     ),
     TargetLowestHP(
         Attack(1.5, BYPASS_ARMOR)
-    ),
-    TargetSelf(
-        Swap()
     )
 });
 
@@ -11628,6 +11937,15 @@ DinoKind Amargocephalus("Amargocephalus", EPIC, 1, {
     }, &MediumCounter_attackE4A7)
 });
 
+DinoKind Ampelorex("Ampelorex", UNIQUE, 1, {
+    DinoRound(6000, 1600, 105, 25.0, 10.0, 125.0, 0.0, 0.0, 0.0, 75.0, 0.0, 50.0, 0.0, 0.0, 100.0, 100.0, 0.0, 50.0, {
+        &DispersedSuperiorVulnerability5AC2,
+        &TauntingResilientGroupImpact240C,
+        &IntimidatingBraceB7C9,
+        &FierceDevouringRampage6CE7
+    }, &MediumFerociousPiercingCounterC88B)
+});
+
 DinoKind Ampelosaurus("Ampelosaurus", EPIC, 1, {
     DinoRound(5000, 1200, 102, 25.0, 5.0, 125.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0, 50.0, 0.0, 50.0, {
         &SuperiorVulnerability7C25,
@@ -11837,6 +12155,15 @@ DinoKind Arctalces("Arctalces", LEGENDARY, 1, {
     }, nullptr)
 });
 
+DinoKind Arctocanis("Arctocanis", UNIQUE, 1, {
+    DinoRound(5200, 1400, 116, 15.0, 10.0, 125.0, 0.0, 50.0, 0.0, 50.0, 75.0, 0.0, 75.0, 100.0, 75.0, 0.0, 0.0, 0.0, {
+        &FerociousShieldedHeal2912,
+        &HowlingRampage6241,
+        &ResilientGroupRampage9B37,
+        &Cheater_sMockeryA9B4
+    }, &CounterPowerHeal4DD2)
+});
+
 DinoKind Arctodus("Arctodus", RARE, 1, {
     DinoRound(4200, 1250, 107, 10.0, 5.0, 125.0, 0.0, 0.0, 0.0, 50.0, 100.0, 0.0, 0.0, 0.0, 100.0, 0.0, 0.0, 0.0, {
         &HeavyStrike5748,
@@ -12004,6 +12331,14 @@ DinoKind Beta("Beta", EPIC, 1, {
     }, nullptr)
 });
 
+DinoKind Blonde("Blonde", EPIC, 1, {
+    DinoRound(4200, 1600, 125, 0.0, 10.0, 125.0, 0.0, 75.0, 50.0, 0.0, 50.0, 100.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.0, {
+        &InstantCunningStrike12C2,
+        &GroupDevouringImpactC9D9,
+        &PrecisePiercingRampageBBE5
+    }, &BlightedPiercingCounter9B36)
+});
+
 DinoKind Blue("Blue", EPIC, 1, {
     DinoRound(2700, 1450, 131, 0.0, 5.0, 125.0, 0.0, 0.0, 100.0, 0.0, 50.0, 100.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
         &CunningStrike75A8,
@@ -12053,6 +12388,14 @@ DinoKind Brontotherium("Brontotherium", COMMON, 1, {
         &ShieldedTauntingStrike73D4,
         &ResilientImpact7BB4
     }, nullptr)
+});
+
+DinoKind Brunette("Brunette", EPIC, 1, {
+    DinoRound(4800, 1500, 111, 10.0, 5.0, 125.0, 0.0, 50.0, 0.0, 50.0, 0.0, 100.0, 0.0, 0.0, 0.0, 50.0, 0.0, 0.0, {
+        &CleansingFormation2446,
+        &DefenseShatteringRevengeFFF1,
+        &AlertDevouringImpact014B
+    }, &DefensiveCounterStrike801C)
 });
 
 DinoKind Bumpy("Bumpy", EPIC, 1, {
@@ -12323,10 +12666,10 @@ DinoKind Cryolophosaurus("Cryolophosaurus", OMEGA, 1, 40, 20, 1, 0.99999, 0.9999
 });
 
 DinoKind Dakotanops("Dakotanops", LEGENDARY, 1, {
-    DinoRound(3300, 1200, 131, 0.0, 10.0, 125.0, 100.0, 0.0, 100.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
-        &Distraction2717,
+    DinoRound(3600, 1400, 131, 0.0, 10.0, 125.0, 100.0, 0.0, 100.0, 0.0, 0.0, 0.0, 75.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
+        &Sidestep5439,
         &PreciseImpact9D87,
-        &DistractingImpactD4D6,
+        &RelentlessEndurance61C3,
         &RevengeCunningRampage422C
     }, nullptr)
 });
@@ -12761,19 +13104,28 @@ DinoKind Entelolania("Entelolania", UNIQUE, 1, {
 });
 
 DinoKind Entelomoth("Entelomoth", LEGENDARY, 1, {
-    DinoRound(4200, 1000, 120, 20.0, 5.0, 125.0, 0.0, 50.0, 0.0, 0.0, 0.0, 100.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.0, {
+    DinoRound(4200, 1400, 121, 20.0, 5.0, 125.0, 0.0, 100.0, 25.0, 50.0, 0.0, 100.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.0, {
         &PersistentFerociousStrikeAF52,
         &MutualFury2752,
         &GroupShatteringImpact7EAE,
-        &Bellow866E
+        &FiercePreciseRampage6D59
+    }, &CounterFerocity85EF)
+});
+
+DinoKind Eremocanis("Eremocanis", APEX, 1, {
+    DinoRound(5300, 1550, 126, 20.0, 10.0, 125.0, 0.0, 50.0, 75.0, 75.0, 50.0, 75.0, 75.0, 0.0, 75.0, 0.0, 0.0, 0.0, {
+        &CunningResilientStrike43DC,
+        &SlothfulVulnerableImpactF951,
+        &Cheater_sMockeryA9B4,
+        &InstantEvasivePreciseRampage6019
     }, nullptr)
 });
 
 DinoKind Eremoceros("Eremoceros", LEGENDARY, 1, {
-    DinoRound(3900, 1300, 126, 10.0, 5.0, 125.0, 0.0, 0.0, 50.0, 0.0, 50.0, 0.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.0, {
+    DinoRound(4100, 1350, 126, 10.0, 5.0, 125.0, 0.0, 0.0, 50.0, 0.0, 50.0, 0.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.0, {
         &ShieldedDeceleratingStrike627F,
-        &Camouflage03BB,
-        &DigIn6DFE,
+        &SuperiorityImpact5FE3,
+        &CamouflagedDigInBD8E,
         &CunningRampage8AEB
     }, nullptr)
 });
@@ -13025,9 +13377,9 @@ DinoKind Glyptosavis("Glyptosavis", APEX, 1, {
 });
 
 DinoKind Gorgonops("Gorgonops", RARE, 1, {
-    DinoRound(3150, 1100, 132, 0.0, 10.0, 125.0, 100.0, 0.0, 100.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
-        &Distraction2717,
-        &CunningImpactEE79,
+    DinoRound(3150, 1250, 132, 0.0, 10.0, 125.0, 100.0, 0.0, 100.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
+        &CunningStrike75A8,
+        &CheatingImpact9E23,
         &RevengeRampageACBE
     }, nullptr)
 });
@@ -13077,10 +13429,10 @@ DinoKind Gryganyth("Gryganyth", APEX, 1, {
 });
 
 DinoKind Grylenken("Grylenken", LEGENDARY, 1, {
-    DinoRound(3600, 1500, 129, 10.0, 30.0, 150.0, 50.0, 100.0, 50.0, 0.0, 50.0, 0.0, 75.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
+    DinoRound(3600, 1500, 130, 10.0, 30.0, 150.0, 50.0, 100.0, 50.0, 0.0, 50.0, 0.0, 75.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
         &DeviousStrike53F7,
         &FoulRakingClaws91FC,
-        &DisarmingDecimateAndRunB62E,
+        &DisarmingDecimation4EBE,
         &InstantBuff41DC
     }, &MinorCriticalCounterE7FC)
 });
@@ -13332,19 +13684,19 @@ DinoKind Keratoporcus("Keratoporcus", LEGENDARY, 1, {
 });
 
 DinoKind Koolabourgiana("Koolabourgiana", LEGENDARY, 1, {
-    DinoRound(4950, 1000, 117, 0.0, 5.0, 125.0, 0.0, 0.0, 50.0, 0.0, 50.0, 0.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.0, {
+    DinoRound(4950, 1200, 117, 0.0, 5.0, 125.0, 0.0, 0.0, 100.0, 0.0, 50.0, 0.0, 0.0, 50.0, 50.0, 0.0, 0.0, 0.0, {
         &ResilientStrikeFEDE,
         &GroupTauntingShieldsStrikeDA58,
-        &DistractingImpactD4D6,
+        &BaitingRampageBCD1,
         &InstantInvincibility9B21
-    }, nullptr)
+    }, &DistractingCounterA897)
 });
 
 DinoKind Koolasuchus("Koolasuchus", EPIC, 1, {
-    DinoRound(3900, 1000, 127, 0.0, 5.0, 125.0, 0.0, 0.0, 100.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
+    DinoRound(3900, 1200, 127, 0.0, 5.0, 125.0, 0.0, 0.0, 100.0, 0.0, 50.0, 50.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
         &CunningStrike75A8,
         &DistractingImpactD4D6,
-        &GroupDistractionFB00
+        &BlightedDodgingImpact1138
     }, nullptr)
 });
 
@@ -13513,6 +13865,25 @@ DinoKind Masiakasaurus("Masiakasaurus", OMEGA, 1, 30, 25, 1, 0.99999, 0.99999, 0
     }, nullptr)
 });
 
+DinoKind Mastodonsaurus("Mastodonsaurus", OMEGA, 1, 45, 25, 1, 1.99999, 0.99999, 0.99999, 97, 74, 20, 23, 20, 25,
+{0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
+    {6, RestrictionType::Counter, 1},
+    {16, RestrictionType::Ability, 3},
+    {16, RestrictionType::RendResistance, 50.0},
+    {16, RestrictionType::DamageOverTimeResistance, 50.0},
+    {16, RestrictionType::HealingReductionResistance, 100.0},
+    {21, RestrictionType::StunResistance, 50.0},
+    {21, RestrictionType::SwapPreventionResistance, 25.0},
+    {26, RestrictionType::Ability, 4}
+}, {
+    DinoRound(1250, 450, 105, 3.99998, 5.0, 125.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 50.0, 50.0, 100.0, 0.0, 0.0, 0.0, {
+        &Bulwark2D7E,
+        &DispersedFierceImpact938B,
+        &AlertProtectingRend2CFB,
+        &LeaderLeech1E4E
+    }, &MediumResilientCounter_attack3EB5)
+});
+
 DinoKind Megalania("Megalania", OMEGA, 1, 30, 20, 1, 0.99999, 0.99999, 0.99999, 130, 76, 25, 10, 10, 75,
 {0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 154, 161, 168, 175, 182, 189, 196, 203, 210}, {
     {6, RestrictionType::Ability, 3},
@@ -13626,6 +13997,15 @@ DinoKind Miragaia("Miragaia", COMMON, 1, {
     }, &DeceleratingCounterD9D3)
 });
 
+DinoKind Monkeydactyl("Monkeydactyl", LEGENDARY, 3, {
+    DinoRound(4100, 1500, 125, 15.0, 10.0, 125.0, 0.0, 0.0, 50.0, 25.0, 100.0, 75.0, 100.0, 0.0, 50.0, 50.0, 0.0, 0.0, {
+        &DispersedSuperiorVulnerability5AC2,
+        &ClimbAway00E4,
+        &ResilientRampageB23D,
+        &TalonedGraspAndRunF775
+    }, nullptr)
+});
+
 DinoKind Monolometrodon("Monolometrodon", LEGENDARY, 1, {
     DinoRound(4200, 1400, 125, 0.0, 5.0, 125.0, 0.0, 100.0, 25.0, 75.0, 75.0, 100.0, 75.0, 0.0, 100.0, 0.0, 0.0, 0.0, {
         &DefenseShatteringStrike1CA6,
@@ -13671,10 +14051,10 @@ DinoKind Monolorhino("Monolorhino", UNIQUE, 1, {
 DinoKind Monomimus("Monomimus", LEGENDARY, 1, {
     DinoRound(3750, 1350, 131, 0.0, 5.0, 125.0, 100.0, 100.0, 100.0, 0.0, 0.0, 100.0, 75.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
         &CunningStrike75A8,
-        &DistractingRampageBD0D,
+        &Sidestep5439,
         &InstantDistractionF5AC,
-        &EvasiveStanceF473
-    }, nullptr)
+        &DistractingRampageBD0D
+    }, &DartingCounter6039)
 });
 
 DinoKind Monostegotops("Monostegotops", LEGENDARY, 1, {
@@ -13767,6 +14147,15 @@ DinoKind Nundasuchus("Nundasuchus", COMMON, 1, {
     DinoRound(3000, 1600, 128, 0.0, 25.0, 150.0, 0.0, 0.0, 0.0, 0.0, 100.0, 0.0, 100.0, 0.0, 50.0, 0.0, 0.0, 0.0, {
         &ArmorPiercingStrike69E0,
         &FerociousStrike71CC
+    }, nullptr)
+});
+
+DinoKind Nyctosaurus("Nyctosaurus", LEGENDARY, 1, {
+    DinoRound(4200, 1600, 126, 0.0, 25.0, 135.0, 0.0, 50.0, 50.0, 50.0, 100.0, 50.0, 100.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
+        &EvasiveStrikeA8EB,
+        &ImpactAndRun738D,
+        &CunningRampageDevourF650,
+        &AfflictedWoundingDistractionFFA6
     }, nullptr)
 });
 
@@ -14029,10 +14418,10 @@ DinoKind Proceratosaurus("Proceratosaurus", RARE, 1, {
 });
 
 DinoKind ProtoLux("Proto Lux", APEX, 1, {
-    DinoRound(5150, 1550, 115, 15.0, 10.0, 125.0, 0.0, 0.0, 50.0, 0.0, 0.0, 100.0, 0.0, 0.0, 75.0, 0.0, 0.0, 0.0, {
-        &DispersedSuperiorVulnerability5AC2,
+    DinoRound(5150, 1550, 115, 25.0, 10.0, 125.0, 0.0, 0.0, 50.0, 50.0, 100.0, 100.0, 0.0, 0.0, 75.0, 0.0, 0.0, 0.0, {
+        &BlessedShieldStrike0CE4,
         &Cheater_sImpact7C86,
-        &AfflictingAlertStun7106,
+        &SunderingDistractingImpact9BEA,
         &GroupDefensiveRampage1969
     }, &AlertCounterSurvivalFA94)
 });
@@ -14226,11 +14615,11 @@ DinoKind Rajadotholus("Rajadotholus", UNIQUE, 1, {
 });
 
 DinoKind Rajakylosaurus("Rajakylosaurus", LEGENDARY, 1, {
-    DinoRound(4350, 1000, 104, 30.0, 5.0, 125.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
+    DinoRound(4550, 1200, 107, 30.0, 20.0, 150.0, 0.0, 0.0, 75.0, 0.0, 100.0, 75.0, 0.0, 0.0, 100.0, 100.0, 0.0, 0.0, {
         &ResilientStrikeFEDE,
-        &TauntingShields1CF6,
+        &InstantShieldImpact2714,
         &GroupShield54BA,
-        &InstantInvincibilityTaunt6C65
+        &InvincibleBlightedStrike1755
     }, &PrecisePiercingStrike5679)
 });
 
@@ -14309,7 +14698,7 @@ DinoKind Rinchenia("Rinchenia", EPIC, 1, {
 });
 
 DinoKind Rinchicyon("Rinchicyon", LEGENDARY, 1, {
-    DinoRound(3450, 1400, 129, 0.0, 25.0, 150.0, 100.0, 0.0, 50.0, 0.0, 75.0, 0.0, 67.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
+    DinoRound(3900, 1400, 129, 0.0, 25.0, 150.0, 100.0, 0.0, 50.0, 0.0, 75.0, 50.0, 67.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
         &InstantDeviousStrike33EA,
         &InstantBuff41DC,
         &DispersedFierceImpact938B,
@@ -14502,7 +14891,7 @@ DinoKind Segnotherisaurus("Segnotherisaurus", UNIQUE, 1, {
 });
 
 DinoKind Sinoceratops("Sinoceratops", EPIC, 1, {
-    DinoRound(3300, 1000, 107, 25.0, 5.0, 125.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
+    DinoRound(3550, 1400, 107, 25.0, 5.0, 125.0, 0.0, 0.0, 75.0, 0.0, 0.0, 100.0, 75.0, 0.0, 50.0, 0.0, 0.0, 0.0, {
         &ResilientStrikeFEDE,
         &DigIn6DFE,
         &InstantCharge0917
@@ -14968,11 +15357,11 @@ DinoKind Toro("Toro", OMEGA, 1, 40, 15, 1, 0.99999, 0.99999, 0.99999, 112, 97, 9
     {16, RestrictionType::Ability, 4},
     {21, RestrictionType::Counter, 1}
 }, {
-    DinoRound(1320, 395, 107, 5.0, 5.0, 125.0, 0.0, 50.0, 50.0, 50.0, 50.0, 100.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
-        &DeceleratingCleanse6E7E,
+    DinoRound(1320, 395, 107, 5.0, 5.0, 125.0, 0.0, 50.0, 100.0, 50.0, 50.0, 100.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, {
+        &Ids_tip_ability_title_group_decelerating_cleanse9740,
         &AngryEndurance8CB4,
         &HornedDevour10A1,
-        &ThrashingImpactAndRun9E6F
+        &ThrashingImpact9E6F
     }, &MinorHealingCounter5330)
 });
 
@@ -15340,6 +15729,7 @@ map<string, const DinoKind *> DinoDex = {
     make_pair("Allosinosaurus", &Allosinosaurus),
     make_pair("Amargasaurus", &Amargasaurus),
     make_pair("Amargocephalus", &Amargocephalus),
+    make_pair("Ampelorex", &Ampelorex),
     make_pair("Ampelosaurus", &Ampelosaurus),
     make_pair("Amphicyon", &Amphicyon),
     make_pair("Andrewsarchus", &Andrewsarchus),
@@ -15365,6 +15755,7 @@ map<string, const DinoKind *> DinoDex = {
     make_pair("Archaeopteryx", &Archaeopteryx),
     make_pair("Archaeotherium", &Archaeotherium),
     make_pair("Arctalces", &Arctalces),
+    make_pair("Arctocanis", &Arctocanis),
     make_pair("Arctodus", &Arctodus),
     make_pair("Arctops", &Arctops),
     make_pair("Arctovasilas", &Arctovasilas),
@@ -15384,11 +15775,13 @@ map<string, const DinoKind *> DinoDex = {
     make_pair("BaryonyxGen2", &BaryonyxGen2),
     make_pair("Beelzebufo", &Beelzebufo),
     make_pair("Beta", &Beta),
+    make_pair("Blonde", &Blonde),
     make_pair("Blue", &Blue),
     make_pair("Borealopelta", &Borealopelta),
     make_pair("Brachiosaurus", &Brachiosaurus),
     make_pair("Brontolasmus", &Brontolasmus),
     make_pair("Brontotherium", &Brontotherium),
+    make_pair("Brunette", &Brunette),
     make_pair("Bumpy", &Bumpy),
     make_pair("Carbonemys", &Carbonemys),
     make_pair("Carbotoceratops", &Carbotoceratops),
@@ -15470,6 +15863,7 @@ map<string, const DinoKind *> DinoDex = {
     make_pair("Entelodon", &Entelodon),
     make_pair("Entelolania", &Entelolania),
     make_pair("Entelomoth", &Entelomoth),
+    make_pair("Eremocanis", &Eremocanis),
     make_pair("Eremoceros", &Eremoceros),
     make_pair("Eremotherium", &Eremotherium),
     make_pair("Erlidominus", &Erlidominus),
@@ -15552,6 +15946,7 @@ map<string, const DinoKind *> DinoDex = {
     make_pair("Mammotherium", &Mammotherium),
     make_pair("MarsupialLion", &MarsupialLion),
     make_pair("Masiakasaurus", &Masiakasaurus),
+    make_pair("Mastodonsaurus", &Mastodonsaurus),
     make_pair("Megalania", &Megalania),
     make_pair("Megaloceros", &Megaloceros),
     make_pair("Megalocevia", &Megalocevia),
@@ -15565,6 +15960,7 @@ map<string, const DinoKind *> DinoDex = {
     make_pair("Meiolania", &Meiolania),
     make_pair("Microraptor", &Microraptor),
     make_pair("Miragaia", &Miragaia),
+    make_pair("Monkeydactyl", &Monkeydactyl),
     make_pair("Monolometrodon", &Monolometrodon),
     make_pair("Monolomoth", &Monolomoth),
     make_pair("Monolophosaurus", &Monolophosaurus),
@@ -15582,6 +15978,7 @@ map<string, const DinoKind *> DinoDex = {
     make_pair("Nomingia", &Nomingia),
     make_pair("Nominrex", &Nominrex),
     make_pair("Nundasuchus", &Nundasuchus),
+    make_pair("Nyctosaurus", &Nyctosaurus),
     make_pair("Olorotitan", &Olorotitan),
     make_pair("Ophiacodon", &Ophiacodon),
     make_pair("Ornithomimus", &Ornithomimus),

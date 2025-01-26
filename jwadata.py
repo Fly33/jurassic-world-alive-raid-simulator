@@ -420,7 +420,7 @@ def GetDino(l10n, data, dino_data, ability_dex):
                             restrictions.append({'level': mln['cl'], 'type': 'SpeedReductionResistance', 'value': msn['fs'] / 100000})
                         elif msn['fst'] == 'ResistanceStun':
                             restrictions.append({'level': mln['cl'], 'type': 'StunResistance', 'value': msn['fs'] / 100000})
-                        elif msn['fst'] == 'ResistanceSwap':
+                        elif msn['fst'] == 'ResistanceSwapPrevention':
                             restrictions.append({'level': mln['cl'], 'type': 'SwapPreventionResistance', 'value': msn['fs'] / 100000})
                         elif msn['fst'] == 'ResistanceTaunt':
                             restrictions.append({'level': mln['cl'], 'type': 'TauntResistance', 'value': msn['fs'] / 100000})
@@ -430,7 +430,7 @@ def GetDino(l10n, data, dino_data, ability_dex):
                             restrictions.append({'level': mln['cl'], 'type': 'ArmorReductionResistance', 'value': msn['fs'] / 100000})
                         elif msn['fst'] == 'ResistanceAffliction':
                             restrictions.append({'level': mln['cl'], 'type': 'AfflictionResistance', 'value': msn['fs'] / 100000})
-                        elif msn['fst'] == 'ResistanceHealing':
+                        elif msn['fst'] == 'ResistanceHealDebuff':
                             restrictions.append({'level': mln['cl'], 'type': 'HealingReductionResistance', 'value': msn['fs'] / 100000})
                         else:
                             raise Exception('Unknown fst: {}'.format(msn['fst']))
